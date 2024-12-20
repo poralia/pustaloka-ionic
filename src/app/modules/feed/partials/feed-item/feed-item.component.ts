@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-feed-item',
-  templateUrl: './feed-item.component.html',
-  styleUrls: ['./feed-item.component.scss'],
+    selector: 'app-feed-item',
+    templateUrl: './feed-item.component.html',
+    styleUrls: ['./feed-item.component.scss'],
+    standalone: false
 })
 export class FeedItemComponent  implements OnInit {
 

@@ -4,9 +4,10 @@ import { AlertController } from '@ionic/angular';
 import * as Granim from 'granim';
 
 @Component({
-  selector: 'app-reading-challenge-timer-screen',
-  templateUrl: './reading-challenge-timer-screen.component.html',
-  styleUrls: ['./reading-challenge-timer-screen.component.scss'],
+    selector: 'app-reading-challenge-timer-screen',
+    templateUrl: './reading-challenge-timer-screen.component.html',
+    styleUrls: ['./reading-challenge-timer-screen.component.scss'],
+    standalone: false
 })
 export class ReadingChallengeTimerScreenComponent  implements OnInit {
 

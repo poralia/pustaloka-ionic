@@ -2,9 +2,10 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-login-form',
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss'],
+    selector: 'app-login-form',
+    templateUrl: './login-form.component.html',
+    styleUrls: ['./login-form.component.scss'],
+    standalone: false
 })
 export class LoginFormComponent  implements OnInit {
 

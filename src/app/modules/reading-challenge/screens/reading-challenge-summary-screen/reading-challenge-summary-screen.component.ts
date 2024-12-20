@@ -8,9 +8,10 @@ export interface Fruit {
 }
 
 @Component({
-  selector: 'app-reading-challenge-summary-screen',
-  templateUrl: './reading-challenge-summary-screen.component.html',
-  styleUrls: ['./reading-challenge-summary-screen.component.scss'],
+    selector: 'app-reading-challenge-summary-screen',
+    templateUrl: './reading-challenge-summary-screen.component.html',
+    styleUrls: ['./reading-challenge-summary-screen.component.scss'],
+    standalone: false
 })
 export class ReadingChallengeSummaryScreenComponent  implements OnInit {
 

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-feed',
-  templateUrl: 'feed.page.html',
-  styleUrls: ['feed.page.scss']
+    selector: 'app-feed',
+    templateUrl: 'feed.page.html',
+    styleUrls: ['feed.page.scss'],
+    standalone: false
 })
 export class FeedPage implements OnInit {
 

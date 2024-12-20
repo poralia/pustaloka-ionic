@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-feed-list-screen',
-  templateUrl: './feed-list-screen.component.html',
-  styleUrls: ['./feed-list-screen.component.scss'],
+    selector: 'app-feed-list-screen',
+    templateUrl: './feed-list-screen.component.html',
+    styleUrls: ['./feed-list-screen.component.scss'],
+    standalone: false
 })
 export class FeedListScreenComponent  implements OnInit {
 

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-feed-detail-screen',
-  templateUrl: './feed-detail-screen.component.html',
-  styleUrls: ['./feed-detail-screen.component.scss'],
+    selector: 'app-feed-detail-screen',
+    templateUrl: './feed-detail-screen.component.html',
+    styleUrls: ['./feed-detail-screen.component.scss'],
+    standalone: false
 })
 export class FeedDetailScreenComponent  implements OnInit {
 
