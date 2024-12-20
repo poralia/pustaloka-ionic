@@ -1,0 +1,12 @@
+ion-avatar {
+    border-width: 2px;
+    border-radius: 100px;
+    border-color: var(--ion-color-purple);
+    border-style: solid;
+}
+
+tr + tr {
+    border-top-width: 1px;
+    border-color: var(--ion-color-purple);
+    border-style: dotted;
+}

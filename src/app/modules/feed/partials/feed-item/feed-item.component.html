@@ -1,0 +1,52 @@
+<ion-card mode="ios" [routerLink]="['/tabs/feed', props.item.id]">
+  <ion-card-content class="pt-3">
+    <ion-item lines="none" class="ion-no-padding mb-2.5">
+      <ion-avatar slot="start" class="w-11 h-11">
+        <ion-img [src]="props.item.avatar"></ion-img>
+      </ion-avatar>
+
+      <ion-label>
+        <ion-text class="font-semibold">{{ props.item.name }}</ion-text>
+        <p><ion-text>{{ props.item.created_at }}</ion-text></p>
+      </ion-label>
+    </ion-item>
+
+    <article class="ion-margin-bottom">
+      {{ props.item.summary }}
+    </article>
+
+    <div class="flex w-full">
+      <div class="w-14 flex-none border border-dotted border-purple-900 p-1 flex items-center justify-center rounded-lg">
+        <ion-img [src]="props.item.cover" class="w-full h-auto"></ion-img>
+      </div>
+    
+      <div class="w-full pl-2">
+        <table class="table text-sm w-full">
+          <tbody>
+            <tr>
+              <td class="w-20 align-top"><ion-text>Judul</ion-text></td>
+              <td class="line-clamp-1"><ion-text>{{ props.item.book }}</ion-text></td>
+            </tr>
+
+            <tr>
+              <td class="w-20 align-top"><ion-text>Halaman</ion-text></td>
+              <td class="line-clamp-1"><ion-text>{{ props.item.page_count }} (215 - 219)</ion-text></td>
+            </tr>
+
+            <tr>
+              <td class="w-20 align-top"><ion-text>Durasi</ion-text></td>
+              <td class="line-clamp-1"><ion-text>{{ props.item.duration }}</ion-text></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- <div class="flex ion-margin-top">
+      <ion-button fill="clear" size="small" color="purple">
+        <ion-icon slot="start" name="chatbubble"></ion-icon>
+        <ion-text>12 Komentar</ion-text>
+      </ion-button>
+    </div> -->
+  </ion-card-content>
+</ion-card>

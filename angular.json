@@ -31,8 +31,13 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
-            "scripts": []
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
+            "scripts": [
+              "node_modules/countdown/countdown.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -111,8 +116,13 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
-            "scripts": []
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
+            "scripts": [
+              "node_modules/countdown/countdown.js"
+            ]
           },
           "configurations": {
             "ci": {
@@ -135,7 +145,8 @@
   },
   "cli": {
     "schematicCollections": [
-      "@ionic/angular-toolkit"
+      "@ionic/angular-toolkit",
+      "@ngrx/schematics"
     ]
   },
   "schematics": {

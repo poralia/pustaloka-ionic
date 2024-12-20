@@ -1,0 +1,86 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-item lines="none" color="light-blue">
+      <ion-avatar slot="end" class="w-11 h-11">
+        <ion-img [src]="item.avatar"></ion-img>
+      </ion-avatar>
+
+      <ion-label class="ion-text-end">
+        <ion-text class="font-semibold">{{ item.name }}</ion-text>
+        <p><ion-text>{{ item.created_at }}</ion-text></p>
+      </ion-label>
+    </ion-item>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" size="small" icon="return-up-back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue">
+  <ion-card mode="ios">
+    <ion-card-content>
+      <div class="block ion-margin-bottom">
+        <ion-text class="block font-semibold text-xl">{{ item.book }}</ion-text>
+      </div>
+      
+      <div class="flex w-full">
+        <div class="w-20 flex-none border border-dotted border-purple-900 p-2 items-center flex justify-center rounded-lg">
+          <ion-img [src]="item.cover" class="w-full h-auto"></ion-img>
+        </div>
+      
+        <div class="w-full pl-2">
+          <table class="table text-sm w-full">
+            <tbody>
+              <tr>
+                <td class="align-center"><ion-icon name="copy"></ion-icon></td>
+                <td class="w-20 align-top"><ion-text>Halaman</ion-text></td>
+                <td class="line-clamp-1"><ion-text>{{ item.page_count }} (215 - 219)</ion-text></td>
+              </tr>
+
+              <tr>
+                <td><ion-icon name="stopwatch"></ion-icon></td>
+                <td class="w-20 align-top"><ion-text>Mulai</ion-text></td>
+                <td class="line-clamp-1"><ion-text>{{ item.start }}</ion-text></td>
+              </tr>
+
+              <tr>
+                <td><ion-icon name="stopwatch"></ion-icon></td>
+                <td class="w-20 align-top"><ion-text>Selesai</ion-text></td>
+                <td class="line-clamp-1"><ion-text>{{ item.end }}</ion-text></td>
+              </tr>
+
+              <tr>
+                <td><ion-icon name="hourglass"></ion-icon></td>
+                <td class="w-20 align-top"><ion-text>Durasi</ion-text></td>
+                <td class="line-clamp-1"><ion-text>{{ item.duration }}</ion-text></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <article class="ion-margin-top" [innerHTML]="item.summary"></article>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- <div class="grid grid-cols-2 gap-3 ion-padding">
+    <div class="flex items-center">
+      <ion-icon slot="start" name="stopwatch-outline" class="text-3xl"></ion-icon>
+      <div class="ion-text-start ion-padding-start">
+        <ion-text class="block normal-case text-xs leading-3">Mulai</ion-text>
+        <ion-text class="block font-semibold">10:13</ion-text>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+      <ion-icon slot="start" name="stopwatch-outline" class="text-3xl"></ion-icon>
+      <div class="ion-text-start ion-padding-start">
+        <ion-text class="block normal-case text-xs leading-3">Selesai</ion-text>
+        <ion-text class="block font-semibold">11:54</ion-text>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <div class="block ion-padding-start ion-padding-end mb-1.5"><ion-text>Kesimpulan:</ion-text></div> -->
+</ion-content>

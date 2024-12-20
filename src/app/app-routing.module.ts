@@ -5,11 +5,18 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: '',
+    loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule),
   }
 ];
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { 
+      preloadingStrategy: PreloadAllModules,
+      enableTracing: false,
+    })
   ],
   exports: [RouterModule]
 })

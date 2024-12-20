@@ -1,0 +1,6 @@
+ion-content {
+    &::part(scroll) {
+        background: rgb(64,44,104);
+        background: linear-gradient(22deg, rgba(64,44,104,1) 36%, rgba(140,61,247,1) 100%);
+    }
+}

@@ -1,0 +1,36 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button icon="return-up-back" defaultHref="/auth/landing"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" color="light-blue">
+  <div class="h-full flex items-center justify-center flex-col w-full md:w-2/3 lg:w-2/5 mx-auto">
+    <div class="px-4 pt-7">
+      <ion-text class="block text-3xl font-semibold">Hi, Halo...</ion-text>
+      <ion-text class="block text-lg text-neutral-600 mt-2.5">
+        Selamat datang kembali! Banyak yang kamu lewatkan lho.
+      </ion-text>
+    </div>
+
+    <div class="w-full mt-7 px-4">
+      <app-login-form></app-login-form>
+    </div>
+
+    <div class="text-center mt-7 flex items-center">
+      <ion-text>Belum mendaftar?</ion-text>
+      <ion-button 
+        mode="ios" 
+        fill="clear" 
+        [routerLink]="['/auth/register']"
+        [ngStyle]="{
+          '--padding-start': '12px',
+          '--padding-end': '12px',
+        }"
+        color="purple"
+      >Daftar Disini</ion-button>
+    </div>
+  </div>
+</ion-content>

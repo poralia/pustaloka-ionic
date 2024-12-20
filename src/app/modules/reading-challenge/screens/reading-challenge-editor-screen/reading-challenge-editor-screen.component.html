@@ -1,0 +1,45 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" icon="return-up-back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue" class="ion-padding">
+  <div class="h-full flex flex-col px-2">
+    <div class="block">
+      <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">
+        <ion-icon slot="start" name="book" aria-hidden="true"></ion-icon>
+        <ion-textarea label="Judul Buku" placeholder="Contoh: Harry Porter Part 6" rows="1" labelPlacement="floating" autoGrow="true"></ion-textarea>
+      </ion-item>
+
+      <ion-item fill="outline" class="ion-item-input mb-2" lines="none">
+        <ion-icon slot="start" name="person" aria-hidden="true"></ion-icon>
+        <ion-textarea 
+          label="Penulis"
+          placeholder="Contoh: Ahmad Albar, Yudhistira" 
+          rows="1" 
+          labelPlacement="floating" 
+          autoGrow="true"
+        ></ion-textarea>
+      </ion-item>
+
+      <div class="block px-1 text-xs">
+        <ion-text>Pisahkan dengan koma (,) jika penulis lebih dari satu.</ion-text>
+      </div>
+    </div>
+
+    <div class="mt-auto h-full w-full ion-padding-top ion-padding-bottom flex items-center justify-center">
+      <div class="block w-48 h-auto mx-auto">
+        <ion-img src="assets/placeholder_book.svg"></ion-img>
+      </div>
+    </div>
+
+    <div class="mt-auto ion-text-center">
+      <ion-button mode="ios" expand="block" color="purple" shape="round" [routerLink]="['/tabs/reading-challenge/timer']">
+        Mulai Membaca
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

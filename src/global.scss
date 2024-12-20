@@ -35,3 +35,67 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/** Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ion-item-input {
+    --border-radius: 14px;
+    --border-color: var(--ion-color-light-blue-contrast);
+    --border-style: solid;
+    --border-width: 1px;
+}
+
+.ion-main-title {
+    font-family: "Macondo", serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 1px;
+}
+
+ion-header {
+    &.ion-border-bottom {
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: var(--ion-color-purple-tint);
+    }
+
+    // ion-back-button {
+    //     background-color: var(--ion-color-purple);
+    //     color: var(--ion-color-purple-contrast);
+    //     border-radius: 50%;
+    //     margin: 8px;
+    // }
+}
+
+ion-card {
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--ion-color-purple-tint);
+    box-shadow: none;
+    border-radius: 16px;
+}
+
+ion-item {
+    ion-textarea {
+        min-height: 38px !important;
+
+        label {
+            .label-text-wrapper {
+                -webkit-transform: translateY(100%) scale(1) !important;
+                transform: translateY(100%) scale(1) !important;
+            }
+        }
+
+        &.has-focus {
+            label {
+                .label-text-wrapper {
+                    -webkit-transform: translateY(50%) scale(0.75) !important;
+                    transform: translateY(50%) scale(0.75) !important;
+                }
+            }
+        }
+    }
+}

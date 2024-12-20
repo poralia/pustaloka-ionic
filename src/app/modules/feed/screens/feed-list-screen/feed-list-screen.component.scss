@@ -1,0 +1,6 @@
+ion-content {
+    --padding-start: calc(var(--ion-padding, 16px) - 10px);
+    --padding-end: calc(var(--ion-padding, 16px) - 10px);
+    padding-inline-start: calc(var(--ion-padding, 16px) - 10px);
+    padding-inline-end: calc(var(--ion-padding, 16px) - 10px);
+}
