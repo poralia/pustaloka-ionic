@@ -1,7 +1,55 @@
-<app-tabs-header></app-tabs-header>
+<ion-header [translucent]="false" class="ion-no-border hidden">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-button fill="clear">
+        <ion-icon name="filter" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
+    <ion-title class="ion-main-title !leading-none">Pustaloka</ion-title>
+    
+    <!-- <ion-buttons slot="end">
+      <ion-button fill="clear" color="purple">
+        <ion-icon name="storefront" slot="icon-only" color="purple"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
 
-<ion-content color="light-blue" class="ion-padding-start">
-  @for (item of items; track item.id) {
-    <app-feed-item [props]="{'item': item}"></app-feed-item>
-  }
+<ion-content color="light-blue" [ngStyle]="{'--padding-start': '0', '--padding-end': '0'}">
+  <!-- <div class="ion-padding !pb-0 !pr-0">
+    <app-user-story></app-user-story>
+  </div> -->
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="bg-[#f9f8f4] border-b-2 border-[#d8d6cf]">
+    <app-profile-card></app-profile-card>
+  </div>
+
+  <ng-container *ngIf="activities$ | async as activities">
+    @if (activities.status == 'success') {
+      <div class="block">
+          <ion-item lines="full">
+            <ion-select label="Filter" interface="action-sheet" [value]="filterValue" placeholder="Pilih" (ionChange)="filterHandler($event)">
+              <ion-select-option value="">Semua</ion-select-option>
+              <ion-select-option value="friends">Teman</ion-select-option>
+              <ion-select-option value="just-me">Hanya Saya</ion-select-option>
+            </ion-select>
+          </ion-item>
+      </div>
+
+      <div class="block">
+        @for (item of activities.data; track item.id) {
+          <app-feed-item [props]="{'item': item}"></app-feed-item>
+        }
+      </div>
+
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    }
+  </ng-container>
 </ion-content>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './modules/auth/services/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -7,5 +8,18 @@ import { Component } from '@angular/core';
     standalone: false
 })
 export class AppComponent {
-  constructor() {}
+
+  constructor(
+    private authService: AuthService,
+  ) { 
+    this.getMe();
+  }
+
+  async getMe() {
+    const auth = await this.authService.getAuth();
+    if (auth) {
+      this.authService.retrieveMe();
+    }
+  }
+
 }

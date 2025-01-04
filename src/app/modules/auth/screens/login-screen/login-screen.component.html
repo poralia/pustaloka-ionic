@@ -16,11 +16,17 @@
     </div>
 
     <div class="w-full mt-7 px-4">
-      <app-login-form></app-login-form>
+      <app-login-form [email]="userEmail"></app-login-form>
+    </div>
+
+    <div class="w-full mt-7 px-4">
+      <ion-button expand="block" (click)="loginWithGoogle()" shape="round" color="light" color="danger" size="large" mode="ios">
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        <ion-text class="ml-1">Login dengan Google</ion-text>
+      </ion-button>
     </div>
 
     <div class="text-center mt-7 flex items-center">
-      <ion-text>Belum mendaftar?</ion-text>
       <ion-button 
         mode="ios" 
         fill="clear" 
@@ -30,7 +36,9 @@
           '--padding-end': '12px',
         }"
         color="purple"
-      >Daftar Disini</ion-button>
+      >
+        Daftar dengan Email
+      </ion-button>
     </div>
   </div>
 </ion-content>

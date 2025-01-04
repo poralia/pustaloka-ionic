@@ -1,0 +1,15 @@
+<div #userStoryEl class="flex flex-nowrap gap-3 swiper swiper-user-story ion-padding-end">
+  <div class="swiper-wrapper">
+    @for(story of stories; track story) {
+      <div class="flex-none swiper-slide">
+        <ion-avatar class="w-full h-auto border-4 border-solid border-purple-600">
+          <ion-img [src]="story.avatar"></ion-img>
+        </ion-avatar>
+
+        <div class="block ion-text-center text-sm mt-1">
+          <ion-text class="line-clamp-1 text-neutral-500">{{ story.username }}</ion-text>
+        </div>
+      </div>
+    }
+  </div>
+</div>

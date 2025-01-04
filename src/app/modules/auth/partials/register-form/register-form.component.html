@@ -1,12 +1,12 @@
 <form [formGroup]="formGroup" (ngSubmit)="submitHandler()">
   <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">
     <ion-icon slot="start" name="person" aria-hidden="true"></ion-icon>
-    <ion-input type="text" formControlName="name" label="Nama Lengkap" labelPlacement="floating" placeholder="Yudhistira"></ion-input>
+    <ion-input type="text" formControlName="display_name" label="Nama Lengkap" labelPlacement="floating" placeholder="Yudhistira"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">
     <ion-icon slot="start" name="mail" aria-hidden="true"></ion-icon>
-    <ion-input type="email" formControlName="email" label="Alamat Email" labelPlacement="floating" placeholder="myemail@domain.com"></ion-input>
+    <ion-input type="email" formControlName="user_email" label="Alamat Email" labelPlacement="floating" placeholder="myemail@domain.com"></ion-input>
   </ion-item>
 
   <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">

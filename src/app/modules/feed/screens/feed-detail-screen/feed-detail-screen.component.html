@@ -1,15 +1,19 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="light-blue">
-    <ion-item lines="none" color="light-blue">
-      <ion-avatar slot="end" class="w-11 h-11">
-        <ion-img [src]="item.avatar"></ion-img>
-      </ion-avatar>
+    <ng-container *ngIf="activity$ | async as activity">
+      @if (activity.status == 'success') {
+        <ion-item lines="none" color="light-blue">
+          <ion-avatar slot="end" class="w-11 h-11">
+            <ion-img [src]="activity.data?.user_avatar.thumb"></ion-img>
+          </ion-avatar>
 
-      <ion-label class="ion-text-end">
-        <ion-text class="font-semibold">{{ item.name }}</ion-text>
-        <p><ion-text>{{ item.created_at }}</ion-text></p>
-      </ion-label>
-    </ion-item>
+          <ion-label class="ion-text-end">
+            <ion-text class="font-semibold">{{ activity.data?.user.display_name }}</ion-text>
+            <p><ion-text>{{ activity.data?.date | date: 'medium' }}</ion-text></p>
+          </ion-label>
+        </ion-item>
+      }
+    </ng-container>
 
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/feed" size="small" icon="return-up-back"></ion-back-button>
@@ -17,70 +21,197 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="light-blue">
-  <ion-card mode="ios">
-    <ion-card-content>
-      <div class="block ion-margin-bottom">
-        <ion-text class="block font-semibold text-xl">{{ item.book }}</ion-text>
-      </div>
-      
-      <div class="flex w-full">
-        <div class="w-20 flex-none border border-dotted border-purple-900 p-2 items-center flex justify-center rounded-lg">
-          <ion-img [src]="item.cover" class="w-full h-auto"></ion-img>
+<ion-content color="light-blue" class="ion-no-padding">
+  <ng-container *ngIf="activity$ | async as activity">
+    @if (activity.status == 'success') {
+      <ion-card 
+        mode="ios" 
+        class="shadow-md mx-0 !border-0 !bg-transparent"
+        [ngClass]="{
+          '!border-green-500': activity.data?.reading.progress >= 100,
+          'bg-transparent': activity.data?.reading.progress >= 100,
+        }"
+      >
+        <ion-card-content>
+          <div class="ion-margin-bottom flex">
+            <ion-text class="block font-semibold text-xl" color="purple" [innerHTML]="activity.data?.book.post_title"></ion-text>
+            <div *ngIf="activity.data?.is_owned" class="ml-auto">
+              <ion-button 
+                size="small" 
+                color="warning"
+                (click)="editHandler(activity.data)"
+              >
+                Edit
+              </ion-button>
+            </div>
+          </div>
+          
+          <div class="flex w-full items-center">
+            <div class="w-20 flex-none border border-dotted border-purple-900 p-2 items-center flex justify-center rounded-lg">
+              <ion-img [src]="activity.data.book.featured_image_url" class="w-full h-auto"></ion-img>
+            </div>
+          
+            <div class="w-full pl-2">
+              <table class="table text-sm w-full">
+                <tbody>
+                  <tr>
+                    <td class="align-center"><ion-icon name="copy"></ion-icon></td>
+                    <td class="w-20 align-top"><ion-text>Halaman</ion-text></td>
+                    <td class="line-clamp-1"><ion-text>{{ activity.data.reading.pages_count }} ({{ activity.data.reading.from_page }} - {{ activity.data.reading.to_page }})</ion-text></td>
+                  </tr>
+
+                  <tr>
+                    <td><ion-icon name="stopwatch"></ion-icon></td>
+                    <td class="w-20 align-top"><ion-text>Mulai</ion-text></td>
+                    <td class="line-clamp-1"><ion-text>{{ activity.data?.reading.from_datetime | date: 'd MMM YY HH:mm' }}</ion-text></td>
+                  </tr>
+
+                  <tr>
+                    <td><ion-icon name="stopwatch"></ion-icon></td>
+                    <td class="w-20 align-top"><ion-text>Selesai</ion-text></td>
+                    <td class="line-clamp-1"><ion-text>{{ activity.data?.reading.to_datetime | date: 'd MMM YY HH:mm' }}</ion-text></td>
+                  </tr>
+
+                  <tr>
+                    <td><ion-icon name="hourglass"></ion-icon></td>
+                    <td class="w-20 align-top"><ion-text>Durasi</ion-text></td>
+                    <td class="line-clamp-1"><ion-text>{{ duration }}</ion-text></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="flex ion-margin-top items-center">
+            <div class="w-12 flex-none ml-auto">
+              <span 
+                class="w-auto h-6 ml-auto flex items-center justify-center rounded-xl bg-purple-800 text-white text-xs font-semibold"
+                [ngClass]="{
+                  '!bg-green-500': activity.data?.reading.progress >= 100,
+                }"
+              >
+                {{ activity.data?.reading.progress }}%
+              </span>
+            </div>
+            
+            <div class="w-10 flex-none text-right">
+              {{ activity.data?.reading.to_page | number }}
+            </div>
+            
+            <div class="w-full px-2">
+              <ion-progress-bar 
+                [value]="activity.data?.reading.progress / 100" 
+                mode="ios" 
+                [color]="activity.data?.reading.progress >= 100 ? 'success' : 'tertiary'" 
+                class="h-2.5"
+              ></ion-progress-bar>
+            </div>
+
+            <div class="w-10 flex-none">
+              {{ activity.data?.reading.number_of_pages | number }}
+            </div>
+          </div>
+
+          <article *ngIf="activity.data?.reading?.content.rendered" class="ion-margin-top !text-neutral-700" [innerHTML]="activity.data?.reading?.content.rendered"></article>
+
+          <div *ngIf="activity.data?.post_tags.length > 0" class="ion-margin-top">
+            <mat-chip-set aria-label="Tags">
+              @for (tag of activity.data?.post_tags; track tag) {
+                <mat-chip>{{ tag.name }}</mat-chip>
+              }
+            </mat-chip-set>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-item color="light-blue" button="true" detail="true" lines="none" (click)="showCommentHandler()">
+        <ion-label>
+          <ion-text *ngIf="activity.data.comment_count.total > 0">{{ activity.data.comment_count.total }} Komentar</ion-text>
+          <ion-text *ngIf="activity.data.comment_count.total <= 0">Beri Komentar</ion-text>
+        </ion-label>
+      </ion-item>
+    }
+  </ng-container>
+
+  <ng-container *ngIf="readings$ | async as readings">
+    @if (readings.status == 'success') {
+      @if (readings.data.length > 0) {
+        <div class="ion-padding-start ion-padding-end ion-padding-top border-t border-neutral-300">
+          <div class="block ion-margin-bottom">
+            <ion-text>Garis waktu baca</ion-text>
+          </div>
+
+          <ng-container *ngFor="let item of readings.data">
+            <div class="block relative pl-7 ion-margin-bottom">
+              <div class="w-3 h-3 bg-purple-500 absolute left-0 top-1.5 rounded-full"></div>
+              <div class="block"><ion-text class="font-medium">{{ item.date | date: 'medium' }}</ion-text></div>
+              <table class="table text-sm">
+                <tr>
+                  <td class="pr-3">Halaman</td>
+                  <td>: {{ item.meta.from_page | number }} - {{ item.meta.to_page | number }}</td>
+                </tr>
+
+                <tr>
+                  <td class="pr-3">Progress</td>
+                  <td>: {{ item.meta.progress }}%</td>
+                </tr>
+              </table>
+
+              <div *ngIf="item.content.rendered" class="block mt-2" [innerHTML]="item.content.rendered"></div>
+            </div>
+          </ng-container>
         </div>
-      
-        <div class="w-full pl-2">
-          <table class="table text-sm w-full">
-            <tbody>
-              <tr>
-                <td class="align-center"><ion-icon name="copy"></ion-icon></td>
-                <td class="w-20 align-top"><ion-text>Halaman</ion-text></td>
-                <td class="line-clamp-1"><ion-text>{{ item.page_count }} (215 - 219)</ion-text></td>
-              </tr>
-
-              <tr>
-                <td><ion-icon name="stopwatch"></ion-icon></td>
-                <td class="w-20 align-top"><ion-text>Mulai</ion-text></td>
-                <td class="line-clamp-1"><ion-text>{{ item.start }}</ion-text></td>
-              </tr>
-
-              <tr>
-                <td><ion-icon name="stopwatch"></ion-icon></td>
-                <td class="w-20 align-top"><ion-text>Selesai</ion-text></td>
-                <td class="line-clamp-1"><ion-text>{{ item.end }}</ion-text></td>
-              </tr>
-
-              <tr>
-                <td><ion-icon name="hourglass"></ion-icon></td>
-                <td class="w-20 align-top"><ion-text>Durasi</ion-text></td>
-                <td class="line-clamp-1"><ion-text>{{ item.duration }}</ion-text></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <article class="ion-margin-top" [innerHTML]="item.summary"></article>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- <div class="grid grid-cols-2 gap-3 ion-padding">
-    <div class="flex items-center">
-      <ion-icon slot="start" name="stopwatch-outline" class="text-3xl"></ion-icon>
-      <div class="ion-text-start ion-padding-start">
-        <ion-text class="block normal-case text-xs leading-3">Mulai</ion-text>
-        <ion-text class="block font-semibold">10:13</ion-text>
-      </div>
-    </div>
-
-    <div class="flex items-center">
-      <ion-icon slot="start" name="stopwatch-outline" class="text-3xl"></ion-icon>
-      <div class="ion-text-start ion-padding-start">
-        <ion-text class="block normal-case text-xs leading-3">Selesai</ion-text>
-        <ion-text class="block font-semibold">11:54</ion-text>
-      </div>
-    </div>
-  </div> -->
-
-  <!-- <div class="block ion-padding-start ion-padding-end mb-1.5"><ion-text>Kesimpulan:</ion-text></div> -->
+      }
+    }
+  </ng-container>
 </ion-content>
+
+<ng-container *ngIf="activity$ | async as activity">
+  <ion-modal #commentModal [initialBreakpoint]="'0.85'" [breakpoints]="[0, 0.85]" mode="md">
+    <ng-template>
+      <div class="h-[85%] flex flex-col">
+        <div class="px-5 pl-1 py-1 text-lg flex items-center">
+          <ion-buttons>
+            <ion-button (click)="closeCommentHandler()">
+              <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-text class="ml-2 relative -top-0.5">Komentar</ion-text>
+        </div>
+
+        <cdk-virtual-scroll-viewport 
+          class="ion-content-scroll-host" 
+          [itemSize]="activity.status == 'success' ? activity.data.comment_count.total : '0'"
+        >
+          <ng-container *ngIf="comments$ | async as comments">
+            @if (comments.status == 'success') {
+              <ion-list>
+                <ion-item *cdkVirtualFor="let item of comments.data; let last=last" class="items-start" [lines]="last ? 'none' : 'inset'">
+                  <ion-avatar slot="start" class="ion-margin-top">
+                    <img [src]="item.user_avatar.thumb" />
+                  </ion-avatar>
+                  <ion-label> 
+                    <ion-text class="block font-medium">{{ item.user.display_name }}</ion-text>
+                    <p>{{ item.date | date: 'short' }}</p>
+                    <div [innerHTML]="item.content.rendered" class="block mt-1"></div>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            }
+          </ng-container>
+ 
+          <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="loadMoreEnabled">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </cdk-virtual-scroll-viewport>
+
+        <div class="flex relative mt-auto border-t border-neutral-200 items-end">
+          <div class="w-full">
+            <ion-textarea [(ngModel)]="commentContent" rows="2" autoGrow="true" placeholder="Tambahkan komentar" class="comment-input"></ion-textarea>
+          </div>
+          <ion-button [disabled]="commentContent == ''" (click)="submitCommentHandler(activity?.data)" fill="clear" class="ion-margin-bottom ion-margin-end">Kirim</ion-button>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+</ng-container>

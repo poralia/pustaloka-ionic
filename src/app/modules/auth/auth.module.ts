@@ -8,6 +8,11 @@ import { LoginFormComponent } from './partials/login-form/login-form.component';
 import { RegisterFormComponent } from './partials/register-form/register-form.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivationScreenComponent } from './screens/activation-screen/activation-screen.component';
+import { ActivationFormComponent } from './partials/activation-form/activation-form.component';
+import { ResetPasswordScreenComponent } from './screens/reset-password-screen/reset-password-screen.component';
+import { ResetPasswordFormComponent } from './partials/reset-password-form/reset-password-form.component';
+import { SettingScreenComponent } from './screens/setting-screen/setting-screen.component';
 
 
 @NgModule({
@@ -15,10 +20,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     // Screens
     LoginScreenComponent,
     RegisterScreenComponent,
+    ActivationScreenComponent,
+    ResetPasswordScreenComponent,
+    SettingScreenComponent,
 
     // Partials
     LoginFormComponent,
     RegisterFormComponent,
+    ActivationFormComponent,
+    ResetPasswordFormComponent,
   ],
   imports: [
     CommonModule,

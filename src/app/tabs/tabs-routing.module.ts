@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { authenticatedGuard } from '../modules/auth/guards/authenticated.guard';
 
 const routes: Routes = [
   {
     path: 'tabs',
+    canActivate: [authenticatedGuard],
     component: TabsPage,
     children: [
       {
@@ -16,8 +18,16 @@ const routes: Routes = [
         loadChildren: () => import('./screens/reading-challenge/reading-challenge.module').then(m => m.ReadingChallengePageModule)
       },
       {
-        path: 'tab3',
-        loadChildren: () => import('./screens/tab3/tab3.module').then(m => m.Tab3PageModule)
+        path: 'search',
+        loadChildren: () => import('./screens/search/search.module').then(m => m.SearchPageModule)
+      },
+      {
+        path: 'information',
+        loadChildren: () => import('./screens/information/information.module').then(m => m.InformationPageModule)
+      },
+      {
+        path: 'member',
+        loadChildren: () => import('./screens/member/member.module').then(m => m.MemberPageModule)
       },
       {
         path: '',

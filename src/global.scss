@@ -9,6 +9,8 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
+@use '@angular/material' as mat;
+
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
@@ -41,6 +43,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.chips-overrides((
+    container-shape-radius: 50px,
+  ));
+}
+
 .ion-item-input {
     --border-radius: 14px;
     --border-color: var(--ion-color-light-blue-contrast);
@@ -48,12 +59,12 @@
     --border-width: 1px;
 }
 
-.ion-main-title {
-    font-family: "Macondo", serif;
-    font-weight: 400;
-    font-style: normal;
-    letter-spacing: 1px;
-}
+// .ion-main-title {
+//     font-family: "Bubblegum Sans", serif;
+//     font-weight: 400;
+//     font-style: normal;
+//     letter-spacing: 1px;
+// }
 
 ion-header {
     &.ion-border-bottom {
@@ -71,11 +82,18 @@ ion-header {
 }
 
 ion-card {
-    border-width: 1px;
+    border-width: 0 0 2px 0; 
     border-style: solid;
-    border-color: var(--ion-color-purple-tint);
+    border-color: #d8d6cf;
     box-shadow: none;
-    border-radius: 16px;
+    border-radius: 0;
+    box-shadow: none !important;
+    margin-top: 0;
+    margin-bottom: 0;
+
+    p {
+        font-size: 1rem !important;
+    }
 }
 
 ion-item {
@@ -89,13 +107,39 @@ ion-item {
             }
         }
 
-        &.has-focus {
+        &.has-focus,
+        &.has-value {
             label {
                 .label-text-wrapper {
                     -webkit-transform: translateY(50%) scale(0.75) !important;
                     transform: translateY(50%) scale(0.75) !important;
                 }
             }
+        }
+    }
+
+    > ion-icon {
+        margin-right: 16px;
+    }
+}
+
+.mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 14px !important;
+}
+
+ng-http-loader {
+    z-index: 99999;
+}
+
+ion-textarea {
+    &.comment-input {
+        textarea {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+            padding-inline-start: 16px !important;
+            -webkit-padding-start: 16px !important;
+            padding-inline-end: 16px !important;
+            -webkit-padding-end: 16px !important;
         }
     }
 }

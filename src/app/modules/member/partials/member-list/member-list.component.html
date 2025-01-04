@@ -1,0 +1,15 @@
+<ng-container *ngIf="friends$ | async as friends">
+  <div class="ion-padding">
+    @if (friends.statuses == 'success') {
+      @for (item of friends.data; track item.id) {
+        <app-member-item [item]="item" [status]="status"></app-member-item>
+      }
+
+      @if (friends.data.length <= 0) {
+        <div class="py-20 px-6 text-center">
+          Belum ada data.
+        </div>
+      }
+    }
+  </div>
+</ng-container>

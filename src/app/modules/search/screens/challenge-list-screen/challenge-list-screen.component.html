@@ -1,0 +1,82 @@
+<div class="block">
+  <ng-container *ngIf="challenges$ | async as challenges">
+    @if (challenges.status == 'success') {
+      @if (challenges.data.length > 0) {
+        <ion-list class="bg-transparent">
+          @for (item of challenges.data; track item.id; let last = $last) {
+            <ion-item 
+              [lines]="last ? 'none' : 'none'"
+              button="true"
+              class="ion-no-margin rounded-none shadow-none"
+              [ngClass]="{
+                'border-b-2 border-blue-50': !last,
+              }"
+              [ngStyle]="{
+                '--background': 'transparent',
+              }"
+              [routerLink]="['/tabs/search/challenge', item.id]"
+            >
+              <ion-thumbnail slot="start" class="w-20 !h-auto py-2">
+                <img [src]="item?.meta?.book?.featured_media_url">
+              </ion-thumbnail>
+
+              <ion-label>
+                <ion-text class="line-clamp-2 font-medium leading-5" [innerHTML]="item.title.rendered"></ion-text>
+
+                <table class="table text-sm text-neutral-600">
+                  <tr>
+                    <td class="pr-2">Pembaca</td>
+                    <td>: {{ item.post_author.name }}</td>
+                  </tr>
+
+                  <tr>
+                    <td class="pr-2">Dibaca</td>
+                    <td>: {{ item.meta.reading.last_reading_datetime ? (item.meta.reading.last_reading_datetime | date : 'medium') : 'Tidak pernah' }}</td>
+                  </tr>
+                </table>
+
+                <div class="flex mt-2 items-center text-sm">
+                  <div class="w-12 flex-none ml-auto">
+                    <span 
+                      class="w-auto h-6 ml-auto flex items-center justify-center rounded-xl bg-purple-950 text-white text-xs font-semibold"
+                    >
+                      {{ item.meta?.reading?.progress }}%
+                    </span>
+                  </div>
+
+                  <div class="w-10 flex-none text-right">
+                    {{ item.meta.reading.to_page ? item.meta.reading.to_page : '0' | number }}
+                  </div>
+                  
+                  <div class="w-full px-2">
+                    <ion-progress-bar 
+                      [value]="item.meta.reading.progress / 100" 
+                      mode="ios" 
+                      color="tertiary" 
+                      class="h-2.5"
+                    ></ion-progress-bar>
+                  </div>
+
+                  <div class="w-10 flex-none">
+                    {{ item.meta.number_of_pages | number }}
+                  </div>
+                </div>
+              </ion-label>
+            </ion-item>
+          }
+        </ion-list>
+      } @else {
+        <div class="ion-padding text-center w-4/5 mx-auto !pt-14">
+          <div class="block text-center">
+            <ion-icon name="book-outline" slot="icon-only" class="text-6xl"></ion-icon>
+          </div>
+          <ion-text>Belum ada yang membaca buku.</ion-text>
+        </div>
+      }
+
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="!loadMoreEnabled">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    }
+  </ng-container>
+</div>

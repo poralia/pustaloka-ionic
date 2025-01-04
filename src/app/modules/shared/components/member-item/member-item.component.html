@@ -1,0 +1,24 @@
+@if (props.member) {
+  <ion-item 
+    lines="none" 
+    button="true"
+    class="ion-margin-bottom rounded-xl shadow border border-purple-800"
+    [ngStyle]="{'--inner-padding-end': '6px'}"
+    [routerLink]="['/tabs/search/members', props.member.id]"
+  >
+    <ion-avatar slot="start">
+      <ion-img [src]="props.member.avatar_urls?.thumb"></ion-img>
+    </ion-avatar>
+
+    <ion-label class="text-sm">
+      <ion-text class="font-medium">{{ props.member.name }}</ion-text>
+      <p class="!text-neutral-500">{{ '@' + props.member.mention_name }}</p>
+    </ion-label>
+
+    <ion-buttons *ngIf="!props.member.friendship_status" slot="end">
+      <ion-button size="small">
+        <ion-icon name="person-add-outline" slot="icon-only" size="small"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
+}

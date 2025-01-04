@@ -1,0 +1,10 @@
+<form [formGroup]="formGroup" (ngSubmit)="submitHandler()">
+  <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">
+    <ion-icon slot="start" name="lock-open" aria-hidden="true"></ion-icon>
+    <ion-input type="text" formControlName="code" label="Kode Aktivasi" labelPlacement="floating" placeholder="123456"></ion-input>
+  </ion-item>
+
+  <div class="mt-6">
+    <ion-button type="submit" mode="ios" expand="block" color="purple" [disabled]="formGroup.invalid">Aktivasi Akun</ion-button>
+  </div>
+</form>

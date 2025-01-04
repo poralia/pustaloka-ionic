@@ -10,25 +10,32 @@ import { ReadingChallengeItemComponent } from './partials/reading-challenge-item
 import { ReadingChallengeListScreenComponent } from './screens/reading-challenge-list-screen/reading-challenge-list-screen.component';
 import { SharedModule } from '../shared/shared.module';
 import { IonicModule } from '@ionic/angular';
-import { ReadingChallengeEditorScreenComponent } from './screens/reading-challenge-editor-screen/reading-challenge-editor-screen.component';
-import { ReadingChallengeTimerScreenComponent } from './screens/reading-challenge-timer-screen/reading-challenge-timer-screen.component';
-import { ReadingChallengeSummaryScreenComponent } from './screens/reading-challenge-summary-screen/reading-challenge-summary-screen.component';
+import { TimerScreenComponent } from './screens/timer-screen/timer-screen.component';
+import { SummaryScreenComponent } from './screens/summary-screen/summary-screen.component';
+import { BookChoiceScreenComponent } from './screens/book-choice-screen/book-choice-screen.component';
+import { BookEditorScreenComponent } from './screens/book-editor-screen/book-editor-screen.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReadingListScreenComponent } from './screens/reading-list-screen/reading-list-screen.component';
 
 
 @NgModule({
   declarations: [
     ReadingChallengeDetailScreenComponent,
     ReadingChallengeListScreenComponent,
-    ReadingChallengeEditorScreenComponent,
-    ReadingChallengeTimerScreenComponent,
-    ReadingChallengeSummaryScreenComponent,
+    TimerScreenComponent,
+    SummaryScreenComponent,
+    ReadingListScreenComponent,
     ReadingChallengeItemComponent,
+    BookChoiceScreenComponent,
+    BookEditorScreenComponent,
   ],
   imports: [
     CommonModule,
     ReadingChallengeRoutingModule,
     IonicModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,

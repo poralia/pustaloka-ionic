@@ -1,57 +1,90 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FeedService } from '../../services/feed.service';
+import { Observable } from 'rxjs';
+import { IFilter } from '../../feed.interfaces';
+import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { ActionsSubject } from '@ngrx/store';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ProfileCardComponent } from 'src/app/modules/shared/components/profile-card/profile-card.component';
 
 @Component({
     selector: 'app-feed-list-screen',
     templateUrl: './feed-list-screen.component.html',
     styleUrls: ['./feed-list-screen.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class FeedListScreenComponent  implements OnInit {
 
-  public items: any = [
-    {
-      id: 1,
-      created_at: "12 June 2023 14:34",
-      name: "Rahman",
-      avatar: "https://i.pravatar.cc/150?img=3",
-      book: "Belajar Python dan Java",
-      cover: "https://images-na.ssl-images-amazon.com/images/I/71sOqrd6JHL._AC_UL381_SR381,381_.jpg",
-      start: "10:00",
-      end: "13:50",
-      duration: "1 jam 10 menit",
-      page_count: 4,
-      summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non urna sodales, dignissim erat in, porta urna. Sed luctus sapien sed sapien vulputate volutpat.',
-    },
-    {
-      id: 2,
-      created_at: "12 June 2023 14:34",
-      name: "Jennifer Debora",
-      avatar: "https://i.pravatar.cc/150?img=5",
-      book: "Psikologi Pekerjaan",
-      cover: "https://images-na.ssl-images-amazon.com/images/I/81fjEcQkTuL._AC_UL381_SR381,381_.jpg",
-      start: "10:00",
-      end: "13:50",
-      duration: "2 jam 24 menit",
-      page_count: 4,
-      summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non urna sodales, dignissim erat in, porta urna. Sed luctus sapien sed sapien vulputate volutpat.',
-    },
-    {
-      id: 3,
-      created_at: "12 June 2023 14:34",
-      name: "Ahmad Taftazani",
-      avatar: "https://i.pravatar.cc/150?img=15",
-      book: "Dad, I Want to Hear Your Story: A Father’s Guided Journal",
-      cover: "https://images-na.ssl-images-amazon.com/images/I/51+ROKEYviL._AC_UL381_SR381,381_.jpg",
-      start: "10:00",
-      end: "13:50",
-      duration: "0 jam 24 menit",
-      page_count: 2,
-      summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non urna sodales, dignissim erat in, porta urna. Sed luctus sapien sed sapien vulputate volutpat.',
+  @ViewChild(ProfileCardComponent) profileCard: ProfileCardComponent | null = null;
+
+  public activities$: Observable<{ data: any, status: string }>;
+  public filter: IFilter = {
+    type: ['post_reading'],
+    component: 'activity',
+    page: 1,
+    per_page: 25,
+    scope: '',
+    display_comments: '',
+  }
+  public filterValue: string = '';
+  public inviniteEvent: InfiniteScrollCustomEvent | null = null;
+
+  constructor(
+    private feedService: FeedService,
+    private actionsSubject$: ActionsSubject,
+  ) { 
+    this.activities$ = this.feedService.selectActivities();
+
+    // listen state
+    this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe(action => {
+      switch (action.type) {
+        case '[Feed] Load More Activities Success':
+        case '[Feed] Load More Activities Failure':
+          this.inviniteEvent?.target?.complete();
+          break;
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.feedService.loadActivities(this.filter);
+  }
+
+  onIonInfinite(ev: any) {
+    // sum page
+    this.filter = {
+      ...this.filter,
+      page: this.filter.page + 1,
     }
-  ];
 
-  constructor() { }
+    this.feedService.loadMoreActivities(this.filter);
+    this.inviniteEvent = (ev as InfiniteScrollCustomEvent);
+  }
 
-  ngOnInit() {}
+  filterHandler(event: any) {
+    this.filterValue = event.target.value;
+    this.filter = {
+      ...this.filter,
+      scope: this.filterValue,
+      page: 1,
+    }
+    this.feedService.loadActivities(this.filter);
+  }
+
+  handleRefresh(event: CustomEvent) {
+    this.filterValue = '';
+    this.filter = {
+      ...this.filter,
+      page: 1,
+      scope: '',
+    }
+    this.feedService.loadActivities(this.filter);
+    this.profileCard?.refresh();
+
+    setTimeout(() => {
+      // Any calls to load data go here
+      (event.target as HTMLIonRefresherElement).complete();
+    }, 1000);
+  }
 
 }

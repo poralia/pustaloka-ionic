@@ -1,0 +1,5 @@
+<div class="ion-padding-top">
+  @for(event of events; track event.id) {
+    <app-event-item [props]="{'event': event}"></app-event-item>
+  }
+</div>

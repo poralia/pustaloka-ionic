@@ -1,0 +1,20 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button icon="return-up-back" defaultHref="/auth/landing"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" color="light-blue">
+  <div class="flex flex-col h-full w-full px-5">
+    <div class="pt-7 mb-5">
+      <ion-text class="block text-3xl font-semibold">Satu Langkah Lagi...</ion-text>
+      <ion-text class="block text-lg text-neutral-600 mt-2.5">
+        Cek email: <strong>{{ email }}</strong> untuk melihat kode aktivasinya.
+      </ion-text>
+    </div>
+
+    <app-activation-form [email]="email"></app-activation-form>
+  </div>
+</ion-content>

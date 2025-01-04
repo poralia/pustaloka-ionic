@@ -10,3 +10,9 @@ tr + tr {
     border-color: var(--ion-color-purple);
     border-style: dotted;
 }
+
+cdk-virtual-scroll-viewport {
+    height: 100%;
+    width: 100%;
+}
+

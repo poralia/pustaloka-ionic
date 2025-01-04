@@ -1,0 +1,73 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" icon="return-up-back-outline"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="text-lg">Profil</ion-title>
+
+    <ion-button slot="end" fill="clear" class="ion-margin-end" color="danger" (click)="logoutHandler()">
+      Keluar
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue" class="ion-padding">
+  <ng-container *ngIf="me$ | async as me">
+    @if (me.statuses == 'success') {
+      <ion-item class="ion-margin-bottom" lines="none" color="light-blue">
+        <ion-avatar class="w-20 h-20">
+          <ion-img [src]="me.data?.avatar_urls?.thumb"></ion-img>
+        </ion-avatar>
+
+        <ion-button slot="end" fill="clear" type="button" color="purple" (click)="uploadAvatar.click()">
+          <ion-icon slot="start" name="cloud-upload" class="ml-0.5"></ion-icon>
+          <ion-text>Upload</ion-text>
+        </ion-button>
+
+        <input 
+          #uploadAvatar
+          accept="image/png,image/jpeg" 
+          type="file" 
+          class="hidden" 
+          [(ngModel)]="avatarFile"
+          [ngModelOptions]="{standalone: true}"
+          (change)="onUploadAvatar($event)"
+        >
+      </ion-item>
+    }
+  </ng-container>
+
+  <form [formGroup]="formGroup" (ngSubmit)="submitHandler()" class="px-4 !pt-8">
+    <ion-input 
+      formControlName="email" 
+      fill="outline" 
+      shape="round" 
+      class="ion-margin-bottom" 
+      label="Alamat Email (tidak bisa dirubah)" 
+      labelPlacement="floating"
+      class="ion-margin-bottom"
+    ></ion-input>
+
+    <ion-input 
+      formControlName="name" 
+      fill="outline" 
+      shape="round" 
+      class="ion-margin-bottom" 
+      label="Nama Lengkap" 
+      labelPlacement="floating"
+      class="ion-margin-bottom"
+    ></ion-input>
+
+    <ion-input 
+      formControlName="username" 
+      fill="outline" 
+      shape="round" 
+      class="ion-margin-bottom" 
+      label="Nama Pengguna" 
+      labelPlacement="floating"
+    ></ion-input>
+
+    <ion-button expand="block" type="submit" shape="round" [disabled]="formGroup.invalid" color="purple" mode="ios" size="large">Simpan</ion-button>
+  </form>
+</ion-content>

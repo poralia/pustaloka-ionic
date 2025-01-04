@@ -1,0 +1,24 @@
+<div class="block">
+  <ng-container *ngIf="tags$ | async as tags">
+    @if (tags.status == 'success') {
+      @if (tags.data.length > 0) {
+        <ion-list class="bg-transparent" lines="full">
+          @for (item of tags.data; track item.id; let last = $last) {
+            <ion-item 
+              color="light-blue" 
+              [lines]="last ? 'none' : 'full'"
+              button="true"
+              detail="true"
+              [routerLink]="['/tabs/search/tags', item.id]"
+              [queryParams]="{'name': item.name}"
+            >
+              <ion-label>
+                <ion-text [innerHTML]="item.name"></ion-text>
+              </ion-label>
+            </ion-item>
+          }
+        </ion-list>
+      }
+    }
+  </ng-container>
+</div>

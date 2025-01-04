@@ -1,0 +1,23 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" icon="return-up-back-outline"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue">
+  <ng-container *ngIf="book$ | async as book">
+    @if (book.status == 'success') {
+      <ion-item lines="none" class="ion-no-paddig" [ngStyle]="{'--inner-padding-end': '0'}">
+        <ion-thumbnail slot="start" class="w-20 !h-auto">
+          <ion-img [src]="book.data.featured_media_url"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>
+          <ion-text class="font-medium text-md !leading-4" [innerHTML]="book.data.title.rendered"></ion-text>
+        </ion-label>
+      </ion-item>
+    }
+  </ng-container>
+</ion-content>

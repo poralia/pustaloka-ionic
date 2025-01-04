@@ -1,0 +1,79 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" icon="return-up-back"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="text-lg">{{ pid ? 'Perbarui Buku' : 'Tambah Buku' }}</ion-title>
+
+    <ion-button 
+      slot="end" 
+      color="purple" 
+      shape="round" 
+      class="ion-margin-end !normal-case" 
+      size="small"
+      (click)="documentEditForm.ngSubmit.emit()"
+      [disabled]="formGroup.invalid || !featuredMedia"
+      form="ngForm"
+    >
+      <ion-icon slot="start" name="checkmark"></ion-icon>
+      <ion-text>Simpan</ion-text>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue" class="ion-padding">
+  <div class="h-full flex flex-col px-2">
+    <form class="block" [formGroup]="formGroup" (ngSubmit)="submitHandler()" id="ngForm" #documentEditForm="ngForm">
+      <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">
+        <ion-icon slot="start" name="book" aria-hidden="true"></ion-icon>
+        <ion-textarea label="Judul Buku" formControlName="title" placeholder="Contoh: Harry Porter Part 6" rows="1" labelPlacement="floating" autoGrow="true"></ion-textarea>
+      </ion-item>
+
+      <ion-item fill="outline" class="ion-item-input mb-2" lines="none">
+        <ion-icon slot="start" name="person" aria-hidden="true"></ion-icon>
+        <ion-textarea 
+          label="Penulis"
+          placeholder="Contoh: Ahmad Albar, Yudhistira" 
+          rows="1" 
+          labelPlacement="floating" 
+          autoGrow="true"
+          formControlName="book_author"
+        ></ion-textarea>
+      </ion-item>
+
+      <div class="block px-1 text-xs">
+        <ion-text>Pisahkan dengan tanda hubung (-) jika lebih dari satu</ion-text>
+      </div>
+
+      <ion-item fill="outline" class="ion-item-input ion-margin-top mb-2" lines="none">
+        <ion-icon slot="start" name="copy" aria-hidden="true"></ion-icon>
+        <ion-input label="Jumlah Halaman Isi" type="number" formControlName="number_of_pages" labelPlacement="floating" placeholder="306"></ion-input>
+      </ion-item>
+
+      <div class="block px-1 text-xs">
+        <ion-text>Diluar halaman kata pengantar, daftar isi dan penutup</ion-text>
+      </div>
+    </form>
+
+    <div class="mt-auto h-full w-full ion-padding-top ion-padding-bottom flex items-center justify-center">
+      <div class="block w-auto h-52 mx-auto" (click)="fileUpload.click()">
+        <ng-container *ngIf="uploadMedia$ | async as media">
+          <ion-img class="h-full" [src]="media.status == 'success' ? media.data.source_url : (featuredMediaUrl ? featuredMediaUrl : 'assets/placeholder_book.svg')"></ion-img>
+        </ng-container>
+      </div>
+    </div>
+
+    <input 
+      type="file" 
+      #fileUpload [(ngModel)]="file" 
+      class="hidden" (change)="fileSelectedHandler($event)"
+      multiple="false"
+      accept="image/png, image/jpeg"
+    >
+  </div>
+
+  @if (pid && challengeId) {
+    <ion-button mode="ios" expand="block" color="danger" size="large" class="mt-6" (click)="deleteChallengeHandler(challengeId)">Hapus Buku Ini</ion-button>
+  }
+</ion-content>

@@ -1,0 +1,23 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/search" icon="return-up-back-outline"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="text-lg">{{ name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue">
+  <ng-container *ngIf="readings$ | async as readings">
+    @if (readings.status == 'success') {
+      @for (item of readings.data; track item.id) {
+        <app-reading-item [item]="item"></app-reading-item>
+      }
+
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="!loadMoreEnabled">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    }
+  </ng-container>
+</ion-content>

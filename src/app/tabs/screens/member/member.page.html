@@ -1,0 +1,27 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar color="light-blue">
+        <ng-container *ngIf="me$ | async as me">
+            <ion-segment *ngIf="me.statuses == 'success'" color="light-blue" [value]="segmentValue" mode="ios" class="ion-margin-start ion-margin-end" (ionChange)="changeHandler($event)">
+                <ion-segment-button value="friend">
+                    <ion-label>Teman</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="incoming">
+                    <ion-label>
+                        <ion-text>{{ me.data.friendship.incoming > 0 ? me.data.friendship.incoming + ' ' : '' }}Permintaan</ion-text>
+                    </ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="requested">
+                    <ion-label>
+                        <ion-text>{{ me.data.friendship.requested > 0 ? me.data.friendship.requested + ' ' : '' }}Terkirim</ion-text>
+                    </ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </ng-container>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue" [fullscreen]="false">
+    <app-member-list *ngIf="segmentValue == 'friend'" status="confirmed"></app-member-list>
+    <app-member-list *ngIf="segmentValue == 'incoming'" status="incoming"></app-member-list>
+    <app-member-list *ngIf="segmentValue == 'requested'" status="requested"></app-member-list>
+</ion-content>

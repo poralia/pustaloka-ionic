@@ -1,0 +1,25 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue" class="!pt-2">
+    <ion-searchbar class="!pb-1" placeholder="Cari" mode="ios" (ionInput)="keywordInputHandler($event)" debounce="250"></ion-searchbar>
+  
+    <div class="px-3 pb-2">
+      <ion-segment [value]="segmentValue" mode="ios" (ionChange)="segmentChangeHandler($event)" color="light-blue">
+        <ion-segment-button value="member">
+          <ion-label>Orang</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="challenge">
+          <ion-label>Bacaan</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="tags">
+          <ion-label>Topik</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue">
+  <app-member-list-screen *ngIf="segmentValue == 'member'"></app-member-list-screen>
+  <app-challenge-list-screen *ngIf="segmentValue == 'challenge'"></app-challenge-list-screen>
+  <app-tags-list-screen *ngIf="segmentValue == 'tags'"></app-tags-list-screen>
+</ion-content>

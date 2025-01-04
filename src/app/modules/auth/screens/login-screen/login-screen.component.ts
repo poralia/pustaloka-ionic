@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-login-screen',
@@ -8,8 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginScreenComponent  implements OnInit {
 
-  constructor() { }
+  public userEmail: string | null = this.route.snapshot.queryParamMap.get('user_email');
+  
+  constructor(
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit() {}
+
+  loginWithGoogle() {
+    
+  }
 
 }

@@ -14,7 +14,7 @@
     </ion-buttons>
   </ion-item>
 
-  <ion-item button="true" lines="none" color="light-blue">
+  <ion-item button="true" lines="none" color="light-blue" (click)="setOpen(true)">
     <ion-label class="ion-text-end">Reset Kata Sandi</ion-label>
   </ion-item>
 
@@ -22,3 +22,35 @@
     <ion-button type="submit" mode="ios" expand="block" color="purple" [disabled]="formGroup.invalid">Masuk ke Akun</ion-button>
   </div>
 </form>
+
+<ion-modal 
+  [isOpen]="isModalOpen()" 
+  [backdropDismiss]="true" 
+  class="ion-padding-start ion-padding-end"
+  (didDismiss)="dismissHandler()"
+>
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar color="light">
+        <ion-title class="text-lg">Reset Kata Sandi</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpen(false)">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding" [scrollY]="false">
+      <p class="ion-margin-bottom">Masukkan email yang digunakan saat mendaftar.</p>
+
+      <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">
+        <ion-icon slot="start" name="mail" aria-hidden="true"></ion-icon>
+        <ion-input [(ngModel)]="resetPasswordEmail" type="email" label="Alamat Email" labelPlacement="floating" placeholder="myemail@domain.com"></ion-input>
+      </ion-item>
+
+      <div class="mt-6">
+        <ion-button type="button" mode="ios" expand="block" color="purple" [disabled]="!resetPasswordEmail" (click)="forgotPasswordHandler()">Reset</ion-button>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

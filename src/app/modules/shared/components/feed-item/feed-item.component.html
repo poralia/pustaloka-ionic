@@ -1,0 +1,91 @@
+<ion-card 
+  mode="ios" 
+  class="!mx-0 shadow-md" 
+  (click)="clickHandler(props.item, $event)"
+  [ngClass]="{
+    '!border-green-500': props.item?.reading?.progress >= 100,
+    'bg-green-50': props.item?.reading?.progress >= 100,
+  }"
+>
+  <ion-card-content class="pt-3">
+    <ion-item lines="none" class="ion-no-padding mb-2.5" [ngStyle]="{'--background': 'none'}">
+      <ion-avatar slot="start" class="w-11 h-11">
+        <ion-img [src]="props.item.user_avatar?.thumb"></ion-img>
+      </ion-avatar>
+
+      <ion-label>
+        <ion-text class="font-semibold">{{ props.item.user?.display_name }}</ion-text>
+        <p><ion-text>{{ props.item.date | date: 'medium' }}</ion-text></p>
+      </ion-label>
+    </ion-item>
+
+    <div *ngIf="props.item.reading?.content.rendered !== ''" class="ion-margin-bottom !text-base !text-neutral-700" [innerHTML]="props.item.reading?.content.rendered"></div>
+
+    <div class="flex w-full">
+      <div *ngIf="props.item?.book" class="w-14 flex-none border border-dotted border-purple-900 p-1 flex items-center justify-center rounded-lg">
+        <ion-img [src]="props.item.book.featured_image_url" class="w-full h-auto"></ion-img>
+      </div>
+    
+      <div *ngIf="props.item?.book" class="w-full pl-2">
+        <table class="table text-sm w-full">
+          <tbody>
+            <tr>
+              <td colspan="2"><ion-text class="line-clamp-2 font-medium" color="purple" [innerHTML]="props.item.book.post_title"></ion-text></td>
+            </tr>
+
+            <tr>
+              <td class="w-20 align-top"><ion-text>Halaman</ion-text></td>
+              <td class="line-clamp-1"><ion-text>{{ props.item.reading.pages_count | number }} ({{ props.item.reading.from_page | number }} - {{ props.item.reading.to_page | number }})</ion-text></td>
+            </tr>
+
+            <tr>
+              <td class="w-20 align-top"><ion-text>Durasi</ion-text></td>
+              <td class="line-clamp-1"><ion-text>{{ duration }}</ion-text></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="props.item?.reading?.progress" class="flex mt-2 items-center">
+      <div class="w-12 flex-none ml-auto">
+        <span 
+          class="w-auto h-6 ml-auto flex items-center justify-center rounded-xl bg-purple-800 text-white text-xs font-semibold"
+          [ngClass]="{
+            '!bg-green-500': props.item.reading.progress >= 100,
+          }"
+        >
+          {{ props.item.reading.progress }}%
+        </span>
+      </div>
+      
+      <div class="w-10 flex-none text-right">
+        {{ props.item.reading.to_page | number }}
+      </div>
+      
+      <div class="w-full px-2">
+        <ion-progress-bar [value]="props.item.reading.progress / 100" mode="ios" [color]="props.item.reading.progress >= 100 ? 'success': 'tertiary'" class="h-2.5"></ion-progress-bar>
+      </div>
+
+      <div class="w-10 flex-none">
+        {{ props.item.reading.number_of_pages | number }}
+      </div>
+    </div>
+
+    <div *ngIf="props.item?.post_tags?.length > 0" class="ion-margin-top">
+      <mat-chip-set aria-label="Tags">
+        @for (tag of props.item.post_tags; track tag) {
+          <mat-chip>{{ tag.name }}</mat-chip>
+        }
+      </mat-chip-set>
+    </div>
+
+    <div class="flex ion-margin-top">
+      <ion-button id="to-comment" fill="clear" size="small" color="purple">
+        <ion-icon slot="start" name="chatbubble"></ion-icon>
+        <ion-text *ngIf="props.item.comment_count.total > 0">{{ props.item.comment_count.total | number }} Komentar</ion-text>
+        <ion-text *ngIf="props.item.comment_count.total <= 0">Beri Komentar</ion-text>
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>

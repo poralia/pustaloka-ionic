@@ -1,0 +1,49 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/search" icon="return-up-back-outline"></ion-back-button>
+    </ion-buttons>
+
+    <ng-container *ngIf="member$ | async as member">
+      @if (member.statuses == 'success') {
+        <ion-title class="text-lg">{{ member.data.name }}</ion-title>
+
+        <ion-buttons slot="end">
+          <ion-button size="small" mode="ios" (click)="friendshipHandler(member.data.id)">
+            <ion-icon name="person-add-outline" slot="start" size="small"></ion-icon>
+            <ion-text>Tambah Teman</ion-text>
+          </ion-button>
+        </ion-buttons>
+      }
+    </ng-container>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue">
+  <ng-container *ngIf="member$ | async as member">
+    @if (member.statuses == 'success') {
+      <ion-item lines="none" color="light-blue">
+        <ion-avatar slot="start" class="!w-16 !h-16">
+          <ion-img [src]="member.data.avatar_urls?.thumb"></ion-img>
+        </ion-avatar>
+
+        <ion-label>
+          <ion-text class="font-medium">{{ member.data.name }}</ion-text>
+          <p>{{ '@' + member.data.mention_name }}</p>
+        </ion-label>
+      </ion-item>
+    }
+  </ng-container>
+
+  <ng-container *ngIf="readings$ | async as readings">
+    @if (readings.status == 'success') {
+      @for (item of readings.data; track item.id) {
+        <app-reading-item [item]="item" [currentUserId]="uid"></app-reading-item>
+      }
+
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="!loadMoreEnabled">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    }
+  </ng-container>
+</ion-content>

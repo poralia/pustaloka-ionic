@@ -1,0 +1,10 @@
+ion-segment-button {
+    &::part(native) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    &.segment-button-checked {
+        color: #fff;
+    }
+}

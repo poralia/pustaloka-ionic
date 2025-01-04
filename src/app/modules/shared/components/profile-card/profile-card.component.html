@@ -1,0 +1,219 @@
+<ng-container *ngIf="me$ | async as me">
+  @if (me.statuses == 'success') {
+    <ion-card color="purple" class="!m-0 rounded-b-[50%] !shadow-lg !border-0">
+      <ion-card-content>
+        <div class="h-64 text-white">
+          <ion-item 
+            lines="none"
+            class="ion-no-padding"
+            [ngStyle]="{
+              '--background': 'transparent',
+              '--inner-padding-end': '0',
+            }"
+          >
+            <ion-avatar slot="start" class="w-12 h-12">
+              <ion-img [src]="me.data.avatar_urls.thumb"></ion-img>
+            </ion-avatar>
+
+            <ion-label>
+              <ion-text class="font-medium text-md text-white line-clamp-1 !leading-3">{{ me.data.name }}</ion-text>
+              <p class="!text-purple-200 !text-sm !mt-1">{{ '@' + me.data.user_login }}</p>
+            </ion-label>
+
+            <ion-buttons slot="end" class="mr-2">
+              <ion-button color="light" [routerLink]="['/auth/setting']">
+                <ion-icon name="settings" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+
+          <div class="grid grid-cols-2 gap-6 mt-2">
+            <ion-item 
+              lines="none" 
+              class="rounded-lg"
+              button="true"
+              [ngStyle]="{
+                '--inner-padding-end': '0'
+              }"
+              [routerLink]="['/tabs/reading-challenge/challenges']"
+            >
+              <ion-label>
+                <p class="!text-xs">Selesai dibaca</p>
+                <ion-text class="text-xl font-semibold !leading-5">{{ me.data.reading.count.done }}</ion-text>
+              </ion-label>
+
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-item>
+
+            <ion-item 
+              lines="none" 
+              class="rounded-lg"
+              button="true"
+              [ngStyle]="{
+                '--inner-padding-end': '0'
+              }"
+              [routerLink]="[me.data.reading.count.ongoing > 0 ? '/tabs/reading-challenge/new' : '/tabs/reading-challenge/book-editor']"
+            >
+              <ion-label>
+                <p class="!text-xs">{{ me.data.reading.count.ongoing > 0 ? 'Sedang dibaca' : 'Bacaan kosong' }}</p>
+                <ion-text 
+                  class="text-xl font-semibold !leading-5"
+                  [ngClass]="{
+                    '!text-sm': me.data.reading.count.ongoing <= 0
+                  }"
+                >
+                  {{ me.data.reading.count.ongoing > 0 ? me.data.reading.count.ongoing : 'Tambah buku' }}
+                </ion-text>
+              </ion-label>
+
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-item>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  }
+</ng-container>
+
+<div class="-mt-28">
+  <div class="swiper swiper-challenge pb-10 ion-padding-start ion-padding-end">
+    <div class="swiper-wrapper">
+      <ng-container *ngIf="challenges$ | async as challenges">
+        @if (challenges.status == 'success') {
+          @if (challenges.data.length > 0) {
+            @for (item of challenges.data; track item.id) {
+              <div class="swiper-slide">
+                <ion-item 
+                  [lines]="'none'"
+                  (click)="choiceHandler(item)"
+                  button="true"
+                  class="ion-no-margin shadow-md bg-white rounded-xl border-0 py-1.5 h-32"
+                >
+                  <ion-thumbnail slot="start" class="w-20 !h-24 rounded-md mr-2">
+                    <img class="rounded-md w-auto h-full" [src]="item?.meta?.book?.featured_media_url">
+                  </ion-thumbnail>
+
+                  <ion-label>
+                    <div class="flex items-center">
+                      <div class="w-full">
+                        <ion-text class="line-clamp-2 font-medium leading-5 !text-md" [innerHTML]="item.title.rendered"></ion-text>
+                        <div>
+                          <ion-text class="text-xs !text-neutral-500">
+                            Dibaca: {{ item.meta.reading.last_reading_datetime ? (item.meta.reading.last_reading_datetime | date : 'short') : 'Tidak pernah' }}
+                          </ion-text>
+                        </div>
+                      </div>
+
+                      <div class="w-10 max-h-10 flex-none">
+                        <div class="flex w-full h-full items-center justify-center">
+                          <ion-icon name="play-circle-outline" class="text-4xl" color="purple"></ion-icon>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex mt-2 items-center">
+                      <div class="w-12 flex-none ml-auto">
+                        <span 
+                          class="w-auto h-6 ml-auto flex items-center justify-center rounded-xl bg-purple-950 text-white text-xs font-semibold"
+                        >
+                          {{ item.meta?.reading?.progress }}%
+                        </span>
+                      </div>
+
+                      <div class="w-10 flex-none text-right">
+                        {{ item.meta.reading.to_page ? item.meta.reading.to_page : '0' | number }}
+                      </div>
+                      
+                      <div class="w-full px-2">
+                        <ion-progress-bar 
+                          [value]="item.meta.reading.progress / 100" 
+                          mode="ios" 
+                          color="tertiary" 
+                          class="h-2.5"
+                        ></ion-progress-bar>
+                      </div>
+
+                      <div class="w-10 flex-none">
+                        {{ item.meta.number_of_pages | number }}
+                      </div>
+                    </div>
+                  </ion-label>
+                </ion-item>
+              </div>
+            }
+          } @else {
+            <div class="swiper-slide">
+              <ion-item 
+                [lines]="'none'"
+                [routerLink]="['/tabs/reading-challenge/book-editor']"
+                button="true"
+                class="ion-no-margin shadow-md bg-white rounded-xl border-0 py-1.5 w-full"
+              >
+                  <ion-icon slot="start" name="book" class="text-7xl"></ion-icon>
+
+                  <ion-label>
+                    <ion-text class="text-lg font-semibold">Tambahkan Buku</ion-text>
+                    <p>Apakah ada buku yang sedang dibaca?</p>
+                  </ion-label>
+              </ion-item>
+            </div>
+          }
+        }
+      </ng-container>
+    </div>
+
+    <div class="swiper-pagination"></div>
+  </div>
+</div>
+
+<ion-modal class="ion-padding-start ion-padding-end">
+  <ng-template>
+    <div class="ion-padding">
+      <div class="flex items-center border-b border-neutral-300 pb-3 mb-3">
+        <div><ion-text class="text-lg font-semibold">Konfirmasi</ion-text></div>
+        <ion-button class="ml-auto" fill="clear" (click)="closeHandler()">
+          <ion-icon slot="start" name="close"></ion-icon>
+          <ion-text>Tutup</ion-text>
+        </ion-button>
+      </div>
+
+      @if (reading) {
+        <div class="text-xl">Kegiatan membaca sebelumnya belum diselesaikan.</div>
+        <ion-item class="ion-no-padding" lines="none">
+          <ion-thumbnail slot="start" class="w-20 !h-auto py-2">
+            <ion-img [src]="reading.meta?.book.book_cover"></ion-img>
+          </ion-thumbnail>
+
+          <ion-label>
+            <ion-text class="text-lg font-medium line-clamp-2" [innerHTML]="reading.title.rendered"></ion-text>
+            <table class="!text-xs !text-neutral-600">
+              <tr>
+                <td>Tanggal</td>
+                <td class="pl-2">: {{ reading.meta.from_datetime | date: 'medium' }}</td>
+              </tr>
+
+              <tr>
+                <td>Halaman</td>
+                <td class="pl-2">: {{ (+reading.meta.from_page + 1) | number }}</td>
+              </tr>
+
+              <tr>
+                <td>Progress</td>
+                <td class="pl-2">: {{ reading.meta.progress + '%' }}</td>
+              </tr>
+            </table>
+          </ion-label>
+        </ion-item>
+
+        <div class="grid grid-cols-2 gap-5">
+          <div>
+            <ion-button expand="block" mode="ios" color="light" (click)="cancelHandler()">Batalkan</ion-button>
+          </div>
+
+          <div>
+            <ion-button expand="block" mode="ios" color="purple" (click)="confirmHandler()">Lanjut Baca</ion-button>
+          </div>
+        </div>
+      }
+    </div>
+  </ng-template>
+</ion-modal>

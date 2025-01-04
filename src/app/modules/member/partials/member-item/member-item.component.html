@@ -1,0 +1,34 @@
+<ion-item 
+  lines="none" 
+  button="true"
+  class="ion-margin-bottom rounded-xl shadow border border-purple-800"
+  [routerLink]="['/tabs/member', item.friend.id]"
+>
+  <ion-avatar slot="start">
+    <ion-img [src]="item.friend.avatar_urls?.thumb"></ion-img>
+  </ion-avatar>
+
+  <ion-label>
+    <ion-text class="font-medium line-clamp-1">{{ item.friend.name }}</ion-text>
+    <p>{{ '@' + item.friend.mention_name }}</p>
+  </ion-label>
+
+  <ion-button 
+    *ngIf="!item.is_confirmed && !item.is_initiator" 
+    slot="end" 
+    size="small" 
+    color="success"
+    (click)="acceptHandler(item.id)"
+  >
+    Terima
+  </ion-button>
+
+  <ng-container *ngIf="status == 'requested'">
+    <ion-text *ngIf="item.is_confirmed" slot="end" color="success" class="text-sm font-semibold">Diterima</ion-text>
+    <ion-text *ngIf="!item.is_confirmed" slot="end" color="warning" class="text-sm font-semibold">Menunggu</ion-text>
+  </ng-container>
+
+  <ng-container *ngIf="status == 'incoming' && item.is_confirmed">
+    <ion-text slot="end" color="success" class="text-sm font-semibold">Menerima</ion-text>
+  </ng-container>
+</ion-item>

@@ -1,0 +1,11 @@
+<div class="ion-padding">
+  <ng-container *ngIf="members$ | async as members">
+    @if (members.statuses == 'success') {
+      @if (members.data.length > 0) {
+        @for(member of members.data; track member.id) {
+          <app-member-item [props]="{'member': member}"></app-member-item>
+        }
+      }
+    }
+  </ng-container>
+</div>

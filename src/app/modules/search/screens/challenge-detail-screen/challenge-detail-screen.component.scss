@@ -1,0 +1,10 @@
+tr + tr {
+    border-top-width: 1px;
+    border-color: var(--ion-color-purple);
+    border-style: dotted;
+}
+
+tr td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}

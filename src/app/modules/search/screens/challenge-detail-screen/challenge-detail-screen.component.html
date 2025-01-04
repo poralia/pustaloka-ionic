@@ -1,0 +1,100 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ng-container *ngIf="challenge$ | async as challenge">
+      @if (challenge.status == 'success') {
+        <ion-item lines="none" color="light-blue">
+          <ion-avatar slot="end" class="w-11 h-11">
+            <ion-img [src]="challenge.data?.post_author?.avatar_urls?.thumb"></ion-img>
+          </ion-avatar>
+
+          <ion-label class="ion-text-end">
+            <ion-text class="font-semibold">{{ challenge.data?.post_author?.name }}</ion-text>
+            <p><ion-text>{{ challenge.data?.date | date: 'medium' }}</ion-text></p>
+          </ion-label>
+        </ion-item>
+      }
+    </ng-container>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/search" icon="return-up-back-outline"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue" class="ion-padding">
+  <ng-container *ngIf="challenge$ | async as challenge">
+    @if (challenge.status == 'success') {
+      <div class="block ion-margin-bottom">
+        <ion-text class="block font-semibold text-xl" color="purple" [innerHTML]="challenge.data?.title?.rendered"></ion-text>
+      </div>
+
+      <div class="flex w-full items-center">
+        <div class="w-20 flex-none border border-dotted border-purple-900 p-2 items-center flex justify-center rounded-lg">
+          <ion-img [src]="challenge.data.meta.book.featured_media_url" class="w-full h-auto"></ion-img>
+        </div>
+      
+        <div class="w-full pl-2">
+          <table class="table text-sm w-full">
+            <tbody>
+              <tr>
+                <td class="align-center"><ion-icon name="copy"></ion-icon></td>
+                <td class="w-20 align-top"><ion-text class="line-clamp-1">Total Halaman</ion-text></td>
+                <td class="line-clamp-1"><ion-text>{{ challenge.data.meta.number_of_pages }}</ion-text></td>
+              </tr>
+
+              <tr>
+                <td><ion-icon name="stopwatch"></ion-icon></td>
+                <td class="w-20 align-top"><ion-text>Mulai</ion-text></td>
+                <td class="line-clamp-1"><ion-text>{{ challenge.data.meta.from_datetime | date: 'medium' }}</ion-text></td>
+              </tr>
+
+              <tr>
+                <td><ion-icon name="stopwatch"></ion-icon></td>
+                <td class="w-20 align-top"><ion-text>Selesai</ion-text></td>
+                <td class="line-clamp-1"><ion-text>{{ challenge.data.meta.to_datetime != '' ? (challenge.data.meta.to_datetime | date: 'medium') : '-' }}</ion-text></td>
+              </tr>
+
+              <tr>
+                <td><ion-icon name="hourglass"></ion-icon></td>
+                <td class="w-20 align-top"><ion-text>Progress</ion-text></td>
+                <td class="line-clamp-1"><ion-text>{{ challenge.data.meta.reading.progress }}%</ion-text></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+  </ng-container>
+
+  <ng-container *ngIf="readings$ | async as readings">
+    @if (readings.status == 'success') {
+      @if (readings.data.length > 0) {
+        <div class="ion-padding-top">
+          <div class="block ion-margin-bottom">
+            <ion-text>Garis waktu baca</ion-text>
+          </div>
+
+          <ng-container *ngFor="let item of readings.data">
+            <div class="block relative pl-7 ion-margin-bottom">
+              <div class="w-3 h-3 bg-purple-500 absolute left-0 top-1.5 rounded-full"></div>
+              <div class="block"><ion-text class="font-medium">{{ item.date | date: 'medium' }}</ion-text></div>
+              <table class="table text-sm">
+                <tr>
+                  <td class="pr-3">Halaman</td>
+                  <td>: {{ item.meta.from_page | number }} - {{ item.meta.to_page | number }}</td>
+                </tr>
+
+                <tr>
+                  <td class="pr-3">Progress</td>
+                  <td>: {{ item.meta.progress }}%</td>
+                </tr>
+              </table>
+
+              <div *ngIf="item.content.rendered" class="block mt-2" [innerHTML]="item.content.rendered"></div>
+            </div>
+          </ng-container>
+        </div>
+      }
+    }
+  </ng-container>
+</ion-content>
