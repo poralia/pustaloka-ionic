@@ -8,10 +8,10 @@
 
 <ion-content class="ion-padding" color="light-blue">
   <div class="h-full flex items-center justify-center flex-col w-full md:w-2/3 lg:w-2/5 mx-auto">
-    <div class="px-4 pt-7">
+    <div class="px-4 pt-4 w-full text-left">
       <ion-text class="block text-3xl font-semibold">Hi, Halo...</ion-text>
       <ion-text class="block text-lg text-neutral-600 mt-2.5">
-        Selamat datang kembali! Banyak yang kamu lewatkan lho.
+        Selamat datang kembali!
       </ion-text>
     </div>
 
@@ -19,14 +19,19 @@
       <app-login-form [email]="userEmail"></app-login-form>
     </div>
 
-    <div class="w-full mt-7 px-4">
-      <ion-button expand="block" (click)="loginWithGoogle()" shape="round" color="light" color="danger" size="large" mode="ios">
+    <div class="relative w-full text-center mt-2">
+      <div class="border-t border-solid border-neutral-200 absolute left-6 right-6 top-4"></div>
+      <div class="bg-[#f6ffff] px-3 py-0.5 inline-block mx-auto z-30 relative">atau</div>
+    </div>
+
+    <div class="w-full mt-3 px-4">
+      <ion-button expand="block" (click)="loginWithGoogle()" color="light" color="danger" mode="ios">
         <ion-icon name="logo-google" slot="start"></ion-icon>
         <ion-text class="ml-1">Login dengan Google</ion-text>
       </ion-button>
     </div>
 
-    <div class="text-center mt-7 flex items-center">
+    <div class="text-center mt-4 flex items-center">
       <ion-button 
         mode="ios" 
         fill="clear" 
@@ -35,7 +40,7 @@
           '--padding-start': '12px',
           '--padding-end': '12px',
         }"
-        color="purple"
+        color="primary"
       >
         Daftar dengan Email
       </ion-button>

@@ -9,6 +9,9 @@ export interface IRegister {
     user_email: string
     display_name: string
     signup_field_data: any[]
+    google_access_token?: string
+    google_id_token?: string
+    google_profile_id?: string
 }
 
 export interface IResetPassword {

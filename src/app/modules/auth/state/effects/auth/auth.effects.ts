@@ -6,6 +6,7 @@ import { HttpService } from '../../../services/http.service';
 import { ModalController, ToastController } from '@ionic/angular';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { ILogin } from '../../../interfaces';
 
 
 @Injectable()
@@ -114,14 +115,30 @@ export class AuthEffects {
   registerSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.registerSuccess),
-      tap(({ data }) => {
+      tap(({ data, payload }) => {
         console.log(data);
-        this.router.navigate(['/auth/activation'], { 
-          replaceUrl: true,
-          queryParams: {
-            user_email: data[0]?.user_email,
-          } 
-        });
+
+        const signup    = data[0];
+        const isActive  = signup?.is_active;
+        const status    = signup?.status;
+        
+        if ( isActive || status === 'registered' ) {
+          // indicated login with google
+          const loginData: ILogin = {
+            username: payload.user_email,
+            password: payload.password,
+          }
+
+          this.authService.login(loginData);
+        } else {
+          // redirect to activation page
+          this.router.navigate(['/auth/activation'], { 
+            replaceUrl: true,
+            queryParams: {
+              user_email: signup?.user_email,
+            } 
+          });
+        }
       })
     ), { dispatch: false }
   )
