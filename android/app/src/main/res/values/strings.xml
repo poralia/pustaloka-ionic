@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pustaloka Ionic</string>
+    <string name="title_activity_main">Pustaloka Ionic</string>
+    <string name="package_name">id.pustaloka.app</string>
+    <string name="custom_url_scheme">id.pustaloka.app</string>
+</resources>
