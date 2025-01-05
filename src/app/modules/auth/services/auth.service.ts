@@ -8,6 +8,7 @@ import * as AuthSelectors from '../state/selectors/auth/auth.selectors';
 import { filter, Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { SocialLogin } from '@capgo/capacitor-social-login';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,16 @@ export class AuthService {
 
   constructor(
     private store: Store<AuthState>,
+    private alertCtrl: AlertController,
   ) { }
+
+  async presentAlert(message: string) {
+    const alrt = await this.alertCtrl.create({
+      message: message,
+    });
+
+    await alrt.present();
+  }
 
   /**
    * Login with google
@@ -34,7 +44,7 @@ export class AuthService {
     });
 
     if (res && res?.result?.idToken) {
-      const password = res?.result?.profile?.id as string + res?.result?.profile?.email as string;
+      const password = (res?.result?.profile?.id as string) + (res?.result?.profile?.email as string);
       const data: IRegister = {
         google_access_token: res.result.accessToken?.token,
         google_id_token: res.result.idToken as string,

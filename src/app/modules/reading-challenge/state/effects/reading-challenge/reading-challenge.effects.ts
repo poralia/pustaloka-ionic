@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { FeedService } from 'src/app/modules/feed/services/feed.service';
 import { IFilter } from 'src/app/modules/feed/feed.interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 
 
@@ -24,6 +24,7 @@ export class ReadingChallengeEffects {
     private authService: AuthService,
     private router: Router,
     private toastCtrl: ToastController,
+    private alertCtrl: AlertController,
   ) {}
 
   async loadChallenges() {
@@ -58,6 +59,14 @@ export class ReadingChallengeEffects {
     await toast.present();
   }
 
+  async presentAlert(message: string) {
+    const alrt = await this.alertCtrl.create({
+      message: message,
+    });
+
+    await alrt.present();
+  }
+
 
   // ...
   // SUBMIT BOOK
@@ -88,7 +97,7 @@ export class ReadingChallengeEffects {
           meta: {
             number_of_pages: data.meta.number_of_pages,
             book: data.id,
-            from_datetime: new Date().toISOString(),
+            from_datetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
             status: 'ongoing',
           }
         }
@@ -137,7 +146,7 @@ export class ReadingChallengeEffects {
           parent: data.id,
           meta: {
             number_of_pages: data.meta.number_of_pages,
-            from_datetime: new Date().toISOString(),
+            from_datetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
             status: 'ongoing',
           }
         }
@@ -723,6 +732,7 @@ export class ReadingChallengeEffects {
       ofType(ReadingChallengeActions.uploadMediaFailure),
       tap(({ error }) => {
         console.log(error);
+        this.presentAlert(JSON.stringify(error));
       }),
     ), { dispatch: false }
   )

@@ -118,13 +118,13 @@ export class HttpService {
    * @param file The file to upload
    * @returns Observable<unknown>
    */
-  public uploadAvatar(file: File, uid: number | string): Observable<unknown> {
+  public uploadAvatar(file: File, uid: number | string): Observable<any> {
     const formData = new FormData();
 
     formData.append('file', file, file.name);
     formData.append('action', 'bp_avatar_upload');
 
-    return this.httpClient.post<unknown>(`buddypress/v1/members/${uid}/avatar`, formData);
+    return this.httpClient.post(`buddypress/v1/members/${uid}/avatar`, formData);
   }
 
   /**

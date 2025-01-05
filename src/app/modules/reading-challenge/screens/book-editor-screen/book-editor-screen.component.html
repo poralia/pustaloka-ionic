@@ -57,7 +57,7 @@
     </form>
 
     <div class="mt-auto h-full w-full ion-padding-top ion-padding-bottom flex items-center justify-center">
-      <div class="block w-auto h-52 mx-auto" (click)="fileUpload.click()">
+      <div class="block w-auto h-52 mx-auto" (click)="selectCover()">
         <ng-container *ngIf="uploadMedia$ | async as media">
           <ion-img class="h-full" [src]="media.status == 'success' ? media.data.source_url : (featuredMediaUrl ? featuredMediaUrl : 'assets/placeholder_book.svg')"></ion-img>
         </ng-container>

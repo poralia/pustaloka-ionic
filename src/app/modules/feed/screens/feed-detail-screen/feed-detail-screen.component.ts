@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FeedService } from '../../services/feed.service';
 import { Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { intervalToDuration, parseISO } from 'date-fns';
+import { differenceInMinutes, intervalToDuration, parseISO } from 'date-fns';
 import { ActionsSubject } from '@ngrx/store';
 import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
 import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
@@ -102,16 +102,11 @@ export class FeedDetailScreenComponent  implements OnInit {
 
   getDuration(activity: any) {
     // calculate duration
-    const { days, hours, minutes, seconds } = intervalToDuration({
-      start: parseISO(activity.reading.from_datetime),
-      end: parseISO(activity.reading.to_datetime),
-    });
+    this.duration = differenceInMinutes(
+      activity.reading.to_datetime,
+      activity.reading.from_datetime
+    ) as unknown as string;
 
-    if (seconds) this.duration = `${seconds} detik`;
-    if (minutes) this.duration = `${minutes} menit ${seconds} detik`;
-    if (hours) this.duration = `${hours} jam ${minutes} menit ${seconds} detik`;
-    if (days) this.duration = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
-    
     return this.duration;
   }
 

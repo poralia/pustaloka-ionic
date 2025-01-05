@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICreateChallenge, ICreateReading, IPostFilter, ISubmitBook, IUpdateReading } from '../reading-challege.interface';
 import { lastValueFrom, Observable } from 'rxjs';

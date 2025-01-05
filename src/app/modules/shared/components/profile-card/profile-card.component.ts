@@ -156,7 +156,7 @@ export class ProfileCardComponent  implements OnInit {
       status: 'draft',
       meta: {
         challenge: this.challenge.id,
-        from_datetime: new Date().toISOString(),
+        from_datetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
         from_page: fromPage,
         to_page: toPage,
       }
@@ -181,7 +181,7 @@ export class ProfileCardComponent  implements OnInit {
     const payload: IUpdateReading = {
       status: 'draft',
       meta: {
-        from_datetime: new Date().toISOString(),
+        from_datetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
         from_page: this.challenge.meta.from_page,
         to_page: this.challenge.meta.to_page,
         to_datetime: '',

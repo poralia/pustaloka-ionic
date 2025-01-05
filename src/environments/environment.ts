@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   restEndpoint: 'http://localhost/www/wp/pustaloka/wp-json',
-  googleOauthClientID: '1087260463503-v7vb772sh1oef1ac295rbg8ju5b8fjt8.apps.googleusercontent.com',
+  // restEndpoint: 'https://pustaloka.id/wp-json',
+  googleOauthClientID: '1087260463503-80jh2sbb558fetnup7a09u91oevm4d8s.apps.googleusercontent.com',
 };
 
 /*

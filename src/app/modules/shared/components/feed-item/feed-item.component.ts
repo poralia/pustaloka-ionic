@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { intervalToDuration, parseISO } from 'date-fns';
+import { differenceInMinutes, intervalToDuration, parseISO } from 'date-fns';
 
 @Component({
     selector: 'app-feed-item',
@@ -23,15 +23,10 @@ export class FeedItemComponent  implements OnInit {
   ngOnInit() {
     // calculate duration
     if (this.props.item?.reading?.from_datetime) {
-      const { days, hours, minutes, seconds } = intervalToDuration({
-        start: parseISO(this.props.item.reading.from_datetime),
-        end: parseISO(this.props.item.reading.to_datetime),
-      });
-
-      if (seconds) this.duration = `${seconds} detik`;
-      if (minutes) this.duration = `${minutes} menit ${seconds} detik`;
-      if (hours) this.duration = `${hours} jam ${minutes} menit ${seconds} detik`;
-      if (days) this.duration = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+      this.duration = differenceInMinutes(
+        this.props.item.reading.to_datetime,
+        this.props.item.reading.from_datetime
+      ) as unknown as string;
     }
   }
 

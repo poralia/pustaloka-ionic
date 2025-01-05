@@ -3,7 +3,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 import { ActivatedRoute } from '@angular/router';
-import { intervalToDuration, parseISO } from 'date-fns';
+import { differenceInMinutes, intervalToDuration, parseISO } from 'date-fns';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IUpdateReading } from '../../reading-challege.interface';
 import { ChallengeService } from '../../services/challenge.service';
@@ -82,15 +82,10 @@ export class SummaryScreenComponent  implements OnInit {
 
   calculateDuration() {
     // get duration
-    const { days, hours, minutes, seconds } = intervalToDuration({ 
-      start: parseISO(this.fromDatetime as unknown as string), 
-      end: parseISO(this.toDatetime as unknown as string), 
-    });
-
-    if (seconds) this.duration = `${seconds} detik`;
-    if (minutes) this.duration = `${minutes} menit ${seconds} detik`;
-    if (hours) this.duration = `${hours} jam ${minutes} menit ${seconds} detik`;
-    if (days) this.duration = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+    this.duration = differenceInMinutes(
+      this.toDatetime as string,
+      this.fromDatetime as string
+    ) as unknown as string;
   }
 
   submitHandler() {

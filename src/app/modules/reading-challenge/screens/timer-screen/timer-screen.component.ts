@@ -96,7 +96,7 @@ export class TimerScreenComponent  implements OnInit {
                 title: reading.title.rendered,
                 bookCover: reading.meta.book.book_cover,
                 fromDatetime: reading.meta.from_datetime,
-                toDatetime: new Date().toISOString(),
+                toDatetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
                 fromPage: reading.meta.from_page,
               }
             });

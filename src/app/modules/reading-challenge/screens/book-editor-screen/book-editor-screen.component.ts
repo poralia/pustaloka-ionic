@@ -9,7 +9,13 @@ import { Observable } from 'rxjs';
 import { ActionsSubject } from '@ngrx/store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { FileTransfer, FileUploadOptions, FileUploadResult } from '@awesome-cordova-plugins/file-transfer/ngx';
+import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { HTTPEnpoint } from '../../reading-challenge.enum';
+import { Capacitor } from '@capacitor/core';
 
 interface Author {
   name: string
@@ -36,6 +42,7 @@ export class BookEditorScreenComponent  implements OnInit {
   public challengeId: string | null = this.route.snapshot.queryParamMap.get('challengeId');
 
   public uploadMedia$: Observable<{ data: any, status: string }>;
+  public progressValue: number = 0;
     
   constructor(
     private fb: FormBuilder,
@@ -43,6 +50,8 @@ export class BookEditorScreenComponent  implements OnInit {
     private actionsSubject$: ActionsSubject,
     private route: ActivatedRoute,
     private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private authService: AuthService,
   ) { 
     this.uploadMedia$ = this.challengeService.selectUploadMedia();
 
@@ -51,6 +60,7 @@ export class BookEditorScreenComponent  implements OnInit {
       switch (action.type) {
         case '[ReadingChallenge] Upload Media Success':
           this.featuredMedia = action.data.id;
+          this.featuredMediaUrl = action.data.source_url;
           break;
         case '[ReadingChallenge] Retrieve Book Success':
           this.featuredMedia = action.data.featured_media;
@@ -65,6 +75,24 @@ export class BookEditorScreenComponent  implements OnInit {
           break;
       }
     });
+  }
+
+  async presentLoading() {
+    // reset progress value
+    const loading = await this.loadingCtrl.create({
+      message: 'Memproses...',
+      backdropDismiss: false,
+    });
+
+    await loading.present();
+  }
+
+  async presentAlert(message: string) {
+    const alrt = await this.alertCtrl.create({
+      message: message,
+    });
+
+    await alrt.present();
   }
 
   ngOnInit() {
@@ -176,6 +204,82 @@ export class BookEditorScreenComponent  implements OnInit {
     });
 
     await alrt.present();
+  }
+
+  /**
+   * Select image for cover
+   */
+  async selectCover() {
+    const image = await Camera.getPhoto({
+      quality: 50,
+      allowEditing: false,
+      width: 576,
+      height: 864,
+      resultType: Capacitor.isNativePlatform() ? CameraResultType.Uri : CameraResultType.DataUrl,
+      saveToGallery: false,
+      webUseInput: true,
+    });
+
+    if (Capacitor.isNativePlatform()) {
+      this.presentLoading();
+      this.transferFile(image.path);
+    } else {
+      this.base64ToBlob(image);
+    } 
+  }
+
+  async base64ToBlob(image: any) {
+    this.urltoFile(image.dataUrl, `book-cover-${Date.now()}.jpg`, 'image/jpeg')
+      .then((file) => {
+        // You now have a file object that you can attach to a form e.g.
+        this.challengeService.uploadMedia(1, file);
+      });
+  }
+
+  async urltoFile(url: any, filename: string, mimeType: string) {
+    return (fetch(url)
+      .then(function(res){return res.arrayBuffer();})
+      .then(function(buf){return new File([buf], filename, { type: mimeType });})
+    );
+  }
+
+  async transferFile(path: string | undefined) {
+    const auth = await this.authService.getAuth();
+    const token = auth.token;
+
+    if (path) {
+      const options: FileUploadOptions = {
+        headers: { 'Authorization': `Bearer ${token}` },
+        httpMethod: 'POST',
+      }
+
+      const ft = new FileTransfer();
+
+      // listen progress
+      ft.create().onProgress((event: ProgressEvent) => {
+        if (event.lengthComputable) {
+          // Calculate the percentage
+          this.progressValue = event.loaded / event.total;
+        } else {
+          this.progressValue++; 
+        }
+      });
+
+      // start upload
+      ft.create().upload(path, encodeURI(`${environment.restEndpoint}/wp/v2/media`), options, true)
+        .then((res: FileUploadResult) => {
+          const response = JSON.parse(res.response);
+          this.featuredMedia = response.id;
+          this.featuredMediaUrl = response.source_url;
+          this.loadingCtrl.dismiss();
+        })
+        .catch(error => {
+          this.presentAlert(JSON.stringify(error));
+          this.loadingCtrl.dismiss();
+        });
+      
+        
+    }
   }
 
 }
