@@ -28,7 +28,7 @@ export class WelcomeScreenComponent  implements OnInit {
 
       setTimeout(() => {
         this.router.navigate(['/tabs/feed'], { replaceUrl: true });
-      }, 3000);
+      }, 0);
     }
   }
 
