@@ -14,6 +14,13 @@ export interface IRegister {
     google_profile_id?: string
 }
 
+export interface IOAuth {
+    profile_id: string
+    token_id: string
+    provider: string
+    result?: any
+}
+
 export interface IResetPassword {
     user_email: string
     security_code: string

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AuthState } from '../state/reducers/auth/auth.reducer';
-import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IRegister, IResetPassword, IUpdateProfile } from '../interfaces';
+import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IOAuth, IRegister, IResetPassword, IUpdateProfile } from '../interfaces';
 import { AuthActions } from '../state/actions/auth/auth.actions';
 import { Preferences } from '@capacitor/preferences';
 import * as AuthSelectors from '../state/selectors/auth/auth.selectors';
@@ -36,32 +36,23 @@ export class AuthService {
   }
 
   async performLoginWithGoogle() {
+    const provider = 'google';
     const res = await SocialLogin.login({
-      provider: 'google',
+      provider: provider,
       options: {
         scopes: ['email', 'profile'],
       }
     });
 
     if (res && res?.result?.idToken) {
-      const password = (res?.result?.profile?.id as string) + (res?.result?.profile?.email as string);
-      const data: IRegister = {
-        google_access_token: res.result.accessToken?.token,
-        google_id_token: res.result.idToken as string,
-        google_profile_id: res.result.profile.id as string,
-        user_email: res.result.profile.email as string,
-        display_name: res.result.profile.name as string,
-        context: 'edit',
-        password: password,
-        signup_field_data: [
-          {
-            field_id: 1,
-            value: res.result.profile.name as string,
-          }
-        ],
+      const data: IOAuth = {
+        profile_id: res.result.profile.id as string,
+        token_id: res.result.idToken as string,
+        provider: provider,
+        result: res.result,
       }
 
-      this.register(data);
+      this.checkOAuth(data);
     }
   }
 
@@ -256,6 +247,20 @@ export class AuthService {
    */
   acceptFriendship(id: string | number) {
     this.store.dispatch(AuthActions.acceptFriendship({ id: id }));
+  }
+
+  /**
+   * Check oauth
+   */
+  checkOAuth(payload: IOAuth) {
+    this.store.dispatch(AuthActions.checkOAuth({ payload: payload }));
+  }
+
+  /**
+   * Select oauth
+   */
+  selectOAuth(): Observable<any> {
+    return this.store.pipe(select(AuthSelectors.oauth));
   }
 
 }

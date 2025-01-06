@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IRegister, IResetPassword, IUpdateProfile } from '../../../interfaces';
+import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IOAuth, IRegister, IResetPassword, IUpdateProfile } from '../../../interfaces';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export const AuthActions = createActionGroup({
@@ -71,5 +71,9 @@ export const AuthActions = createActionGroup({
     'Load More Get Friends': props<{ filter: IFriendFilter }>(),
     'Load More Get Friends Success': props<{ data: any, filter: IFriendFilter }>(),
     'Load More Get Friends Failure': props<{ error: HttpErrorResponse, filter: IFriendFilter }>(),
+
+    'Check OAuth': props<{ payload: IOAuth }>(),
+    'Check OAuth Success': props<{ data: any, payload: IOAuth }>(),
+    'Check OAuth Failure': props<{ error: HttpErrorResponse, payload: IOAuth }>(),
   }
 });

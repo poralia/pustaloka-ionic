@@ -61,3 +61,8 @@ export const friends = createSelector(
     authSelectFeature,
     (state: AuthState) => state.friends,
 );
+
+export const oauth = createSelector(
+    authSelectFeature,
+    (state: AuthState) => state.oauth,
+);

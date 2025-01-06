@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IRegister, IResetPassword, IUpdateProfile } from '../interfaces';
+import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IOAuth, IRegister, IResetPassword, IUpdateProfile } from '../interfaces';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { HTTPEnpoint } from '../auth.enum';
 import { Preferences } from '@capacitor/preferences';
@@ -172,6 +172,13 @@ export class HttpService {
     console.log('Token removed');
 
     return lastValueFrom(of(null));
+  }
+
+  /**
+   * Check oauth
+   */
+  checkOAuth(data: IOAuth): Observable<any> {
+    return this.httpClient.post<any>(`${HTTPEnpoint.OAUTH}`, data);
   }
 
 }

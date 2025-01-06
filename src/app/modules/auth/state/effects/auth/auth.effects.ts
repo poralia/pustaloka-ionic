@@ -633,4 +633,46 @@ export class AuthEffects {
     ), { dispatch: false }
   )
 
+
+  // ...
+  // CHECK OAUTH 
+  // ...
+  checkOAuth$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.checkOAuth),
+      exhaustMap(action => 
+        this.httpService.checkOAuth(action.payload).pipe(
+          map(res => AuthActions.checkOAuthSuccess({ data: res, payload: action.payload })),
+          catchError(error => of(AuthActions.checkOAuthFailure({ error: error, payload: action.payload }))),
+        )
+      )
+    )
+  )
+
+  checkOAuthSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.checkOAuthSuccess),
+      tap(({ data, payload }) => {
+        console.log(data);
+        this.authService.saveAuth(data);
+        this.router.navigate(['/tabs/feed'], { replaceUrl: true });
+        this.authService.retrieveMe();
+      })
+    ), { dispatch: false }
+  )
+
+  checkOAuthFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.checkOAuthFailure),
+      tap(({ error, payload }) => {
+        console.log(error);
+        const statusCode = error.status;
+        if (statusCode !== 404) {
+          const message = error.error.message;
+          this.presentToast(message);
+        }
+      })
+    ), { dispatch: false }
+  )
+
 }

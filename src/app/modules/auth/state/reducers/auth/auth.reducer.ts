@@ -72,6 +72,11 @@ export interface AuthState {
     statuses: string
     error: any | null
   },
+  oauth: {
+    data: any
+    statuses: string
+    error: any | null
+  },
 }
 
 export const initialState: AuthState = {
@@ -137,6 +142,11 @@ export const initialState: AuthState = {
   },
   friends: {
     data: [],
+    statuses: Statuses.IDLE,
+    error: null,
+  },
+  oauth: {
+    data: null,
     statuses: Statuses.IDLE,
     error: null,
   },
@@ -680,6 +690,43 @@ export const AuthReducer = createReducer(
             }
           }
         }
+      }
+    }
+  }),
+
+
+  // ...
+  // CHECK OAUTH
+  // ...
+  on(AuthActions.checkOAuth, (state, { payload }) => {
+    return {
+      ...state,
+      oauth: {
+        ...state.oauth,
+        data: payload,
+        statuses: Statuses.LOADING,
+        error: null,
+      }
+    }
+  }),
+  on(AuthActions.checkOAuthSuccess, (state, { data }) => {
+    return {
+      ...state,
+      oauth: {
+        ...state.oauth,
+        data: data,
+        statuses: Statuses.SUCCESS,
+        error: null,
+      },
+    }
+  }),
+  on(AuthActions.checkOAuthFailure, (state, { error }) => {
+    return {
+      ...state,
+      oauth: {
+        ...state.oauth,
+        error: error,
+        statuses: Statuses.FAILURE,
       }
     }
   }),
