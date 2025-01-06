@@ -35,6 +35,7 @@
     "@capacitor/preferences": "^6.0.3",
     "@capacitor/status-bar": "6.0.2",
     "@capgo/capacitor-social-login": "^0.0.85",
+    "@date-fns/tz": "^1.2.0",
     "@ionic/angular": "^8.0.0",
     "@ionic/pwa-elements": "^3.3.0",
     "@ngrx/effects": "^19.0.0",

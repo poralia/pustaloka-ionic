@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { ICreateReading, IPostFilter, IUpdateReading } from '../../reading-challege.interface';
 import { ActionsSubject } from '@ngrx/store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TZDate } from '@date-fns/tz';
 
 @Component({
   selector: 'app-book-choice-screen',
@@ -132,7 +133,7 @@ export class BookChoiceScreenComponent  implements OnInit {
       status: 'draft',
       meta: {
         challenge: this.challenge.id,
-        from_datetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
+        from_datetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
         from_page: fromPage,
         to_page: toPage,
       }
@@ -157,7 +158,7 @@ export class BookChoiceScreenComponent  implements OnInit {
     const payload: IUpdateReading = {
       status: 'draft',
       meta: {
-        from_datetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
+        from_datetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
         from_page: this.challenge.meta.from_page,
         to_page: this.challenge.meta.to_page,
         to_datetime: '',

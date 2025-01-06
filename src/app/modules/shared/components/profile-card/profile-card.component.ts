@@ -9,6 +9,8 @@ import Swiper from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { endOfDay, format, parseISO } from 'date-fns';
+import { TZDate } from "@date-fns/tz";
 
 @Component({
   selector: 'app-profile-card',
@@ -156,7 +158,7 @@ export class ProfileCardComponent  implements OnInit {
       status: 'draft',
       meta: {
         challenge: this.challenge.id,
-        from_datetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
+        from_datetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
         from_page: fromPage,
         to_page: toPage,
       }
@@ -181,7 +183,7 @@ export class ProfileCardComponent  implements OnInit {
     const payload: IUpdateReading = {
       status: 'draft',
       meta: {
-        from_datetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
+        from_datetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
         from_page: this.challenge.meta.from_page,
         to_page: this.challenge.meta.to_page,
         to_datetime: '',

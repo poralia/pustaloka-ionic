@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import Granim from 'granim';
 import { ChallengeService } from '../../services/challenge.service';
 import { Observable } from 'rxjs';
+import { TZDate } from '@date-fns/tz';
 
 @Component({
     selector: 'app-timer-screen',
@@ -96,7 +97,7 @@ export class TimerScreenComponent  implements OnInit {
                 title: reading.title.rendered,
                 bookCover: reading.meta.book.book_cover,
                 fromDatetime: reading.meta.from_datetime,
-                toDatetime: new Date().toLocaleString('id', { timeZone: 'Asia/Jakarta' }),
+                toDatetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
                 fromPage: reading.meta.from_page,
               }
             });
