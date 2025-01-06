@@ -92,7 +92,7 @@ export class AuthEffects {
     ofType(AuthActions.logoutSuccess),
     tap(() => {
       console.log('Logout success');
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/welcome']);
     })
   ), { dispatch: false });
 

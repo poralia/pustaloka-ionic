@@ -1,0 +1,21 @@
+<ion-content class="ion-padding" color="light-blue">
+  <div class="flex items-center w-full h-full flex-col justify-center">
+    <div [ngClass]="{'mt-auto': !isAuthenticated}">
+      <ion-img src="assets/pustaloka.png" class="w-64 mx-auto"></ion-img>
+    </div>
+
+    <div *ngIf="!isAuthenticated" class="mt-auto text-center pb-4">
+      <ion-button 
+        color="purple" 
+        size="small" 
+        mode="ios" 
+        shape="round" 
+        [routerLink]="['/auth/login']"
+        [ngStyle]="{'--padding-top': '10px', '--padding-bottom': '10px'}"
+      >
+        <ion-icon name="log-in" slot="start"></ion-icon>
+        <ion-text class="ml-1">Masuk</ion-text>
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
