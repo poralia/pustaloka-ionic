@@ -11,6 +11,7 @@ import { IonModal } from '@ionic/angular';
 import { FeedService } from 'src/app/modules/feed/services/feed.service';
 import { ActionsSubject } from '@ngrx/store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TZDate } from '@date-fns/tz';
 
 export interface Tag {
   label: string;
@@ -68,10 +69,12 @@ export class SummaryScreenComponent  implements OnInit {
   }
 
   ngOnInit() {
+    const newPage = this.fromPage ? (parseInt(this.fromPage) + 1) as unknown as string: "1";
+
     this.calculateDuration();
     this.formGroup = this.fb.group({
       content: [''],
-      fromPage: [this.fromPage ? (parseInt(this.fromPage) + 1) as unknown as string : "1", [Validators.required]],
+      fromPage: [this.isEdit ? this.fromPage : newPage, [Validators.required]],
       toPage: [this.toPage ? this.toPage : '', [Validators.required]],
     });
 
@@ -167,7 +170,7 @@ export class SummaryScreenComponent  implements OnInit {
   }
 
   dateChangedHandler(event: any) {
-    this.newDatetime = parseISO(event.detail.value);
+    this.newDatetime = new TZDate(event.detail.value, "Asia/Jakarta").toISOString();
   }
 
   confirmHandler() {
