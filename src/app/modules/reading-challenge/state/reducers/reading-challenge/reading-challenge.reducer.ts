@@ -41,6 +41,11 @@ export interface ReadingChallengeState {
     status: string
     error: HttpErrorResponse | null,
   },
+  readingsDraft: {
+    data: any
+    status: string
+    error: HttpErrorResponse | null,
+  },
   updateReading: {
     data: any
     status: string
@@ -112,6 +117,11 @@ export const initialState: ReadingChallengeState = {
     error: null,
   },
   readings: {
+    data: [],
+    status: Statuses.IDLE,
+    error: null,
+  },
+  readingsDraft: {
     data: [],
     status: Statuses.IDLE,
     error: null,
@@ -366,6 +376,42 @@ export const ReadingChallengeReducer = createReducer(
       ...state,
       readings: {
         ...state.readings,
+        status: Statuses.FAILURE,
+        error: error,
+      }
+    }
+  }),
+
+
+  // ...
+  // GET READINGS DRAFT
+  // ...
+  on(ReadingChallengeActions.getReadingsDraft, (state) => {
+    return {
+      ...state,
+      readingsDraft: {
+        ...state.readingsDraft,
+        status: Statuses.LOADING,
+        error: null,
+      }
+    }
+  }),
+  on(ReadingChallengeActions.getReadingsDraftSuccess, (state, { data }) => {
+    return {
+      ...state,
+      readingsDraft: {
+        ...state.readingsDraft,
+        data: data,
+        status: Statuses.SUCCESS,
+        error: null,
+      }
+    }
+  }),
+  on(ReadingChallengeActions.getReadingsDraftFailure, (state, { error }) => {
+    return {
+      ...state,
+      readingsDraft: {
+        ...state.readingsDraft,
         status: Statuses.FAILURE,
         error: error,
       }

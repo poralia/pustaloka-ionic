@@ -142,6 +142,13 @@ export class ChallengeService {
   }
 
   /**
+   * Get readings draft
+   */
+  getReadingsDraft(filter: IPostFilter, extra?: any): void {
+    this.store.dispatch(ReadingChallengeActions.getReadingsDraft({ filter: filter, extra: extra }));
+  }
+
+  /**
    * Update reading
    */
   updateReading(pid: number, data: IUpdateReading): void {
@@ -170,6 +177,13 @@ export class ChallengeService {
    */
   selectReadings(): Observable<any> {
     return this.store.pipe(select(ChallengeSelectors.readings));
+  }
+
+  /**
+   * Select readings draft
+   */
+  selectReadingsDraft(): Observable<any> {
+    return this.store.pipe(select(ChallengeSelectors.readingsDraft));
   }
 
   /**

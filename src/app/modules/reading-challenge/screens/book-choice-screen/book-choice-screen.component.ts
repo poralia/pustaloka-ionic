@@ -158,7 +158,7 @@ export class BookChoiceScreenComponent  implements OnInit {
     const payload: IUpdateReading = {
       status: 'draft',
       meta: {
-        from_datetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
+        from_datetime: this.challenge.meta.from_datetime,
         from_page: this.challenge.meta.from_page,
         to_page: this.challenge.meta.to_page,
         to_datetime: '',

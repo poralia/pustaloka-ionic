@@ -53,6 +53,13 @@ export const readings = createSelector(
     }
 );
 
+export const readingsDraft = createSelector(
+    challengeSelectFeature,
+    (state: ReadingChallengeState) => {
+        return state.readingsDraft;
+    }
+);
+
 export const updateReading = createSelector(
     challengeSelectFeature,
     (state: ReadingChallengeState) => {

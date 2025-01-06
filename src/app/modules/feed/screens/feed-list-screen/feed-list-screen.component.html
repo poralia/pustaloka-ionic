@@ -29,6 +29,24 @@
     <app-profile-card></app-profile-card>
   </div>
 
+  <ng-container *ngIf="drafts$ | async as drafts">
+    @if (drafts.status == 'success') {
+      <ion-item 
+        *ngIf="drafts.data.length > 0"
+        lines="full"
+        button="true"
+        detail="true"
+        color="warning"
+        (click)="continueReading(drafts.data[0])"
+      >
+        <ion-label>
+          <p class="italic !text-xs">bacaan tertunda, lanjutkan?</p>
+          <ion-text [innerHTML]="drafts.data[0].title.rendered" class="font-medium"></ion-text>
+        </ion-label>
+      </ion-item>
+    }
+  </ng-container>
+
   <ng-container *ngIf="activities$ | async as activities">
     @if (activities.status == 'success') {
       <div class="block">

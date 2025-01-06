@@ -22,12 +22,12 @@ export class HistoryScreenComponent  implements OnInit {
     per_page: 25,
     meta_query: {
       relation: 'AND',
-        0: {
-          key: 'challenge',
-          value: this.challengeId,
-          compare: '=',
-        }
+      0: {
+        key: 'challenge',
+        value: this.challengeId,
+        compare: '=',
       }
+    }
   }
   public histories$: Observable<{ data: any, status: string }>;
   public book$: Observable<{ data: any, status: string }>;

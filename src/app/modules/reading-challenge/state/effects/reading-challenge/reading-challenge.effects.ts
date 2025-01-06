@@ -570,6 +570,40 @@ export class ReadingChallengeEffects {
 
 
   // ...
+  // GET READINGS DRAFT
+  // ...
+  getReadingsDraft$ = createEffect(() => 
+    this.actions$.pipe(
+      ofType(ReadingChallengeActions.getReadingsDraft),
+      mergeMap(action => 
+        this.httpService.getReadings(action.filter).pipe(
+          map(res => ReadingChallengeActions.getReadingsDraftSuccess({ data: res, filter: action.filter, extra: action.extra })),
+          catchError(error => of(ReadingChallengeActions.getReadingsDraftFailure({ error: error, filter: action.filter, extra: action.extra }))),
+        )
+      )
+    )
+  )
+
+  getReadingsDraftSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReadingChallengeActions.getReadingsDraftSuccess),
+      tap(({ data }) => {
+        console.log(data);
+      }),
+    ), { dispatch: false }
+  )
+  
+  getReadingsDraftFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReadingChallengeActions.getReadingsDraftFailure),
+      tap(({ error }) => {
+        console.log(error);
+      }),
+    ), { dispatch: false }
+  )
+
+
+  // ...
   // LOAD MORE READINGS
   // ...
   loadMoreReadings$ = createEffect(() => 

@@ -68,6 +68,10 @@ export const ReadingChallengeActions = createActionGroup({
     'Get Readings Success': props<{ data: any, filter: IPostFilter, extra?: any }>(),
     'Get Readings Failure': props<{ error: any, filter: IPostFilter, extra?: any }>(),
 
+    'Get Readings Draft': props<{ filter: IPostFilter, extra?: any }>(),
+    'Get Readings Draft Success': props<{ data: any, filter: IPostFilter, extra?: any }>(),
+    'Get Readings Draft Failure': props<{ error: any, filter: IPostFilter, extra?: any }>(),
+
     'Load More Readings': props<{ filter: IPostFilter, extra?: any }>(),
     'Load More Readings Success': props<{ data: any, filter: IPostFilter, extra?: any }>(),
     'Load More Readings Failure': props<{ error: any, filter: IPostFilter, extra?: any }>(),
