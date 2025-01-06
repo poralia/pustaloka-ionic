@@ -85,5 +85,9 @@ export const ReadingChallengeActions = createActionGroup({
     'Get Tags': props<{ filter: IPostFilter }>(),
     'Get Tags Success': props<{ data: any, filter: IPostFilter }>(),
     'Get Tags Failure': props<{ error: any, filter: IPostFilter }>(),
+
+    'Stats Get Challenges': props<{ filter: IPostFilter }>(),
+    'Stats Get Challenges Success': props<{ data: any, filter: IPostFilter }>(),
+    'Stats Get Challenges Failure': props<{ error: any, filter: IPostFilter }>(),
   }
 });

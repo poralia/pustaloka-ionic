@@ -805,4 +805,38 @@ export class ReadingChallengeEffects {
     ), { dispatch: false }
   )
 
+
+  // ...
+  // STATS GET CHALLENGES
+  // ...
+  statsGetChallenges$ = createEffect(() => 
+    this.actions$.pipe(
+      ofType(ReadingChallengeActions.statsGetChallenges),
+      mergeMap(action => 
+        this.httpService.getChallenges(action.filter).pipe(
+          map(res => ReadingChallengeActions.statsGetChallengesSuccess({ data: res, filter: action.filter })),
+          catchError(error => of(ReadingChallengeActions.statsGetChallengesFailure({ error: error, filter: action.filter }))),
+        )
+      )
+    )
+  )
+
+  statsGetChallengesSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReadingChallengeActions.statsGetChallengesSuccess),
+      tap(({ data }) => {
+        console.log(data);
+      }),
+    ), { dispatch: false }
+  )
+  
+  statsGetChallengesFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReadingChallengeActions.statsGetChallengesFailure),
+      tap(({ error }) => {
+        console.log(error);
+      }),
+    ), { dispatch: false }
+  )
+
 }

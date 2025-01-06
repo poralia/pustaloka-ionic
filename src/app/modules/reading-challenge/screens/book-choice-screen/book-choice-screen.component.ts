@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { AlertController, IonModal } from '@ionic/angular';
 import { ChallengeService } from '../../services/challenge.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
@@ -51,7 +51,7 @@ export class BookChoiceScreenComponent  implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.getChallenges();
   }
 
@@ -61,6 +61,8 @@ export class BookChoiceScreenComponent  implements OnInit {
     if (auth) {
       this.challengeService.getChallenges({ 
         author: auth.user_id,
+        page: 1,
+        per_page: 100,
         meta_query: {
           relation: 'AND',
           0: {

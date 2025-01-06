@@ -80,3 +80,10 @@ export const tags = createSelector(
         return state.tags;
     }
 );
+
+export const statsChalleges = createSelector(
+    challengeSelectFeature,
+    (state: ReadingChallengeState) => {
+        return state.stats.challenges;
+    }
+);

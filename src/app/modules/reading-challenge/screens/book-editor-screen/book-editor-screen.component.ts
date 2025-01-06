@@ -8,7 +8,7 @@ import { ChallengeService } from '../../services/challenge.service';
 import { Observable } from 'rxjs';
 import { ActionsSubject } from '@ngrx/store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { FileTransfer, FileUploadOptions, FileUploadResult } from '@awesome-cordova-plugins/file-transfer/ngx';
@@ -52,6 +52,7 @@ export class BookEditorScreenComponent  implements OnInit {
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private authService: AuthService,
+    private router: Router,
   ) { 
     this.uploadMedia$ = this.challengeService.selectUploadMedia();
 

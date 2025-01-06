@@ -66,6 +66,13 @@ export interface ReadingChallengeState {
     status: string
     error: HttpErrorResponse | null,
   },
+  stats: {
+    challenges: {
+      data: any
+      status: string
+      error: HttpErrorResponse | null,
+    }
+  }
 }
 
 export const initialState: ReadingChallengeState = {
@@ -129,6 +136,13 @@ export const initialState: ReadingChallengeState = {
     status: Statuses.IDLE,
     error: null,
   },
+  stats: {
+    challenges: {
+      data: [],
+      status: Statuses.IDLE,
+      error: null,
+    }
+  }
 };
 
 export const ReadingChallengeReducer = createReducer(
@@ -730,6 +744,51 @@ export const ReadingChallengeReducer = createReducer(
         ...state.tags,
         status: Statuses.FAILURE,
         error: error,
+      }
+    }
+  }),
+
+
+  // ...
+  // STATS GET CHALLENGES
+  // ...
+  on(ReadingChallengeActions.statsGetChallenges, (state) => {
+    return {
+      ...state,
+      stats: {
+        ...state.stats,
+        challenges: {
+          ...state.challenges,
+          status: Statuses.LOADING,
+          error: null,
+        }
+      }
+    }
+  }),
+  on(ReadingChallengeActions.statsGetChallengesSuccess, (state, { data }) => {
+    return {
+      ...state,
+      stats: {
+        ...state.stats,
+        challenges: {
+          ...state.challenges,
+          data: data,
+          status: Statuses.SUCCESS,
+          error: null,
+        }
+      }
+    }
+  }),
+  on(ReadingChallengeActions.statsGetChallengesFailure, (state, { error }) => {
+    return {
+      ...state,
+      stats: {
+        ...state.stats,
+        challenges: {
+          ...state.challenges,
+          status: Statuses.FAILURE,
+          error: error,
+        }
       }
     }
   }),

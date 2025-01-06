@@ -221,4 +221,18 @@ export class ChallengeService {
     this.store.dispatch(ReadingChallengeActions.getTags({ filter: filter }));
   }
 
+  /**
+   * Get Stats challenges
+   */
+  statsGetChallenges(filter: IPostFilter): void {
+    this.store.dispatch(ReadingChallengeActions.statsGetChallenges({ filter: filter }));
+  }
+
+  /**
+   * Stats Select challenges
+   */
+  selectStatsChallenges(): Observable<any> {
+    return this.store.pipe(select(ChallengeSelectors.statsChalleges));
+  }
+
 }

@@ -7,6 +7,7 @@ import { SummaryScreenComponent } from './screens/summary-screen/summary-screen.
 import { BookChoiceScreenComponent } from './screens/book-choice-screen/book-choice-screen.component';
 import { BookEditorScreenComponent } from './screens/book-editor-screen/book-editor-screen.component';
 import { ReadingListScreenComponent } from './screens/reading-list-screen/reading-list-screen.component';
+import { ChallengeDetailScreenComponent } from '../search/screens/challenge-detail-screen/challenge-detail-screen.component';
 
 const routes: Routes = [
   {
@@ -39,7 +40,11 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: ReadingListScreenComponent,
+        component: ReadingChallengeListScreenComponent,
+      },
+      {
+        path: ':pid',
+        component: ChallengeDetailScreenComponent,
       }
     ]
   },
