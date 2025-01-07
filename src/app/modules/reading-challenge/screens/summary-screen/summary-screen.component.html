@@ -122,6 +122,6 @@
       <div class="pl-3 text-lg">{{ changeDateBehavior == 'from' ? 'Baca dari kapan?' : 'Sampai kapan?' }}</div>
     </div>
     <ion-datetime class="w-full mb-3" locale="id-ID" hourCycle="h24" [value]="selectedDatetime" (ionChange)="dateChangedHandler($event)"></ion-datetime>
-    <ion-button expand="block" color="purple" mode="ios" shape="round" class="mb-4 ion-margin-start ion-margin-end" (click)="confirmHandler()">OK</ion-button>
+    <ion-button expand="block" color="purple" mode="ios" shape="round" class="mb-4 ion-margin-start ion-margin-end" (click)="confirmHandler()">Terapkan</ion-button>
   </ng-template>
 </ion-modal>
