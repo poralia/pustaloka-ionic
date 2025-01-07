@@ -10,6 +10,7 @@ import { FileTransfer, FileUploadOptions, FileUploadResult } from '@awesome-cord
 import { environment } from 'src/environments/environment';
 import { Capacitor } from '@capacitor/core';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-setting-screen',
@@ -157,8 +158,8 @@ export class SettingScreenComponent  implements OnInit {
     }
   }
 
-  logoutHandler() {
-    this.authService.logout();
+  async exitApp() {
+    await App.exitApp();
   }
 
 }

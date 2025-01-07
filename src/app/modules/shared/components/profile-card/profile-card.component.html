@@ -9,6 +9,7 @@
             [ngStyle]="{
               '--background': 'transparent',
               '--inner-padding-end': '0',
+              '--padding-end': '0',
             }"
           >
             <ion-avatar slot="start" class="w-12 h-12">
@@ -16,11 +17,15 @@
             </ion-avatar>
 
             <ion-label>
-              <ion-text class="font-medium text-md text-white line-clamp-1 !leading-3">{{ me.data.name }}</ion-text>
+              <ion-text class="font-medium text-md text-white line-clamp-2 !leading-3">{{ me.data.name }}</ion-text>
               <p class="!text-purple-200 !text-sm !mt-1">{{ '@' + me.data.user_login }}</p>
             </ion-label>
 
-            <ion-buttons slot="end" class="mr-2">
+            <ion-buttons slot="end">
+              <ion-button color="light" (click)="logoutHandler()">
+                <ion-icon name="log-out" slot="icon-only"></ion-icon>
+              </ion-button>
+
               <ion-button color="light" [routerLink]="['/auth/setting']">
                 <ion-icon name="settings" slot="icon-only"></ion-icon>
               </ion-button>

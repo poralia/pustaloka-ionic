@@ -69,6 +69,30 @@ export class ProfileCardComponent  implements OnInit {
     });
   }
 
+  async logoutHandler() {
+    const alrt = await this.alertCtrl.create({
+      header: 'Konfirmasi',
+      subHeader: 'Ingin logout dari akun?',
+      backdropDismiss: false,
+      mode: 'ios',
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+        },
+        {
+          text: 'IYA',
+          role: 'destructive',
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+
+    await alrt.present();
+  }
+
   ngOnInit() {
     this.getChallenges();
     this.authService.retrieveMe();
