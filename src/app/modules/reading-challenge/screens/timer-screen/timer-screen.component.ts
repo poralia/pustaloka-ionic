@@ -5,6 +5,8 @@ import Granim from 'granim';
 import { ChallengeService } from '../../services/challenge.service';
 import { Observable } from 'rxjs';
 import { TZDate } from '@date-fns/tz';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { parseISO } from 'date-fns';
 
 @Component({
     selector: 'app-timer-screen',
@@ -37,6 +39,11 @@ export class TimerScreenComponent  implements OnInit {
     private challengeService: ChallengeService,
   ) { 
     this.reading$ = this.challengeService.selectReading();
+    this.reading$.pipe(takeUntilDestroyed()).subscribe((state: any) => {
+      if (state.status == 'success') {
+        this.startStopwatch(state.data.meta.from_datetime);
+      }
+    });
   }
 
   /**
@@ -116,7 +123,6 @@ export class TimerScreenComponent  implements OnInit {
 
   ngAfterViewInit() {
     this.animatedGradientBackground();
-    this.startStopwatch();
   }
 
   /**
@@ -156,9 +162,12 @@ export class TimerScreenComponent  implements OnInit {
     }, 10);
   }
   
-  startStopwatch() {
+  startStopwatch(from?: string) {
+    let time = new Date().getTime();
+    if (from) time = parseISO(from).getTime();
+    
     if (!this.stopwatchInterval) {
-      this.startTime = new Date().getTime() - this.elapsedPausedTime; // get the starting time by subtracting the elapsed paused time from the current time
+      this.startTime = time - this.elapsedPausedTime; // get the starting time by subtracting the elapsed paused time from the current time
       this.stopwatchInterval = setInterval(() => {
         this.updateStopwatch();
       }, 1000); // update every second
