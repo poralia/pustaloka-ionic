@@ -2,13 +2,12 @@
   lines="none" 
   button="true"
   class="ion-margin-bottom rounded-xl shadow border border-purple-800"
-  [routerLink]="['/tabs/member', item.friend.id]"
 >
-  <ion-avatar slot="start">
+  <ion-avatar slot="start" [routerLink]="['/tabs/member', item.friend.id]">
     <ion-img [src]="item.friend.avatar_urls?.thumb"></ion-img>
   </ion-avatar>
 
-  <ion-label>
+  <ion-label [routerLink]="['/tabs/member', item.friend.id]">
     <ion-text class="font-medium line-clamp-1">{{ item.friend.name }}</ion-text>
     <p>{{ '@' + item.friend.mention_name }}</p>
   </ion-label>
@@ -18,7 +17,7 @@
     slot="end" 
     size="small" 
     color="success"
-    (click)="acceptHandler(item.id)"
+    (click)="acceptHandler(item.initiator_id)"
   >
     Terima
   </ion-button>
