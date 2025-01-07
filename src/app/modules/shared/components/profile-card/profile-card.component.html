@@ -43,7 +43,7 @@
               [routerLink]="['/tabs/reading-challenge/challenges']"
             >
               <ion-label>
-                <p class="!text-xs">Selesai dibaca</p>
+                <p class="!text-xs line-clamp-1">Selesai dibaca</p>
                 <ion-text class="text-xl font-semibold !leading-5">{{ me.data.reading.count.done }}</ion-text>
               </ion-label>
 
@@ -60,9 +60,9 @@
               [routerLink]="[me.data.reading.count.ongoing > 0 ? '/tabs/reading-challenge/new' : '/tabs/reading-challenge/book-editor']"
             >
               <ion-label>
-                <p class="!text-xs">{{ me.data.reading.count.ongoing > 0 ? 'Sedang dibaca' : 'Bacaan kosong' }}</p>
+                <p class="!text-xs line-clamp-1">{{ me.data.reading.count.ongoing > 0 ? 'Sedang dibaca' : 'Bacaan kosong' }}</p>
                 <ion-text 
-                  class="text-xl font-semibold !leading-5"
+                  class="text-xl font-semibold !leading-5 line-clamp-1"
                   [ngClass]="{
                     '!text-sm': me.data.reading.count.ongoing <= 0
                   }"
