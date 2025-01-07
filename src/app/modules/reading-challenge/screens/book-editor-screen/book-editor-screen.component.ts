@@ -117,6 +117,7 @@ export class BookEditorScreenComponent  implements OnInit {
       title: this.formGroup.value.title,
       book_author: this.formGroup.value.book_author.split('-'),
       featured_media: this.featuredMedia as number,
+      status: 'publish',
       meta: {
         number_of_pages: this.formGroup.value.number_of_pages,
       }

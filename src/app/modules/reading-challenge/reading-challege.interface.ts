@@ -2,6 +2,7 @@ export interface ISubmitBook {
     title: string
     book_author: string[]
     featured_media: number
+    status?: string
     meta: {
         number_of_pages: number
     }
