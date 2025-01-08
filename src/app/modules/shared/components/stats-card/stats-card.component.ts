@@ -82,7 +82,7 @@ export class StatsCardComponent  implements OnInit {
   initializeCharts(payload: any) {
     if (this.chart) this.chart.destroy();
 
-    const ctx = document.getElementById('myChart-' + this.uid);
+    const ctx = document.getElementById('myChart');
 
     const labels = payload.map((item: any) => {
       return parseISO(item.post_date).getDate();
