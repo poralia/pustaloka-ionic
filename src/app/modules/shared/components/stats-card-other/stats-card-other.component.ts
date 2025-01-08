@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TZDate } from '@date-fns/tz';
 import { IonModal } from '@ionic/angular';
@@ -44,10 +44,13 @@ export class StatsCardOtherComponent  implements OnInit {
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
         case '[Auth] Get Stats Success':
-          setTimeout(() => {
-            this.initializeCharts(action.data);
-            this.displayStat = true;
-          }, 250);
+          const behavior = action?.extra?.behavior;
+          if (behavior == 'other') {
+            setTimeout(() => {
+              this.initializeCharts(action.data);
+              this.displayStat = true;
+            }, 250);
+          }
           break;
       }
     })
@@ -73,12 +76,10 @@ export class StatsCardOtherComponent  implements OnInit {
       }
     }
 
-    this.authService.getStats(this.filter);
+    this.authService.getStats(this.filter, { behavior: 'other' });
   }
 
   initializeCharts(payload: any) {
-    if (this.chart) this.chart.destroy();
-
     const ctx = document.getElementById('myChart-user-' + this.uid);
 
     const labels = payload.map((item: any) => {
@@ -182,6 +183,10 @@ export class StatsCardOtherComponent  implements OnInit {
     this.chart.destroy();
     this.loadStats();
     this.changeDateModal?.dismiss();
+  }
+
+  ionViewDidLeave() {
+    this.chart.destroy();
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
@@ -8,6 +8,7 @@ import { IFriendshipRequest } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
 import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { StatsCardOtherComponent } from 'src/app/modules/shared/components/stats-card-other/stats-card-other.component';
 
 @Component({
   selector: 'app-member-detail-screen',
@@ -16,6 +17,8 @@ import { ChallengeService } from 'src/app/modules/reading-challenge/services/cha
   standalone: false,
 })
 export class MemberDetailScreenComponent  implements OnInit {
+
+  @ViewChild(StatsCardOtherComponent) otherCardComponent: StatsCardOtherComponent | null = null;
 
   public member$: Observable<{ data: any, statuses: string }>;
   public readings$: Observable<{ data: any, status: string }>;
@@ -80,6 +83,11 @@ export class MemberDetailScreenComponent  implements OnInit {
 
       this.authService.friendshipRequest(payload);
     }
+  }
+
+  ionViewDidLeave() {
+    console.log('ionViewDidLeave');
+    this.otherCardComponent?.ionViewDidLeave();
   }
 
 }
