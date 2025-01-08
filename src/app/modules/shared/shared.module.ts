@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { TabsHeaderComponent } from './components/tabs-header/tabs-header.component';
 import { IonicModule } from '@ionic/angular';
 import { UserStoryComponent } from './components/user-story/user-story.component';
@@ -32,6 +32,9 @@ import { StatsCardComponent } from './components/stats-card/stats-card.component
     IonicModule,
     MatChipsModule,
     RouterModule,
+  ],
+  providers: [
+    DecimalPipe,
   ],
   exports: [
     TabsHeaderComponent,

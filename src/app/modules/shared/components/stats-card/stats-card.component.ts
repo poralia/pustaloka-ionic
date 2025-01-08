@@ -5,9 +5,9 @@ import { IonModal } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
 import Chart, { plugins } from 'chart.js/auto';
 import { addMonths, format, parseISO, startOfMonth } from 'date-fns';
-import { Observable } from 'rxjs';
 import { IStatsFilter } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-stats-card',
@@ -37,6 +37,7 @@ export class StatsCardComponent  implements OnInit {
   constructor(
     private authService: AuthService,
     private actionsSubject$: ActionsSubject,
+    private decimalPipe: DecimalPipe,
   ) { 
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
@@ -81,16 +82,19 @@ export class StatsCardComponent  implements OnInit {
       return Math.round(parseInt(item.spending_time) / 60);
     });
 
+    const totalPages = pages.reduce((acc: any, curr: any) => acc + curr, 0);
+    const totalMinutes = minutes.reduce((acc: any, curr: any) => acc + curr, 0);
+
     const data = {
       labels: labels,
       datasets: [
         {
-          label: 'Halaman',
+          label: `${totalPages > 0 ? this.decimalPipe.transform(totalPages, '1.0') : ''} Halaman`,
           data: pages,
           backgroundColor: ['rgba(255, 99, 132, 0.6)'],
         },
         {
-          label: 'Menit',
+          label: `${totalMinutes > 0 ? this.decimalPipe.transform(totalMinutes, '1.0') : ''} Menit`,
           data: minutes,
           backgroundColor: ['rgba(75, 192, 192, 0.6)'],
         }
