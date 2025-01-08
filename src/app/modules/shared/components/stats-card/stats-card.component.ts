@@ -8,6 +8,7 @@ import { addMonths, format, parseISO, startOfMonth } from 'date-fns';
 import { IStatsFilter } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { DecimalPipe } from '@angular/common';
+import { callback } from 'chart.js/dist/helpers/helpers.core';
 
 @Component({
   selector: 'app-stats-card',
@@ -119,6 +120,14 @@ export class StatsCardComponent  implements OnInit {
           legend: {
             position: 'bottom',
           },
+          tooltip: {
+            callbacks: {
+              label: (ctx: any) => {
+                console.log(ctx)
+                return ctx.dataset.label.replace(/\d+/g, '') + ': ' + ctx.formattedValue;
+              },
+            }
+          }
         }
       },
     };
