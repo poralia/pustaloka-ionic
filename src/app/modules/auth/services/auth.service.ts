@@ -266,8 +266,8 @@ export class AuthService {
   /**
    * Get stats
    */
-  getStats(filter: IStatsFilter) {
-    this.store.dispatch(AuthActions.getStats({ filter: filter }));
+  getStats(filter: IStatsFilter, extra?: any) {
+    this.store.dispatch(AuthActions.getStats({ filter: filter, extra: extra }));
   }
 
   /**

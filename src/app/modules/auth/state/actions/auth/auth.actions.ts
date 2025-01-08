@@ -76,8 +76,8 @@ export const AuthActions = createActionGroup({
     'Check OAuth Success': props<{ data: any, payload: IOAuth }>(),
     'Check OAuth Failure': props<{ error: HttpErrorResponse, payload: IOAuth }>(),
 
-    'Get Stats': props<{ filter: IStatsFilter }>(),
-    'Get Stats Success': props<{ data: any, filter: IStatsFilter }>(),
-    'Get Stats Failure': props<{ error: HttpErrorResponse, filter: IStatsFilter }>(),
+    'Get Stats': props<{ filter: IStatsFilter, extra?: any }>(),
+    'Get Stats Success': props<{ data: any, filter: IStatsFilter, extra?: any }>(),
+    'Get Stats Failure': props<{ error: HttpErrorResponse, filter: IStatsFilter, extra?: any }>(),
   }
 });

@@ -11,12 +11,12 @@ import { DecimalPipe } from '@angular/common';
 import { callback } from 'chart.js/dist/helpers/helpers.core';
 
 @Component({
-  selector: 'app-stats-card',
-  templateUrl: './stats-card.component.html',
-  styleUrls: ['./stats-card.component.scss'],
+  selector: 'app-stats-card-other',
+  templateUrl: './stats-card-other.component.html',
+  styleUrls: ['./stats-card-other.component.scss'],
   standalone: false,
 })
-export class StatsCardComponent  implements OnInit {
+export class StatsCardOtherComponent  implements OnInit {
 
   @ViewChild('changeDateModal', { read: IonModal }) changeDateModal: IonModal | null = null;
   @Input('uid') uid: string | number | null = null;
@@ -44,13 +44,10 @@ export class StatsCardComponent  implements OnInit {
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
         case '[Auth] Get Stats Success':
-          const behavior = action?.extra?.behavior;
-          if (behavior == 'self') {
-            setTimeout(() => {
-              this.initializeCharts(action.data);
-              this.displayStat = true;
-            }, 250);
-          }
+          setTimeout(() => {
+            this.initializeCharts(action.data);
+            this.displayStat = true;
+          }, 250);
           break;
       }
     })
@@ -76,13 +73,13 @@ export class StatsCardComponent  implements OnInit {
       }
     }
 
-    this.authService.getStats(this.filter, { behavior: 'self' });
+    this.authService.getStats(this.filter);
   }
 
   initializeCharts(payload: any) {
     if (this.chart) this.chart.destroy();
 
-    const ctx = document.getElementById('myChart-' + this.uid);
+    const ctx = document.getElementById('myChart-user-' + this.uid);
 
     const labels = payload.map((item: any) => {
       return parseISO(item.post_date).getDate();

@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { ProfileCardComponent } from './components/profile-card/profile-card.component';
 import { ReadingItemComponent } from './components/reading-item/reading-item.component';
 import { StatsCardComponent } from './components/stats-card/stats-card.component';
+import { StatsCardOtherComponent } from './components/stats-card-other/stats-card-other.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { StatsCardComponent } from './components/stats-card/stats-card.component
     ProfileCardComponent,
     ReadingItemComponent,
     StatsCardComponent,
+    StatsCardOtherComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +49,7 @@ import { StatsCardComponent } from './components/stats-card/stats-card.component
     ProfileCardComponent,
     ReadingItemComponent,
     StatsCardComponent,
+    StatsCardOtherComponent,
   ]
 })
 export class SharedModule { }

@@ -684,8 +684,8 @@ export class AuthEffects {
       ofType(AuthActions.getStats),
       exhaustMap(action => 
         this.httpService.getStats(action.filter).pipe(
-          map(res => AuthActions.getStatsSuccess({ data: res, filter: action.filter })),
-          catchError(error => of(AuthActions.getStatsFailure({ error: error, filter: action.filter }))),
+          map(res => AuthActions.getStatsSuccess({ data: res, filter: action.filter, extra: action.extra })),
+          catchError(error => of(AuthActions.getStatsFailure({ error: error, filter: action.filter, extra: action.extra }))),
         )
       )
     )
