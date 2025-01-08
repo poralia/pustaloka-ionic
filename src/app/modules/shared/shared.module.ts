@@ -12,6 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { RouterModule } from '@angular/router';
 import { ProfileCardComponent } from './components/profile-card/profile-card.component';
 import { ReadingItemComponent } from './components/reading-item/reading-item.component';
+import { StatsCardComponent } from './components/stats-card/stats-card.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ReadingItemComponent } from './components/reading-item/reading-item.com
     FeedItemComponent,
     ProfileCardComponent,
     ReadingItemComponent,
+    StatsCardComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +43,7 @@ import { ReadingItemComponent } from './components/reading-item/reading-item.com
     FeedItemComponent,
     ProfileCardComponent,
     ReadingItemComponent,
+    StatsCardComponent,
   ]
 })
 export class SharedModule { }

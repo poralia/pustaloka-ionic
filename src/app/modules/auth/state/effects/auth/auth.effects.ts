@@ -675,4 +675,41 @@ export class AuthEffects {
     ), { dispatch: false }
   )
 
+
+  // ...
+  // GET STATS
+  // ...
+  getStats$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getStats),
+      exhaustMap(action => 
+        this.httpService.getStats(action.filter).pipe(
+          map(res => AuthActions.getStatsSuccess({ data: res, filter: action.filter })),
+          catchError(error => of(AuthActions.getStatsFailure({ error: error, filter: action.filter }))),
+        )
+      )
+    )
+  )
+
+  getStatsSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getStatsSuccess),
+      tap(({ data }) => {
+        console.log(data);
+      })
+    ), { dispatch: false }
+  )
+
+  getStatsFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getStatsFailure),
+      tap(({ error }) => {
+        console.log(error);
+        const message = error.error.message;
+        this.presentToast(message);
+
+      })
+    ), { dispatch: false }
+  )
+
 }

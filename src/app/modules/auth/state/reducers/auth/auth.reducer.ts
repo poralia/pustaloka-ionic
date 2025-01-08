@@ -3,6 +3,7 @@ import { AuthActions } from '../../actions/auth/auth.actions';
 import { ReadingChallengeActions } from 'src/app/modules/reading-challenge/state/actions/reading-challenge/reading-challenge.actions';
 import { Statuses } from 'src/app/modules/shared/statuses.enum';
 import { reading } from 'src/app/modules/reading-challenge/state/selectors/reading-challenge/reading-challenge.selectors';
+import { InitialState } from '@ngrx/store/src/models';
 
 export const authFeatureKey = 'auth';
 
@@ -77,6 +78,13 @@ export interface AuthState {
     statuses: string
     error: any | null
   },
+  stats: {
+    pages_everyday: {
+      data: any
+      statuses: string
+      error: any | null
+    }
+  },
 }
 
 export const initialState: AuthState = {
@@ -149,6 +157,13 @@ export const initialState: AuthState = {
     data: null,
     statuses: Statuses.IDLE,
     error: null,
+  },
+  stats: {
+    pages_everyday: {
+      data: [],
+      statuses: Statuses.IDLE,
+      error: null,
+    }
   },
 };
 
@@ -729,6 +744,69 @@ export const AuthReducer = createReducer(
         statuses: Statuses.FAILURE,
       }
     }
+  }),
+
+
+  // ...
+  // GET STATS
+  // ...
+  on(AuthActions.getStats, (state, { filter }) => {
+    const view = filter.view;
+
+    if (view === 'pages_everyday') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          [view]: {
+            ...state.stats[view],
+            status: Statuses.LOADING,
+            error: null,
+          }
+        }
+      }
+    }
+
+    return { ...state }
+  }),
+  on(AuthActions.getStatsSuccess, (state, { data, filter }) => {
+    const view = filter.view;
+
+    if (view === 'pages_everyday') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          pages_everyday: {
+            ...state.stats.pages_everyday,
+            data: data,
+            status: Statuses.SUCCESS,
+            error: null,
+          }
+        }
+      }
+    }
+    
+    return { ...state }
+  }),
+  on(AuthActions.getStatsFailure, (state, { error, filter }) => {
+    const view = filter.view;
+
+    if (view === 'pages_everyday') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          pages_everyday: {
+            ...state.stats.pages_everyday,
+            status: Statuses.FAILURE,
+            error: error,
+          }
+        }
+      }
+    }
+
+    return { ...state }
   }),
 );
 

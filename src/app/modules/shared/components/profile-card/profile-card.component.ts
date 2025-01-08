@@ -84,7 +84,7 @@ export class ProfileCardComponent  implements OnInit {
           text: 'IYA',
           role: 'destructive',
           handler: () => {
-
+            this.authService.logout();
           }
         }
       ]

@@ -59,3 +59,10 @@ export interface IFriendFilter {
     // custom parameter
     show_as?: 'friend' | 'requested' | 'incoming'
 }
+
+export interface IStatsFilter {
+    from_date: string
+    to_date: string
+    uid: string | number
+    view: string
+}

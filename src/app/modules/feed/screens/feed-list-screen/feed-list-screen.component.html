@@ -47,6 +47,8 @@
     }
   </ng-container>
 
+  <app-stats-card></app-stats-card>
+
   <ng-container *ngIf="activities$ | async as activities">
     @if (activities.status == 'success') {
       <div class="block">

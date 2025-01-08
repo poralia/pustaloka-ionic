@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IOAuth, IRegister, IResetPassword, IUpdateProfile } from '../interfaces';
+import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IOAuth, IRegister, IResetPassword, IStatsFilter, IUpdateProfile } from '../interfaces';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { HTTPEnpoint } from '../auth.enum';
 import { Preferences } from '@capacitor/preferences';
@@ -179,6 +179,29 @@ export class HttpService {
    */
   checkOAuth(data: IOAuth): Observable<any> {
     return this.httpClient.post<any>(`${HTTPEnpoint.OAUTH}`, data);
+  }
+
+  /**
+   * Get stats
+   */
+  getStats(filter: IStatsFilter): Observable<any> {
+    let httpParams = new HttpParams();
+
+    for (let key in filter) {
+      let value = filter[key as keyof IStatsFilter];
+
+      if ((value && value != undefined) && (key != 'next')) {
+        if (Array.isArray(value)) {
+          for (let v of value) {
+            httpParams = httpParams.append(key + '[]', v);
+          }
+        } else {
+          httpParams = httpParams.append(key, value);
+        }
+      }
+    }
+
+    return this.httpClient.get<any>(`${HTTPEnpoint.MEMBER}/${filter.uid}/stats`, { params: httpParams });
   }
 
 }

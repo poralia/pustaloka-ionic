@@ -66,3 +66,13 @@ export const oauth = createSelector(
     authSelectFeature,
     (state: AuthState) => state.oauth,
 );
+
+export const stats = (props: { view: string }) => createSelector(
+    authSelectFeature,
+    (state: AuthState) => {
+        const view = props.view;
+        
+        if (view === 'pages_everyday') return state.stats.pages_everyday;
+        return state.stats;
+    },
+);

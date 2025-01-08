@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AuthState } from '../state/reducers/auth/auth.reducer';
-import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IOAuth, IRegister, IResetPassword, IUpdateProfile } from '../interfaces';
+import { IFilterMember, IFriendFilter, IFriendshipRequest, ILogin, IOAuth, IRegister, IResetPassword, IStatsFilter, IUpdateProfile } from '../interfaces';
 import { AuthActions } from '../state/actions/auth/auth.actions';
 import { Preferences } from '@capacitor/preferences';
 import * as AuthSelectors from '../state/selectors/auth/auth.selectors';
@@ -261,6 +261,20 @@ export class AuthService {
    */
   selectOAuth(): Observable<any> {
     return this.store.pipe(select(AuthSelectors.oauth));
+  }
+
+  /**
+   * Get stats
+   */
+  getStats(filter: IStatsFilter) {
+    this.store.dispatch(AuthActions.getStats({ filter: filter }));
+  }
+
+  /**
+   * Select stats
+   */
+  selectStats(view: string): Observable<any> {
+    return this.store.pipe(select(AuthSelectors.stats({ view })));
   }
 
 }
