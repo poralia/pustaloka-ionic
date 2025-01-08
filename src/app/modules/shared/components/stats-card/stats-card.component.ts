@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TZDate } from '@date-fns/tz';
 import { IonModal } from '@ionic/angular';
@@ -19,6 +19,7 @@ import { callback } from 'chart.js/dist/helpers/helpers.core';
 export class StatsCardComponent  implements OnInit {
 
   @ViewChild('changeDateModal', { read: IonModal }) changeDateModal: IonModal | null = null;
+  @Input('uid') uid: string | number | null = null;
   
   public displayStat: boolean = false;
   public changeDateBehavior: string = 'from';
@@ -63,13 +64,22 @@ export class StatsCardComponent  implements OnInit {
         ...this.filter,
         uid: auth.user_id,
       }
-
-      this.authService.getStats(this.filter);
     }
+
+    if (this.uid) {
+      this.filter = {
+        ...this.filter,
+        uid: this.uid,
+      }
+    }
+
+    this.authService.getStats(this.filter);
   }
 
   initializeCharts(payload: any) {
-    const ctx = document.getElementById('myChart');
+    if (this.chart) this.chart.destroy();
+
+    const ctx = document.getElementById('myChart-' + this.uid);
 
     const labels = payload.map((item: any) => {
       return parseISO(item.post_date).getDate();
@@ -123,7 +133,6 @@ export class StatsCardComponent  implements OnInit {
           tooltip: {
             callbacks: {
               label: (ctx: any) => {
-                console.log(ctx)
                 return ctx.dataset.label.replace(/\d+/g, '') + ': ' + ctx.formattedValue;
               },
             }
@@ -151,8 +160,6 @@ export class StatsCardComponent  implements OnInit {
   }
 
   confirmHandler() {
-    
-    
     if (this.changeDateBehavior == 'from') {
       // update from datetime
       this.fromDatetime = this.selectedDatetime;

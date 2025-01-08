@@ -35,6 +35,8 @@
     }
   </ng-container>
 
+  <app-stats-card [uid]="uid"></app-stats-card>
+
   <ng-container *ngIf="readings$ | async as readings">
     @if (readings.status == 'success') {
       @for (item of readings.data; track item.id) {
