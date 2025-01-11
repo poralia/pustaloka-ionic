@@ -28,12 +28,12 @@
           <div>{{ second }}</div>
         </div>
 
-        <div class="grid grid-cols-2 gap-6 ion-margin-top">
+        <div class="grid grid-cols-2 gap-6 ion-margin-top items-center">
           <ion-button  shape="round" size="large" color="danger" class="!w-16 !h-16" (click)="cancelHandler(reading.data)">
             <ion-icon slot="icon-only" name="close-outline" size="large"></ion-icon>
           </ion-button>
 
-          <!-- <ion-button shape="round" size="large" color="purple" class="!w-20 !h-20" (click)="playPauseHandler()">
+          <!-- <ion-button shape="round" size="large" color="secondary" class="!w-14 !h-14" (click)="playPauseHandler(reading.data)">
             <ion-icon 
               slot="icon-only" 
               [name]="isPlay() ? 'pause' : 'play'" 

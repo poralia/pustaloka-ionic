@@ -6,7 +6,13 @@ import { ChallengeService } from '../../services/challenge.service';
 import { Observable } from 'rxjs';
 import { TZDate } from '@date-fns/tz';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { parseISO } from 'date-fns';
+import { differenceInMilliseconds, parseISO } from 'date-fns';
+
+export interface IPauseHistory {
+  id: number
+  from_datetime: string
+  to_datetime: string
+}
 
 @Component({
     selector: 'app-timer-screen',
@@ -20,6 +26,10 @@ export class TimerScreenComponent  implements OnInit {
   public hour: string | null = '00';
   public minute: string | null = '00';
   public second: string | null = '00';
+
+  // Pause histories
+  public pauseLogs = signal<IPauseHistory[]>([]);
+  public lastLog: any = null;
 
   // Stopwatch
   public startTime: any;
@@ -41,7 +51,45 @@ export class TimerScreenComponent  implements OnInit {
     this.reading$ = this.challengeService.selectReading();
     this.reading$.pipe(takeUntilDestroyed()).subscribe((state: any) => {
       if (state.status == 'success') {
+        // start stopwatch
         this.startStopwatch(state.data.meta.from_datetime);
+
+        // set pause log
+        const previousPauseLogs = state.data.meta?.pause_log;
+        if (previousPauseLogs && previousPauseLogs.length > 0) {
+          const logs = previousPauseLogs.map((obj: any) => {
+            return {
+              id: obj[0],
+              from_datetime: obj[1],
+              to_datetime: obj[2],
+            }
+          });
+
+          this.pauseLogs.update(values => {
+            return [
+              ...values,
+              ...logs,
+            ]
+          });
+
+          this.lastLog = this.pauseLogs()[this.pauseLogs()?.length - 1];
+          
+          // // if last log to datetime is empty indicate current status is PAUSED
+          // const toDatetime = this.lastLog?.to_datetime;
+          // if (toDatetime == '' || !toDatetime) {
+          //   this.isPlay.set(!this.isPlay());
+            
+          //   // update stopwatch with default value
+          //   this.startTime = parseISO(state.data.meta?.from_datetime).getTime();
+
+          //   // update stopwatch
+          //   this.updateStopwatch();
+          // }
+          // else {
+          //   // start stopwatch
+          //   this.startStopwatch(state.data.meta.from_datetime);
+          // }
+        }
       }
     });
   }
@@ -128,44 +176,69 @@ export class TimerScreenComponent  implements OnInit {
   /**
    * Set state play or pause
    */
-  playPauseHandler() {
+  playPauseHandler(reading: any) {
     this.isPlay.set(!this.isPlay());
 
     if (!this.isPlay()) {
       this.stopStopwatch();
+      
+      this.pauseLogs.update(values => {
+        return [
+          ...values,
+          {
+            id: + new Date(), // timestamp
+            from_datetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
+            to_datetime: '',
+          }
+        ]
+      });
     }
     else {
+      // check to_datetime empty
+      const prev = this.pauseLogs().find(obj => obj.to_datetime == '' || !obj.to_datetime);
+      const prevId = prev?.id;
+
+      // update
+      if (prevId) {
+        const index = this.pauseLogs().findIndex(obj => obj.id == prevId);
+        this.pauseLogs.update(values => {
+          return [
+            ...values.slice(0, index),
+            {
+              ...values[index],
+              to_datetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
+            },
+            ...values.slice(index + 1),
+          ]
+        });
+
+        // reset last log
+        this.lastLog = this.pauseLogs()[this.pauseLogs()?.length - 1];
+      }
+
       this.startStopwatch();
     }
+
+    const pausesHistory = this.pauseLogs().map(obj => {
+      return [obj.id, obj.from_datetime, obj.to_datetime]
+    });
+
+    // save pause histories
+    this.challengeService.updateReading(
+      this.readingId as unknown as number,
+      {
+        status: 'draft',
+        meta: {
+          pause_log: pausesHistory,
+        }
+      }
+    );
   }
 
-  /**
-   * Animated gradient background
-   */
-  animatedGradientBackground() {
-    setTimeout(() => {
-      const granimInstance = new Granim({
-        element: '#granim-canvas',
-        // @ts-ignore
-        opacity: [1, 1],
-        name: 'granim',
-        stateTransitionSpeed: 2000,
-        states : {
-          "default-state": {
-            gradients: [
-              ['#834D9B', '#D04ED6'],
-              ['#1CD8D2', '#93EDC7']
-            ]
-          }
-        }
-      });
-    }, 10);
-  }
-  
   startStopwatch(from?: string) {
     let time = new Date().getTime();
     if (from) time = parseISO(from).getTime();
-    
+
     if (!this.stopwatchInterval) {
       this.startTime = time - this.elapsedPausedTime; // get the starting time by subtracting the elapsed paused time from the current time
       this.stopwatchInterval = setInterval(() => {
@@ -199,6 +272,29 @@ export class TimerScreenComponent  implements OnInit {
     this.hour = this.pad(hours);
     this.minute = this.pad(minutes);
     this.second = this.pad(seconds);
+  }
+
+  /**
+   * Animated gradient background
+   */
+  animatedGradientBackground() {
+    setTimeout(() => {
+      const granimInstance = new Granim({
+        element: '#granim-canvas',
+        // @ts-ignore
+        opacity: [1, 1],
+        name: 'granim',
+        stateTransitionSpeed: 2000,
+        states : {
+          "default-state": {
+            gradients: [
+              ['#834D9B', '#D04ED6'],
+              ['#1CD8D2', '#93EDC7']
+            ]
+          }
+        }
+      });
+    }, 10);
   }
 
   pad(number: number) {

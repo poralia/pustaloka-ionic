@@ -37,12 +37,13 @@ export interface ICreateReading {
 export interface IUpdateReading {
     content?: string
     tags?: string[]
-    status: string
+    status?: string
     meta: {
-        from_page: string
-        to_page: string
-        from_datetime: string
-        to_datetime: string
+        from_page?: string
+        to_page?: string
+        from_datetime?: string
+        to_datetime?: string
+        pause_log?: any
     }
     extra?: any // not associated with any wordpress data
 }
