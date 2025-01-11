@@ -76,8 +76,16 @@ export const AuthActions = createActionGroup({
     'Check OAuth Success': props<{ data: any, payload: IOAuth }>(),
     'Check OAuth Failure': props<{ error: HttpErrorResponse, payload: IOAuth }>(),
 
-    'Get Stats': props<{ filter: IStatsFilter, extra?: any }>(),
-    'Get Stats Success': props<{ data: any, filter: IStatsFilter, extra?: any }>(),
-    'Get Stats Failure': props<{ error: HttpErrorResponse, filter: IStatsFilter, extra?: any }>(),
+    'Get Daily Stats': props<{ filter: IStatsFilter, extra?: any }>(),
+    'Get Daily Stats Success': props<{ data: any, filter: IStatsFilter, extra?: any }>(),
+    'Get Daily Stats Failure': props<{ error: HttpErrorResponse, filter: IStatsFilter, extra?: any }>(),
+
+    'Get Book Stats': props<{ filter: IStatsFilter, extra?: any }>(),
+    'Get Book Stats Success': props<{ data: any, filter: IStatsFilter, extra?: any }>(),
+    'Get Book Stats Failure': props<{ error: HttpErrorResponse, filter: IStatsFilter, extra?: any }>(),
+
+    'Get General Stats': props<{ filter: IStatsFilter, extra?: any }>(),
+    'Get General Stats Success': props<{ data: any, filter: IStatsFilter, extra?: any }>(),
+    'Get General Stats Failure': props<{ error: HttpErrorResponse, filter: IStatsFilter, extra?: any }>(),
   }
 });

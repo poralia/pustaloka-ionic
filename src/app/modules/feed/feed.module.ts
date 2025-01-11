@@ -10,6 +10,7 @@ import { SharedModule } from "../shared/shared.module";
 import { HistoryScreenComponent } from './screens/history-screen/history-screen.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StatsScreenComponent } from './screens/stats-screen/stats-screen.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FeedListScreenComponent,
     FeedDetailScreenComponent,
     HistoryScreenComponent,
+    StatsScreenComponent,
   ],
   imports: [
     CommonModule,

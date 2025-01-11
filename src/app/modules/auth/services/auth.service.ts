@@ -264,17 +264,45 @@ export class AuthService {
   }
 
   /**
-   * Get stats
+   * Get Daily stats
    */
-  getStats(filter: IStatsFilter, extra?: any) {
-    this.store.dispatch(AuthActions.getStats({ filter: filter, extra: extra }));
+  getDailyStats(filter: IStatsFilter, extra?: any) {
+    this.store.dispatch(AuthActions.getDailyStats({ filter: filter, extra: extra }));
   }
 
   /**
-   * Select stats
+   * Select Daily stats
    */
-  selectStats(view: string): Observable<any> {
-    return this.store.pipe(select(AuthSelectors.stats({ view })));
+  selectDailyStats(): Observable<any> {
+    return this.store.pipe(select(AuthSelectors.dailyStats));
+  }
+
+  /**
+   * Get book stats
+   */
+  getBookStats(filter: IStatsFilter, extra?: any) {
+    this.store.dispatch(AuthActions.getBookStats({ filter: filter, extra: extra }));
+  }
+
+  /**
+   * Select book stats
+   */
+  selectBookStats(): Observable<any> {
+    return this.store.pipe(select(AuthSelectors.bookStats));
+  }
+
+  /**
+   * Get general stats
+   */
+  getGeneralStats(filter: IStatsFilter, extra?: any) {
+    this.store.dispatch(AuthActions.getGeneralStats({ filter: filter, extra: extra }));
+  }
+
+  /**
+   * Select general stats
+   */
+  selectGeneralStats(): Observable<any> {
+    return this.store.pipe(select(AuthSelectors.generalStats));
   }
 
 }

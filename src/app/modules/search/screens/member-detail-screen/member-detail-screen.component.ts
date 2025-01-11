@@ -43,13 +43,13 @@ export class MemberDetailScreenComponent  implements OnInit {
     // listen state
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe(action => {
       switch (action.type) {
-        case '[ReadingChallenge] Load More Readings Success':
+        case '[ReadingChallenge] Load More Readings Challenges':
           this.loadMoreEnabled = true;
-          if (this.infiniteEvent) this.infiniteEvent.target.complete();
+          this.infiniteEvent?.target?.complete();
           break;
         case '[ReadingChallenge] Load More Readings Failure':
           this.loadMoreEnabled = false;
-          if (this.infiniteEvent) this.infiniteEvent.target.complete();
+          this.infiniteEvent?.target?.complete();
           break;
       }
     });
@@ -67,7 +67,7 @@ export class MemberDetailScreenComponent  implements OnInit {
       page: this.filter.page ? this.filter.page + 1 : 1,
     }
 
-    this.challengeService.loadMoreOtherChallenges(this.filter);
+    this.challengeService.loadMoreReadings(this.filter);
     this.infiniteEvent = (ev as InfiniteScrollCustomEvent);
   }
 

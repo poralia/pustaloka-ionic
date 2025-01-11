@@ -33,7 +33,7 @@ export class StatsCardOtherComponent  implements OnInit {
     uid: '',
     from_date: format(this.startOfMonth, 'yyyy-MM-dd'),
     to_date: format(this.toDatetime, 'yyyy-MM-dd'),
-    view: 'pages_everyday',
+    view: 'daily',
   }
 
   constructor(
@@ -43,9 +43,11 @@ export class StatsCardOtherComponent  implements OnInit {
   ) { 
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
-        case '[Auth] Get Stats Success':
-          const behavior = action?.extra?.behavior;
-          if (behavior == 'other') {
+        case '[Auth] Get Daily Stats Success':
+          const target = action?.extra?.target;
+          const view = action.filter.view;
+
+          if (target == 'other' && view == 'daily') {
             setTimeout(() => {
               this.initializeCharts(action.data);
               this.displayStat = true;
@@ -76,7 +78,7 @@ export class StatsCardOtherComponent  implements OnInit {
       }
     }
 
-    this.authService.getStats(this.filter, { behavior: 'other' });
+    this.authService.getDailyStats(this.filter, { target: 'other' });
   }
 
   initializeCharts(payload: any) {
@@ -118,6 +120,7 @@ export class StatsCardOtherComponent  implements OnInit {
       data: data,
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         legend: {
           position: 'bottom',
           display: true,

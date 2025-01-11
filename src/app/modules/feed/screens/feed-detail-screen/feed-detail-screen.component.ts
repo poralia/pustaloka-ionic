@@ -77,7 +77,7 @@ export class FeedDetailScreenComponent  implements OnInit {
           break;
         
         case '[Feed] Load More Comments Success':
-          if (action.dta.length <= 0) {
+          if (action.data.length <= 0) {
             this.loadMoreEnabled = false;
           }
           this.infiniteEvent.target.complete();

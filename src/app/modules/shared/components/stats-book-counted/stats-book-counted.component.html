@@ -1,22 +1,22 @@
-<div class="block mt-4">
-  <div *ngIf="displayStat && showHeader" class="flex items-center">
-    <div>{{ title ? title : 'Grafik' }}</div>
+<div class="ion-padding">
+  <div *ngIf="displayStat" class="mb-3 flex items-center">
+    <div>{{ title ? title : 'Statistik' }}</div>
     <div class="ml-auto">
       <ion-buttons>
-        <ion-button color="primary" size="small" fill="clear" mode="ios" (click)="dateChangeHandler('from', startOfMonth)">
-          <ion-text>{{ startOfMonth | date: 'dd MMM YY' }}</ion-text>
+        <ion-button color="primary" size="small" fill="clear" mode="ios" (click)="dateChangeHandler('from', startOfYear)">
+          <ion-text>{{ startOfYear | date: 'MMM YYYY' }}</ion-text>
           <ion-icon name="caret-down-outline" class="ml-1 text-neutral-500"></ion-icon>
         </ion-button>
         -
         <ion-button color="primary" size="small" fill="clear" mode="ios" (click)="dateChangeHandler('to', toDatetime)">
-          <ion-text>{{ toDatetime | date: 'dd MMM YY' }}</ion-text>
+          <ion-text>{{ toDatetime | date: 'MMM YYYY' }}</ion-text>
           <ion-icon name="caret-down-outline" class="ml-1 text-neutral-500"></ion-icon>
         </ion-button>
       </ion-buttons>
     </div>
   </div>
-
-  <canvas [id]="'myChart-' + elementId"></canvas>
+  
+  <canvas [id]="'booksCountChart'" class="!h-56"></canvas>
 </div>
 
 <ion-modal #changeDateModal class="changeDateModal">
@@ -30,7 +30,7 @@
 
       <div class="pl-3 text-lg">{{ changeDateBehavior == 'from' ? 'Baca dari kapan?' : 'Sampai kapan?' }}</div>
     </div>
-    <ion-datetime presentation="date" size="cover" class="w-full mb-3" locale="id-ID" [value]="selectedDatetime" (ionChange)="dateChangedHandler($event)"></ion-datetime>
+    <ion-datetime presentation="month-year" size="cover" class="w-full mb-3" locale="id-ID" [value]="selectedDatetime" (ionChange)="dateChangedHandler($event)"></ion-datetime>
     <ion-button expand="block" color="purple" mode="ios" shape="round" class="mb-4 ion-margin-start ion-margin-end" (click)="confirmHandler()">Terapkan</ion-button>
   </ng-template>
 </ion-modal>

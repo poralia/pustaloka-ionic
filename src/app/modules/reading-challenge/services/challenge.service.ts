@@ -142,6 +142,13 @@ export class ChallengeService {
   }
 
   /**
+   * Load more readings
+   */
+  loadMoreReadings(filter: IPostFilter, extra?: any): void {
+    this.store.dispatch(ReadingChallengeActions.loadMoreReadings({ filter: filter, extra: extra }));
+  }
+
+  /**
    * Get readings draft
    */
   getReadingsDraft(filter: IPostFilter, extra?: any): void {

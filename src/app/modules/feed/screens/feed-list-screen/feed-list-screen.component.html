@@ -47,7 +47,11 @@
     }
   </ng-container>
 
-  <app-stats-card></app-stats-card>
+  <app-stats-general></app-stats-general>
+  
+  <!-- <ion-item lines="full" button="true" detail="true" [routerLink]="['/tabs/feed/stats']">
+    <ion-label>Semua statistik</ion-label>
+  </ion-item> -->
 
   <ng-container *ngIf="activities$ | async as activities">
     @if (activities.status == 'success') {

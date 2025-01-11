@@ -677,32 +677,106 @@ export class AuthEffects {
 
 
   // ...
-  // GET STATS
+  // GET DAILY STATS
   // ...
-  getStats$ = createEffect(() =>
+  getDailyStats$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.getStats),
+      ofType(AuthActions.getDailyStats),
       exhaustMap(action => 
         this.httpService.getStats(action.filter).pipe(
-          map(res => AuthActions.getStatsSuccess({ data: res, filter: action.filter, extra: action.extra })),
-          catchError(error => of(AuthActions.getStatsFailure({ error: error, filter: action.filter, extra: action.extra }))),
+          map(res => AuthActions.getDailyStatsSuccess({ data: res, filter: action.filter, extra: action.extra })),
+          catchError(error => of(AuthActions.getDailyStatsFailure({ error: error, filter: action.filter, extra: action.extra }))),
         )
       )
     )
   )
 
-  getStatsSuccess$ = createEffect(() =>
+  getDailyStatsSuccess$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.getStatsSuccess),
+      ofType(AuthActions.getDailyStatsSuccess),
       tap(({ data }) => {
         console.log(data);
       })
     ), { dispatch: false }
   )
 
-  getStatsFailure$ = createEffect(() =>
+  getDailyStatsFailure$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AuthActions.getStatsFailure),
+      ofType(AuthActions.getDailyStatsFailure),
+      tap(({ error }) => {
+        console.log(error);
+        const message = error.error.message;
+        this.presentToast(message);
+
+      })
+    ), { dispatch: false }
+  )
+
+
+  // ...
+  // GET BOOK STATS
+  // ...
+  getBookStats$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getBookStats),
+      exhaustMap(action => 
+        this.httpService.getStats(action.filter).pipe(
+          map(res => AuthActions.getBookStatsSuccess({ data: res, filter: action.filter, extra: action.extra })),
+          catchError(error => of(AuthActions.getBookStatsFailure({ error: error, filter: action.filter, extra: action.extra }))),
+        )
+      )
+    )
+  )
+
+  getBookStatsSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getBookStatsSuccess),
+      tap(({ data }) => {
+        console.log(data);
+      })
+    ), { dispatch: false }
+  )
+
+  getBookStatsFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getBookStatsFailure),
+      tap(({ error }) => {
+        console.log(error);
+        const message = error.error.message;
+        this.presentToast(message);
+
+      })
+    ), { dispatch: false }
+  )
+
+
+  // ...
+  // GET GENERAL STATS
+  // ...
+  getGeneralStats$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getGeneralStats),
+      exhaustMap(action => 
+        this.httpService.getStats(action.filter).pipe(
+          map(res => AuthActions.getGeneralStatsSuccess({ data: res, filter: action.filter, extra: action.extra })),
+          catchError(error => of(AuthActions.getGeneralStatsFailure({ error: error, filter: action.filter, extra: action.extra }))),
+        )
+      )
+    )
+  )
+
+  getGeneralStatsSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getGeneralStatsSuccess),
+      tap(({ data }) => {
+        console.log(data);
+      })
+    ), { dispatch: false }
+  )
+
+  getGeneralStatsFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getGeneralStatsFailure),
       tap(({ error }) => {
         console.log(error);
         const message = error.error.message;

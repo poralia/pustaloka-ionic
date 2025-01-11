@@ -1,0 +1,83 @@
+<ng-container *ngIf="stats$ | async as stats">
+  @if (stats.statuses == 'success') {
+    <div class="block mb-4 ion-padding !pb-0">
+      <div class="bg-white rounded-lg shadow-md p-5">
+        <div class="block">
+          <ion-text class="text-lg font-semibold" color="purple">Capaian Saya</ion-text>
+        </div>
+
+        <div class="flex gap-2 -ml-2">
+          <ion-buttons>
+            <ion-button color="primary" size="small" fill="clear" mode="ios" (click)="dateChangeHandler('from', startOfMonth)">
+              <ion-text>{{ startOfMonth | date: 'dd MMM YY' }}</ion-text>
+              <ion-icon name="caret-down-outline" class="ml-1 text-neutral-500"></ion-icon>
+            </ion-button>
+            -
+            <ion-button color="primary" size="small" fill="clear" mode="ios" (click)="dateChangeHandler('to', toDatetime)">
+              <ion-text>{{ toDatetime | date: 'dd MMM YY' }}</ion-text>
+              <ion-icon name="caret-down-outline" class="ml-1 text-neutral-500"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
+
+        <div class="block mt-4">
+          <div class="flex gap-3 items-center py-1">
+            <div class="flex items-center w-8">
+              <ion-icon name="book" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+            </div>
+
+            <div><ion-text class="textl-lg">Buku Selesai</ion-text></div>
+            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.challenge_done | number }}</ion-text></div>
+          </div>
+
+          <div class="flex gap-3 items-center py-1">
+            <div class="flex items-center w-8">
+              <ion-icon name="timer" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+            </div>
+
+            <div><ion-text class="textl-lg">Menit Digunakan</ion-text></div>
+            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.spending_time) }}</ion-text></div>
+          </div>
+
+          <div class="flex gap-3 items-center py-1">
+            <div class="flex items-center w-8">
+              <ion-icon name="receipt" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+            </div>
+
+            <div><ion-text class="textl-lg">Halaman Dibaca</ion-text></div>
+            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.total_page | number }}</ion-text></div>
+          </div>
+
+          <div class="flex gap-3 items-center py-1">
+            <div class="flex items-center w-8">
+              <ion-icon name="calendar" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+            </div>
+
+            <div><ion-text class="textl-lg">Total Sesi</ion-text></div>
+            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.total_session | number }}</ion-text></div>
+          </div>
+        </div>
+      
+        <app-stats-card [showHeader]="false"></app-stats-card>
+      </div>
+    </div>
+  }
+</ng-container>
+
+<ion-modal #changeDateModal class="changeDateModal">
+  <ng-template>
+    <div class="w-full">
+      <div class="ion-padding flex items-center w-full">
+        <ion-buttons>
+          <ion-button (click)="closeChangeDateHandler()" size="small">
+            <ion-icon name="close" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+
+        <div class="pl-3 text-lg">{{ changeDateBehavior == 'from' ? 'Baca dari kapan?' : 'Sampai kapan?' }}</div>
+      </div>
+      <ion-datetime presentation="date" size="cover" class="w-full mb-3" locale="id-ID" [value]="selectedDatetime" (ionChange)="dateChangedHandler($event)"></ion-datetime>
+      <ion-button expand="block" color="purple" mode="ios" shape="round" class="mb-4 ion-margin-start ion-margin-end" (click)="confirmHandler()">Terapkan</ion-button>
+    </div>
+  </ng-template>
+</ion-modal>

@@ -3,20 +3,20 @@
     <div>Statistik</div>
     <div class="ml-auto">
       <ion-buttons>
-        <ion-button size="small" fill="clear" mode="ios" (click)="dateChangeHandler('from', startOfMonth)">
+        <ion-button color="primary" size="small" fill="clear" mode="ios" (click)="dateChangeHandler('from', startOfMonth)">
           <ion-text>{{ startOfMonth | date: 'dd MMM YY' }}</ion-text>
-          <ion-text class="ml-1">(ubah)</ion-text>
+          <ion-icon name="caret-down-outline" class="ml-1 text-neutral-500"></ion-icon>
         </ion-button>
         -
-        <ion-button size="small" fill="clear" mode="ios" (click)="dateChangeHandler('to', toDatetime)">
+        <ion-button color="primary" size="small" fill="clear" mode="ios" (click)="dateChangeHandler('to', toDatetime)">
           <ion-text>{{ toDatetime | date: 'dd MMM YY' }}</ion-text>
-          <ion-text class="ml-1">(ubah)</ion-text>
+          <ion-icon name="caret-down-outline" class="ml-1 text-neutral-500"></ion-icon>
         </ion-button>
       </ion-buttons>
     </div>
   </div>
   
-  <canvas [id]="'myChart-user-' + uid" class="h-20"></canvas>
+  <canvas [id]="'myChart-user-' + uid" class="!h-56"></canvas>
 </div>
 
 <ion-modal #changeDateModal class="changeDateModal">
@@ -30,7 +30,7 @@
 
       <div class="pl-3 text-lg">{{ changeDateBehavior == 'from' ? 'Baca dari kapan?' : 'Sampai kapan?' }}</div>
     </div>
-    <ion-datetime presentation="date" class="w-full mb-3" locale="id-ID" [value]="selectedDatetime" (ionChange)="dateChangedHandler($event)"></ion-datetime>
+    <ion-datetime presentation="date" size="cover" class="w-full mb-3" locale="id-ID" [value]="selectedDatetime" (ionChange)="dateChangedHandler($event)"></ion-datetime>
     <ion-button expand="block" color="purple" mode="ios" shape="round" class="mb-4 ion-margin-start ion-margin-end" (click)="confirmHandler()">Terapkan</ion-button>
   </ng-template>
 </ion-modal>

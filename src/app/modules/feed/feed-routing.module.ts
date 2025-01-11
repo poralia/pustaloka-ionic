@@ -4,6 +4,7 @@ import { FeedListScreenComponent } from './screens/feed-list-screen/feed-list-sc
 import { FeedDetailScreenComponent } from './screens/feed-detail-screen/feed-detail-screen.component';
 import { HistoryScreenComponent } from './screens/history-screen/history-screen.component';
 import { MemberDetailScreenComponent } from '../search/screens/member-detail-screen/member-detail-screen.component';
+import { StatsScreenComponent } from './screens/stats-screen/stats-screen.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: 'history',
         component: HistoryScreenComponent,
+      },
+      {
+        path: 'stats',
+        component: StatsScreenComponent,
       },
       {
         path: ':pid',

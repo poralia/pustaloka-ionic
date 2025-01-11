@@ -1,43 +1,42 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TZDate } from '@date-fns/tz';
+import { id } from 'date-fns/locale';
 import { IonModal } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
-import Chart, { plugins } from 'chart.js/auto';
-import { addMonths, format, parseISO, startOfMonth } from 'date-fns';
+import Chart, { plugins, Ticks } from 'chart.js/auto';
+import { addMonths, addYears, endOfMonth, format, parseISO, startOfMonth, startOfYear } from 'date-fns';
 import { IStatsFilter } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { DecimalPipe } from '@angular/common';
 import { callback } from 'chart.js/dist/helpers/helpers.core';
 
 @Component({
-  selector: 'app-stats-card',
-  templateUrl: './stats-card.component.html',
-  styleUrls: ['./stats-card.component.scss'],
+  selector: 'app-stats-book-counted',
+  templateUrl: './stats-book-counted.component.html',
+  styleUrls: ['./stats-book-counted.component.scss'],
   standalone: false,
 })
-export class StatsCardComponent  implements OnInit {
+export class StatsBookCountedComponent  implements OnInit {
 
   @ViewChild('changeDateModal', { read: IonModal }) changeDateModal: IonModal | null = null;
-
+  
   @Input('uid') uid: string | number | null = null;
   @Input('title') title: string | number | null = null;
-  @Input('elementId') elementId: string | number | null = null;
-  @Input('showHeader') showHeader: boolean = true;
   
   public displayStat: boolean = false;
   public changeDateBehavior: string = 'from';
   public selectedDatetime: any;
   public fromDatetime: any = new TZDate(new Date(), "Asia/Jakarta");
-  public startOfMonth: any = startOfMonth(this.fromDatetime);
-  public toDatetime: any = addMonths(this.startOfMonth.toISOString(), 1);
+  public startOfYear: any = startOfYear(this.fromDatetime);
+  public toDatetime: any = addMonths(this.startOfYear.toISOString(), 6);
   public chart: any;
 
   public filter: IStatsFilter = {
     uid: '',
-    from_date: format(this.startOfMonth, 'yyyy-MM-dd'),
-    to_date: format(this.toDatetime, 'yyyy-MM-dd'),
-    view: 'daily',
+    from_date: format(this.startOfYear, 'yyyy-MM-dd'),
+    to_date: format(endOfMonth(this.toDatetime), 'yyyy-MM-dd'),
+    view: 'book',
   }
 
   constructor(
@@ -47,11 +46,11 @@ export class StatsCardComponent  implements OnInit {
   ) { 
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
-        case '[Auth] Get Daily Stats Success':
+        case '[Auth] Get Book Stats Success':
           const target = action?.extra?.target;
           const view = action.filter.view;
-
-          if (target == 'self' && view == 'daily') {
+  
+          if (target == 'self' && view == 'book') {
             setTimeout(() => {
               this.initializeCharts(action.data);
               this.displayStat = true;
@@ -75,49 +74,36 @@ export class StatsCardComponent  implements OnInit {
       }
     }
 
-    if (this.uid) {
-      this.filter = {
-        ...this.filter,
-        uid: this.uid,
-      }
-    }
-
-    this.authService.getDailyStats(this.filter, { target: 'self' });
+    
+    this.authService.getBookStats(this.filter, { target: 'self' });
   }
 
   initializeCharts(payload: any) {
     if (this.chart) this.chart.destroy();
 
-    const ctx = document.getElementById('myChart-' + this.elementId);
+    const months = this.getMonths(this.filter.from_date, this.filter.to_date);
+    const ctx = document.getElementById('booksCountChart');
 
-    const labels = payload.map((item: any) => {
-      return parseISO(item.post_date).getDate();
+    const labels = months.map((item: any) => {
+      return  format(item.first, 'LLL', { locale: id }); 
     });
 
-    const pages = payload.map((item: any) => {
-      return parseInt(item.total_reading_page);
-    });
+    const books = months.map((item: any) => {
+      const date = format(item.first, 'yyyy-MM', { locale: id }); 
+      const book = payload.find((obj: any) => obj.to_date == date);
 
-    const minutes = payload.map((item: any) => {
-      return Math.round(parseInt(item.spending_time) / 60);
+      if (book) return parseInt(book.total);
+      return 0;
     });
-
-    const totalPages = pages.reduce((acc: any, curr: any) => acc + curr, 0);
-    const totalMinutes = minutes.reduce((acc: any, curr: any) => acc + curr, 0);
 
     const data = {
       labels: labels,
       datasets: [
         {
-          label: `${totalPages > 0 ? this.decimalPipe.transform(totalPages, '1.0') : ''} Halaman`,
-          data: pages,
+          label: `Buku`,
+          data: books,
           backgroundColor: ['rgba(255, 99, 132, 0.6)'],
         },
-        {
-          label: `${totalMinutes > 0 ? this.decimalPipe.transform(totalMinutes, '1.0') : ''} Menit`,
-          data: minutes,
-          backgroundColor: ['rgba(75, 192, 192, 0.6)'],
-        }
       ]
     };
 
@@ -126,19 +112,25 @@ export class StatsCardComponent  implements OnInit {
       data: data,
       options: {
         responsive: true,
-        maintainAspectRatio: true,
-        legend: {
-          position: 'bottom',
-          display: true,
-        },
+        maintainAspectRatio: false,
+        indexAxis: 'y',
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            ticks: {
+              autoSkip: false
+            }
+          },
+          x: {
+            ticks: {
+              stepSize: 1,
+            }
           }
         },
         plugins: {
           legend: {
             position: 'bottom',
+            display: false,
           },
           tooltip: {
             callbacks: {
@@ -173,10 +165,10 @@ export class StatsCardComponent  implements OnInit {
     if (this.changeDateBehavior == 'from') {
       // update from datetime
       this.fromDatetime = this.selectedDatetime;
-      this.startOfMonth = this.fromDatetime;
+      this.startOfYear = this.fromDatetime;
       this.filter = {
         ...this.filter,
-        from_date: format(this.startOfMonth, 'yyyy-MM-dd'),
+        from_date: format(this.startOfYear, 'yyyy-MM-dd'),
       }
     }
 
@@ -185,26 +177,37 @@ export class StatsCardComponent  implements OnInit {
       this.toDatetime = this.selectedDatetime;
       this.filter = {
         ...this.filter,
-        to_date: format(this.toDatetime, 'yyyy-MM-dd'),
+        to_date: format(endOfMonth(this.toDatetime), 'yyyy-MM-dd'),
       }
     }
 
-    if (this.chart) this.chart.destroy();
+    this.chart.destroy();
     this.loadStats();
     this.changeDateModal?.dismiss();
   }
 
-  /**
-   * Trigger from outside
-   */
-  externalTriggerHandler(data: any) {
-    this.filter = {
-      ...this.filter,
-      from_date: data.from_date,
-      to_date: data.to_date,
-    };
-    if (this.chart) this.chart.destroy();
-    this.loadStats();
+  getMonths(startDate: any, endDate: any){
+    let resultList = [];
+    let date = new Date(startDate);
+    endDate = new Date(endDate);
+    let monthNameList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    while (date <= endDate) {
+      let stringDate = monthNameList[date.getMonth()] + " " + date.getFullYear();
+      
+      //get first and last day of month
+      let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      
+      resultList.push({
+          str:stringDate,
+          first:firstDay,
+          last:lastDay,
+      });
+      date.setMonth(date.getMonth() + 1);
+    }
+    
+    return resultList;
   }
 
 }

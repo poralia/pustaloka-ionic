@@ -79,7 +79,17 @@ export interface AuthState {
     error: any | null
   },
   stats: {
-    pages_everyday: {
+    daily: {
+      data: any
+      statuses: string
+      error: any | null
+    },
+    book: {
+      data: any
+      statuses: string
+      error: any | null
+    },
+    general: {
       data: any
       statuses: string
       error: any | null
@@ -159,11 +169,21 @@ export const initialState: AuthState = {
     error: null,
   },
   stats: {
-    pages_everyday: {
+    daily: {
       data: [],
       statuses: Statuses.IDLE,
       error: null,
-    }
+    },
+    book: {
+      data: [],
+      statuses: Statuses.IDLE,
+      error: null,
+    },
+    general: {
+      data: null,
+      statuses: Statuses.IDLE,
+      error: null,
+    },
   },
 };
 
@@ -748,19 +768,19 @@ export const AuthReducer = createReducer(
 
 
   // ...
-  // GET STATS
+  // GET DAILY STATS
   // ...
-  on(AuthActions.getStats, (state, { filter }) => {
+  on(AuthActions.getDailyStats, (state, { filter }) => {
     const view = filter.view;
 
-    if (view === 'pages_everyday') {
+    if (view === 'daily') {
       return {
         ...state,
         stats: {
           ...state.stats,
-          [view]: {
-            ...state.stats[view],
-            status: Statuses.LOADING,
+          daily: {
+            ...state.stats.daily,
+            statuses: Statuses.LOADING,
             error: null,
           }
         }
@@ -769,18 +789,18 @@ export const AuthReducer = createReducer(
 
     return { ...state }
   }),
-  on(AuthActions.getStatsSuccess, (state, { data, filter }) => {
+  on(AuthActions.getDailyStatsSuccess, (state, { data, filter }) => {
     const view = filter.view;
 
-    if (view === 'pages_everyday') {
+    if (view === 'daily') {
       return {
         ...state,
         stats: {
           ...state.stats,
-          pages_everyday: {
-            ...state.stats.pages_everyday,
+          daily: {
+            ...state.stats.daily,
             data: data,
-            status: Statuses.SUCCESS,
+            statuses: Statuses.SUCCESS,
             error: null,
           }
         }
@@ -789,17 +809,17 @@ export const AuthReducer = createReducer(
     
     return { ...state }
   }),
-  on(AuthActions.getStatsFailure, (state, { error, filter }) => {
+  on(AuthActions.getDailyStatsFailure, (state, { error, filter }) => {
     const view = filter.view;
 
-    if (view === 'pages_everyday') {
+    if (view === 'daily') {
       return {
         ...state,
         stats: {
           ...state.stats,
-          pages_everyday: {
-            ...state.stats.pages_everyday,
-            status: Statuses.FAILURE,
+          daily: {
+            ...state.stats.daily,
+            statuses: Statuses.FAILURE,
             error: error,
           }
         }
@@ -808,5 +828,132 @@ export const AuthReducer = createReducer(
 
     return { ...state }
   }),
+
+
+  // ...
+  // GET BOOK STATS
+  // ...
+  on(AuthActions.getBookStats, (state, { filter }) => {
+    const view = filter.view;
+
+    if (view === 'book') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          book: {
+            ...state.stats.book,
+            statuses: Statuses.LOADING,
+            error: null,
+          }
+        }
+      }
+    }
+
+    return { ...state }
+  }),
+  on(AuthActions.getBookStatsSuccess, (state, { data, filter }) => {
+    const view = filter.view;
+
+    if (view === 'book') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          book: {
+            ...state.stats.book,
+            data: data,
+            statuses: Statuses.SUCCESS,
+            error: null,
+          }
+        }
+      }
+    }
+    
+    return { ...state }
+  }),
+  on(AuthActions.getBookStatsFailure, (state, { error, filter }) => {
+    const view = filter.view;
+
+    if (view === 'book') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          book: {
+            ...state.stats.book,
+            statuses: Statuses.FAILURE,
+            error: error,
+          }
+        }
+      }
+    }
+
+    return { ...state }
+  }),
+
+
+  // ...
+  // GET GENERAL STATS
+  // ...
+  on(AuthActions.getGeneralStats, (state, { filter }) => {
+    const view = filter.view;
+
+    if (view === 'general') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          general: {
+            ...state.stats.general,
+            statuses: Statuses.LOADING,
+            error: null,
+          }
+        }
+      }
+    }
+
+    return { ...state }
+  }),
+  on(AuthActions.getGeneralStatsSuccess, (state, { data, filter }) => {
+    const view = filter.view;
+
+    if (view === 'general') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          general: {
+            ...state.stats.general,
+            data: data,
+            statuses: Statuses.SUCCESS,
+            error: null,
+          }
+        }
+      }
+    }
+    
+    return { ...state }
+  }),
+  on(AuthActions.getGeneralStatsFailure, (state, { error, filter }) => {
+    const view = filter.view;
+
+    if (view === 'general') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          general: {
+            ...state.stats.general,
+            statuses: Statuses.FAILURE,
+            error: error,
+          }
+        }
+      }
+    }
+
+    return { ...state }
+  }),
+
 );
 

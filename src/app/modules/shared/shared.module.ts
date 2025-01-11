@@ -14,6 +14,8 @@ import { ProfileCardComponent } from './components/profile-card/profile-card.com
 import { ReadingItemComponent } from './components/reading-item/reading-item.component';
 import { StatsCardComponent } from './components/stats-card/stats-card.component';
 import { StatsCardOtherComponent } from './components/stats-card-other/stats-card-other.component';
+import { StatsBookCountedComponent } from './components/stats-book-counted/stats-book-counted.component';
+import { StatsGeneralComponent } from './components/stats-general/stats-general.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { StatsCardOtherComponent } from './components/stats-card-other/stats-car
     ReadingItemComponent,
     StatsCardComponent,
     StatsCardOtherComponent,
+    StatsBookCountedComponent,
+    StatsGeneralComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +54,8 @@ import { StatsCardOtherComponent } from './components/stats-card-other/stats-car
     ReadingItemComponent,
     StatsCardComponent,
     StatsCardOtherComponent,
+    StatsBookCountedComponent,
+    StatsGeneralComponent,
   ]
 })
 export class SharedModule { }

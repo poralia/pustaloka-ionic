@@ -1,0 +1,14 @@
+<ion-header [translucent]="false" class="ion-no-border">
+  <ion-toolbar color="light-blue">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" size="small" icon="return-up-back"></ion-back-button>
+    </ion-buttons>
+    
+    <ion-title class="ion-main-title !leading-none text-lg">Statistik</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light-blue">
+  <app-stats-card [title]="'Harian'" [elementId]="10"></app-stats-card>
+  <app-stats-book-counted [title]="'Buku'"></app-stats-book-counted>
+</ion-content>
