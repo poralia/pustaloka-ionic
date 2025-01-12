@@ -669,18 +669,19 @@ export class ReadingChallengeEffects {
             }
           });
         } else {
-          // this.router.navigate(['/tabs/feed', data.acivity_id], { 
-          //   replaceUrl: true,
-          // }).then(() => {
-          //   const filter: IFilter = {
-          //     type: ['post_reading'],
-          //     component: 'activity',
-          //     page: 1,
-          //     per_page: 25,
-          //   }
+          this.presentToast("Berhasil disimpan dan dibagikan.", 'success');
+          this.router.navigate(['/tabs/feed', data.acivity_id], { 
+            replaceUrl: true,
+          }).then(() => {
+            const filter: IFilter = {
+              type: ['post_reading'],
+              component: 'activity',
+              page: 1,
+              per_page: 25,
+            }
 
-          //   this.feedService.loadActivities(filter);
-          // });
+            this.feedService.loadActivities(filter);
+          });
         }
       }),
     ), { dispatch: false }
