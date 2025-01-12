@@ -669,7 +669,7 @@ export class ReadingChallengeEffects {
             }
           });
         } else {
-          this.presentToast("Berhasil disimpan dan dibagikan.", 'success');
+          this.presentToast("Berhasil disimpan.", 'success');
           this.router.navigate(['/tabs/feed', data.acivity_id], { 
             replaceUrl: true,
           }).then(() => {
