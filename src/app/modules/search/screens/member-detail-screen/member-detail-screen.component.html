@@ -35,7 +35,7 @@
     }
   </ng-container>
 
-  <app-stats-card-other [uid]="uid"></app-stats-card-other>
+  <app-stats-general-other [uid]="uid"></app-stats-general-other>
 
   <ng-container *ngIf="readings$ | async as readings">
     @if (readings.status == 'success') {

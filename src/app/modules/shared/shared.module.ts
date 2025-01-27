@@ -16,6 +16,7 @@ import { StatsCardComponent } from './components/stats-card/stats-card.component
 import { StatsCardOtherComponent } from './components/stats-card-other/stats-card-other.component';
 import { StatsBookCountedComponent } from './components/stats-book-counted/stats-book-counted.component';
 import { StatsGeneralComponent } from './components/stats-general/stats-general.component';
+import { StatsGeneralComponentOther } from './components/stats-general-other/stats-general-other.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { StatsGeneralComponent } from './components/stats-general/stats-general.
     StatsCardOtherComponent,
     StatsBookCountedComponent,
     StatsGeneralComponent,
+    StatsGeneralComponentOther,
   ],
   imports: [
     CommonModule,
@@ -56,6 +58,7 @@ import { StatsGeneralComponent } from './components/stats-general/stats-general.
     StatsCardOtherComponent,
     StatsBookCountedComponent,
     StatsGeneralComponent,
+    StatsGeneralComponentOther,
   ]
 })
 export class SharedModule { }

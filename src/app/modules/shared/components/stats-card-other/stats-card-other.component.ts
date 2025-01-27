@@ -8,7 +8,6 @@ import { addMonths, format, parseISO, startOfMonth } from 'date-fns';
 import { IStatsFilter } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { DecimalPipe } from '@angular/common';
-import { callback } from 'chart.js/dist/helpers/helpers.core';
 
 @Component({
   selector: 'app-stats-card-other',
@@ -20,6 +19,7 @@ export class StatsCardOtherComponent  implements OnInit {
 
   @ViewChild('changeDateModal', { read: IonModal }) changeDateModal: IonModal | null = null;
   @Input('uid') uid: string | number | null = null;
+  @Input('showHeader') showHeader: boolean = true;
   
   public displayStat: boolean = false;
   public changeDateBehavior: string = 'from';
@@ -103,6 +103,8 @@ export class StatsCardOtherComponent  implements OnInit {
     const effectiveDurations = payload.map((item: any) => {
       return Math.round(parseInt(item.effective_duration) / 60);
     });
+
+    console.log(effectiveDurations)
 
     const totalPages = pages.reduce((acc: any, curr: any) => acc + curr, 0);
     const totalMinutes = minutes.reduce((acc: any, curr: any) => acc + curr, 0);
