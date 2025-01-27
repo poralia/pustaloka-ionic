@@ -1,7 +1,7 @@
 <ng-container *ngIf="stats$ | async as stats">
   @if (stats.statuses == 'success') {
     <div class="block mb-4 ion-padding !pb-0">
-      <div class="bg-white rounded-lg shadow-md p-5">
+      <div class="block">
         <div class="block">
           <ion-text class="text-lg font-semibold" color="purple">Capaian Saya</ion-text>
         </div>
@@ -20,59 +20,71 @@
           </ion-buttons>
         </div>
 
-        <div class="block mt-4">
-          <div class="flex gap-3 items-center py-1">
-            <div class="flex items-center w-8">
-              <ion-icon name="book" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div class="flex gap-3 items-center py-2 px-3 border border-neutral-300 rounded-lg bg-white">
+            <div class="flex-none items-center w-4">
+              <div class="flex items-center h-full">
+                <ion-icon name="book" color="purple" slot="icon-only" class="text-xl"></ion-icon>
+              </div>
             </div>
 
-            <div><ion-text class="textl-lg">Buku Selesai</ion-text></div>
-            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.challenge_done | number }}</ion-text></div>
+            <div class="leading-none"><ion-text class="text-sm !leading-4">Buku Selesai</ion-text></div>
+            <div class="text-base font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.challenge_done | number }}</ion-text></div>
           </div>
 
-          <div class="flex gap-3 items-center py-1">
-            <div class="flex items-center w-8">
-              <ion-icon name="timer" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+          <div class="flex gap-3 items-center py-2 px-3 border border-neutral-300 rounded-lg bg-white">
+            <div class="flex-none items-center w-4">
+              <div class="flex items-center h-full">
+                <ion-icon name="timer" color="purple" slot="icon-only" class="text-xl"></ion-icon>
+              </div>
             </div>
 
-            <div><ion-text class="textl-lg">Total Menit</ion-text></div>
-            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.spending_time) }}</ion-text></div>
+            <div class="leading-none"><ion-text class="text-sm !leading-4">Total Menit</ion-text></div>
+            <div class="text-base font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.spending_time) }}</ion-text></div>
           </div>
 
-          <div class="flex gap-3 items-center py-1">
-            <div class="flex items-center w-8">
-              <ion-icon name="pause" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+          <div class="flex gap-3 items-center py-2 px-3 border border-neutral-300 rounded-lg bg-white">
+            <div class="flex-none items-center w-4">
+              <div class="flex items-center h-full">
+                <ion-icon name="pause" color="purple" slot="icon-only" class="text-xl"></ion-icon>
+              </div>
             </div>
 
-            <div><ion-text class="textl-lg">Jeda Menit</ion-text></div>
-            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.pause_duration) }}</ion-text></div>
+            <div class="leading-none"><ion-text class="text-sm !leading-4">Jeda Menit</ion-text></div>
+            <div class="text-base font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.pause_duration) }}</ion-text></div>
           </div>
 
-          <div class="flex gap-3 items-center py-1">
-            <div class="flex items-center w-8">
-              <ion-icon name="alarm" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+          <div class="flex gap-3 items-center py-2 px-3 border border-neutral-300 rounded-lg bg-white">
+            <div class="flex-none items-center w-4">
+              <div class="flex items-center h-full">
+                <ion-icon name="alarm" color="purple" slot="icon-only" class="text-xl"></ion-icon>
+              </div>
             </div>
 
-            <div><ion-text class="textl-lg">Menit Efektif</ion-text></div>
-            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.spending_time - stats.data.pause_duration) }}</ion-text></div>
+            <div class="leading-none"><ion-text class="text-sm !leading-4">Menit Efektif</ion-text></div>
+            <div class="text-base font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.spending_time - stats.data.pause_duration) }}</ion-text></div>
           </div>
 
-          <div class="flex gap-3 items-center py-1">
-            <div class="flex items-center w-8">
-              <ion-icon name="receipt" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+          <div class="flex gap-3 items-center py-2 px-3 border border-neutral-300 rounded-lg bg-white">
+            <div class="flex-none items-center w-4">
+              <div class="flex items-center h-full">
+                <ion-icon name="receipt" color="purple" slot="icon-only" class="text-xl"></ion-icon>
+              </div>
             </div>
 
-            <div><ion-text class="textl-lg">Halaman Dibaca</ion-text></div>
-            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.total_page | number }}</ion-text></div>
+            <div class="leading-none"><ion-text class="text-sm !leading-4">Halaman</ion-text></div>
+            <div class="text-base font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.total_page | number }}</ion-text></div>
           </div>
 
-          <div class="flex gap-3 items-center py-1">
-            <div class="flex items-center w-8">
-              <ion-icon name="calendar" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+          <div class="flex gap-3 items-center py-2 px-3 border border-neutral-300 rounded-lg bg-white">
+            <div class="flex-none items-center w-4">
+              <div class="flex items-center h-full">
+                <ion-icon name="calendar" color="purple" slot="icon-only" class="text-xl"></ion-icon>
+              </div>
             </div>
 
-            <div><ion-text class="textl-lg">Total Sesi</ion-text></div>
-            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.total_session | number }}</ion-text></div>
+            <div class="leading-none"><ion-text class="text-sm !leading-4">Sesi</ion-text></div>
+            <div class="text-base font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.total_session | number }}</ion-text></div>
           </div>
         </div>
       

@@ -102,8 +102,18 @@ export class StatsCardComponent  implements OnInit {
       return Math.round(parseInt(item.spending_time) / 60);
     });
 
+    const pauseDurations = payload.map((item: any) => {
+      return Math.round(parseInt(item.pause_duration) / 60);
+    });
+
+    const effectiveDurations = payload.map((item: any) => {
+      return Math.round(parseInt(item.effective_duration) / 60);
+    });
+
     const totalPages = pages.reduce((acc: any, curr: any) => acc + curr, 0);
     const totalMinutes = minutes.reduce((acc: any, curr: any) => acc + curr, 0);
+    const totalPauseDurations = pauseDurations.reduce((acc: any, curr: any) => acc + curr, 0);
+    const totalEffectiveDurations = effectiveDurations.reduce((acc: any, curr: any) => acc + curr, 0);
 
     const data = {
       labels: labels,
@@ -114,10 +124,25 @@ export class StatsCardComponent  implements OnInit {
           backgroundColor: ['rgba(255, 99, 132, 0.6)'],
         },
         {
-          label: `${totalMinutes > 0 ? this.decimalPipe.transform(totalMinutes, '1.0') : ''} Menit`,
-          data: minutes,
+          label: `${totalEffectiveDurations > 0 ? this.decimalPipe.transform(totalEffectiveDurations, '1.0') : ''} Menit`,
+          data: effectiveDurations,
           backgroundColor: ['rgba(75, 192, 192, 0.6)'],
         }
+        // {
+        //   label: `${totalMinutes > 0 ? this.decimalPipe.transform(totalMinutes, '1.0') : ''} Menit`,
+        //   data: minutes,
+        //   backgroundColor: ['rgba(75, 192, 192, 0.6)'],
+        // },
+        // {
+        //   label: `${totalPauseDurations > 0 ? this.decimalPipe.transform(totalPauseDurations, '1.0') : ''} Jeda`,
+        //   data: pauseDurations,
+        //   backgroundColor: ['rgba(255, 159, 64, 0.6)'],
+        // },
+        // {
+        //   label: `${totalEffectiveDurations > 0 ? this.decimalPipe.transform(totalEffectiveDurations, '1.0') : ''} Efektif`,
+        //   data: effectiveDurations,
+        //   backgroundColor: ['rgba(153, 102, 255, 0.6'],
+        // }
       ]
     };
 
@@ -127,18 +152,28 @@ export class StatsCardComponent  implements OnInit {
       options: {
         responsive: true,
         maintainAspectRatio: true,
-        legend: {
-          position: 'bottom',
-          display: true,
-        },
         scales: {
           y: {
-            beginAtZero: true
-          }
+            beginAtZero: true,
+            stacked: false,
+          },
+          x: {
+            beginAtZero: true,
+            stacked: false,
+          },
         },
         plugins: {
           legend: {
             position: 'bottom',
+            align: 'center',
+            fullSize: false,
+            labels: {
+              boxWidth: 10,
+              boxHeight: 10,
+            },
+            title: {
+              display: false,
+            }
           },
           tooltip: {
             callbacks: {
