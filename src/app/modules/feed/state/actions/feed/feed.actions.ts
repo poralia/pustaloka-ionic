@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { ICreateActivity, IFilter } from '../../../feed.interfaces';
-import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
+import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
 
 export const FeedActions = createActionGroup({
   source: 'Feed',

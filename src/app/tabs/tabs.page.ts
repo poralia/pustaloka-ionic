@@ -15,11 +15,11 @@ export class TabsPage {
   public me$: Observable<{ data: any, statuses: string }>;
   public showTabs = signal<boolean>(true);
   public hideTabsUrls: string[] = [
-    '/tabs/reading-challenge/new', 
-    '/tabs/reading-challenge/timer',
-    '/tabs/reading-challenge/summary',
-    '/tabs/reading-challenge/book-editor',
-    '/tabs/reading-challenge/challenges',
+    '/tabs/challenge/new', 
+    '/tabs/challenge/timer',
+    '/tabs/challenge/summary',
+    '/tabs/challenge/book-editor',
+    '/tabs/challenge/challenges',
     '/tabs/feed/', 
     '/tabs/search/challenge',
     '/tabs/search/tags',

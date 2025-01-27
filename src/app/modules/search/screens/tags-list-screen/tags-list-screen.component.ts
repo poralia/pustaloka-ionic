@@ -1,7 +1,7 @@
 import { Component, effect, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 import { KeywordSignalService } from '../../services/keyword-signal.service';
 
 @Component({

@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { AuthActions } from '../../actions/auth/auth.actions';
-import { ReadingChallengeActions } from 'src/app/modules/reading-challenge/state/actions/reading-challenge/reading-challenge.actions';
+import { ChallengeActions } from 'src/app/modules/challenge/state/actions/challenge/challenge.actions';
 import { Statuses } from 'src/app/modules/shared/statuses.enum';
-import { reading } from 'src/app/modules/reading-challenge/state/selectors/reading-challenge/reading-challenge.selectors';
+import { reading } from 'src/app/modules/challenge/state/selectors/challenge/challenge.selectors';
 import { InitialState } from '@ngrx/store/src/models';
 
 export const authFeatureKey = 'auth';
@@ -579,7 +579,7 @@ export const AuthReducer = createReducer(
 
 
   // LISTEN FROM CHALLENGE CREATED
-  on(ReadingChallengeActions.createChallengeSuccess, (state, { data }) => {
+  on(ChallengeActions.createChallengeSuccess, (state, { data }) => {
     const prevOnGoing = +state.me.data.reading.count.ongoing;
 
     return {
@@ -704,7 +704,7 @@ export const AuthReducer = createReducer(
 
 
   // LISTEN READING UPDATED
-  on(ReadingChallengeActions.updateReadingSuccess, (state, { data }) => {
+  on(ChallengeActions.updateReadingSuccess, (state, { data }) => {
     const prevDone = +state.me.data.reading.count.done;
     const doneCount = data?.meta?.progress >= 100 ? prevDone + 1 : 0;
     const prevOnGoing = +state.me.data.reading.count.ongoing;

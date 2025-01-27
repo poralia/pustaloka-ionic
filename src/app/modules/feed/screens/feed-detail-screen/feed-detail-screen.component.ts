@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FeedService } from '../../services/feed.service';
 import { Observable } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { differenceInMinutes, intervalToDuration, parseISO } from 'date-fns';
+import { differenceInMinutes, differenceInSeconds, intervalToDuration, parseISO } from 'date-fns';
 import { ActionsSubject } from '@ngrx/store';
-import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 import { ICreateActivity, IFilter } from '../../feed.interfaces';
 import { InfiniteScrollCustomEvent, IonModal } from '@ionic/angular';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -28,7 +28,7 @@ export class FeedDetailScreenComponent  implements OnInit {
   public activity$: Observable<{ data: any, status: string }>;
   public readings$: Observable<{ data: any, status: string }>;
   public comments$: Observable<{ data: any, status: string }>;
-  public duration: string = '-';
+  public duration: number = 0;
   public commentFilter: IFilter = {
     page: 1,
     per_page: 15,
@@ -56,7 +56,7 @@ export class FeedDetailScreenComponent  implements OnInit {
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
         case '[Feed] Retrieve Activity Success':
-          const challegeId = action.data.challenge.ID;
+          const challengeId = action.data.challenge.ID;
           const authorId = action.data.user_id;
           const filter: IPostFilter = {
             author: authorId,
@@ -66,14 +66,14 @@ export class FeedDetailScreenComponent  implements OnInit {
               relation: 'AND',
               0: {
                 key: 'challenge',
-                value: challegeId,
+                value: challengeId,
                 compare: '=',
               }
             }
           }
 
           this.challengeService.getReadings(filter, { action: 'history' });
-          this.getDuration(action.data);
+          this.calculateDuration(action.data);
           break;
         
         case '[Feed] Load More Comments Success':
@@ -100,14 +100,47 @@ export class FeedDetailScreenComponent  implements OnInit {
     this.getComments();
   }
 
-  getDuration(activity: any) {
+  calculateDuration(activity: any) {
     // calculate duration
     this.duration = differenceInMinutes(
       activity.reading.to_datetime,
       activity.reading.from_datetime
-    ) as unknown as string;
+    );
 
     return this.duration;
+  }
+
+  getPausedDuration(activity: any) {
+    const pauseLog = activity?.reading?.pause_log;
+
+    if (pauseLog.length > 0) {
+      return this.getPauseDuration(pauseLog);
+    } else {
+      return 0;
+    }
+  }
+
+  /**
+   * Get duration in seconds convert to minutes
+   */
+  getPauseDuration(pauseLogs: any[]): number {
+    if (pauseLogs.length > 0) {
+      const differences = pauseLogs.map((p: any) => {
+        const fromDatetime = p[1];
+        const toDatetime = p[2];
+        let difference = 0;
+
+        if (fromDatetime && toDatetime) {
+          difference = differenceInSeconds(toDatetime, fromDatetime) / 60;
+        }
+
+        return Math.floor(difference);
+      });
+
+      return differences.reduce((sum: number, current: number) => sum + current, 0);
+    }
+
+    return 0;
   }
 
   getComments() {
@@ -155,7 +188,7 @@ export class FeedDetailScreenComponent  implements OnInit {
   }
 
   editHandler(activity: any) {
-    this.router.navigate(['/tabs/reading-challenge/summary'], { 
+    this.router.navigate(['/tabs/challenge/summary'], { 
       replaceUrl: false,
       queryParams: {
         pid: activity.id,

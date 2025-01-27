@@ -3,8 +3,8 @@ import { AlertController, IonModal } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { ICreateReading, IPostFilter, IUpdateReading } from 'src/app/modules/reading-challenge/reading-challege.interface';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { ICreateReading, IPostFilter, IUpdateReading } from 'src/app/modules/challenge/challenge.interface';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 import Swiper from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -41,7 +41,7 @@ export class ProfileCardComponent  implements OnInit {
     // listen state
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((state: any) => {
       switch (state.type) {
-        case '[ReadingChallenge] Get Readings Success':
+        case '[Challenge] Get Readings Success':
           const action = state?.extra?.action;
 
           if (action === 'check-draft') {
@@ -57,7 +57,7 @@ export class ProfileCardComponent  implements OnInit {
           
           break;
         
-        case '[ReadingChallenge] Get Challenges Success':
+        case '[Challenge] Get Challenges Success':
           let slidesPerView = 1.1;
           if (state.data.length <= 1) {
             slidesPerView = 1;
@@ -212,12 +212,13 @@ export class ProfileCardComponent  implements OnInit {
         to_page: this.challenge.meta.to_page,
         to_datetime: '',
       },
-      extra: {
-        action: 'continue-reading',
-      }
     }
 
-    this.challengeService.updateReading(this.reading.id, payload);
+    const extra = {
+      action: 'continue-reading',
+    }
+
+    this.challengeService.updateReading(this.reading.id, payload, extra);
     this.ionModal?.dismiss();
   }
 

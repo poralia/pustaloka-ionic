@@ -35,12 +35,13 @@
           <div class="grid grid-cols-2 gap-6 mt-2">
             <ion-item 
               lines="none" 
-              class="rounded-lg"
               button="true"
               [ngStyle]="{
-                '--inner-padding-end': '0'
+                '--inner-padding-end': '0',
+                '--border-radius': '8px',
+                '--min-height': '64px'
               }"
-              [routerLink]="['/tabs/reading-challenge/challenges']"
+              [routerLink]="['/tabs/challenge/challenges']"
             >
               <ion-label>
                 <p class="!text-xs line-clamp-1">Selesai dibaca</p>
@@ -51,18 +52,19 @@
             </ion-item>
 
             <ion-item 
-              lines="none" 
-              class="rounded-lg"
+              lines="none"
               button="true"
               [ngStyle]="{
-                '--inner-padding-end': '0'
+                '--inner-padding-end': '0',
+                '--border-radius': '8px',
+                '--min-height': '64px'
               }"
-              [routerLink]="[me.data.reading.count.ongoing > 0 ? '/tabs/reading-challenge/new' : '/tabs/reading-challenge/book-editor']"
+              [routerLink]="[me.data.reading.count.ongoing > 0 ? '/tabs/challenge/new' : '/tabs/challenge/book-editor']"
             >
               <ion-label>
                 <p class="!text-xs line-clamp-1">{{ me.data.reading.count.ongoing > 0 ? 'Sedang dibaca' : 'Bacaan kosong' }}</p>
                 <ion-text 
-                  class="text-xl font-semibold !leading-5"
+                  class="text-xl font-semibold !leading-5 line-clamp-1"
                   [ngClass]="{
                     '!text-sm': me.data.reading.count.ongoing <= 0
                   }"
@@ -149,7 +151,7 @@
             <div class="swiper-slide">
               <ion-item 
                 [lines]="'none'"
-                [routerLink]="['/tabs/reading-challenge/book-editor']"
+                [routerLink]="['/tabs/challenge/book-editor']"
                 button="true"
                 class="ion-no-margin shadow-md bg-white rounded-xl border-0 py-1.5 w-full"
               >

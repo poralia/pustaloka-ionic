@@ -73,9 +73,15 @@
                   </tr>
 
                   <tr>
+                    <td><ion-icon name="pause-circle"></ion-icon></td>
+                    <td class="w-20 align-top"><ion-text>Jeda</ion-text></td>
+                    <td class="line-clamp-1"><ion-text>{{ getPausedDuration(activity.data) }} menit</ion-text></td>
+                  </tr>
+
+                  <tr>
                     <td><ion-icon name="hourglass"></ion-icon></td>
                     <td class="w-20 align-top"><ion-text>Durasi</ion-text></td>
-                    <td class="line-clamp-1"><ion-text>{{ duration }} menit</ion-text></td>
+                    <td class="line-clamp-1"><ion-text>{{ duration > 0 ? duration - getPausedDuration(activity.data) : '0' }} menit</ion-text></td>
                   </tr>
                 </tbody>
               </table>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 
 @Component({
   selector: 'app-challenge-detail-screen',

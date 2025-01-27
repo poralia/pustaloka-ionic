@@ -1,0 +1,55 @@
+<ion-content color="purple">
+  <canvas id="granim-canvas" class="w-screen h-screen z-40 absolute top-0 left-0 right-0 bottom-0"></canvas>
+
+  <ng-container *ngIf="reading$ | async as reading">
+    @if (reading.status === 'success') {
+      <div class="h-full flex flex-col items-center justify-center p-7 relative z-50">
+        <div class="block w-40 ion-margin-bottom">
+          <ion-img [src]="reading.data.meta.book.book_cover"></ion-img>
+        </div>
+
+        <div class="block mb-2">
+          <ion-text class="block text-xl font-semibold ion-text-center" [innerHTML]="reading.data.title.rendered"></ion-text>
+        </div>
+
+        <!-- <div *ngIf="reading.data.meta.book_author.length > 0" class="ion-margin-bottom flex gap-2 flex-wrap">
+          <ion-badge *ngFor="let author of reading.data.meta.book.book_author" class="font-normal" fill="clear" color="purple">{{ author.name }}</ion-badge>
+        </div> -->
+
+        <div class="ion-margin-bottom text-xs font-italic">
+          <ion-text>Sedang membaca... dari halaman {{ fromPage | number }}</ion-text>
+        </div>
+
+        <div class="flex gap-2 text-center text-3xl font-bold ion-margin-bottom">
+          <div>{{ hour }}</div>
+          <div>:</div>
+          <div>{{ minute }}</div>
+          <div>:</div>
+          <div>{{ second }}</div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 ion-margin-top items-center">
+          <ion-button  shape="round" size="large" color="danger" class="!w-14 !h-14" (click)="cancelHandler(reading.data)">
+            <ion-icon slot="icon-only" name="close-outline" size="large"></ion-icon>
+          </ion-button>
+
+          <ion-button shape="round" size="large" color="secondary" class="!w-14 !h-14" (click)="playPauseHandler(reading.data)">
+            <ion-icon 
+              slot="icon-only" 
+              [name]="isPlay() ? 'pause' : 'play'" 
+              class="relative"
+              size="large"
+              [ngClass]="{
+                'left-0.5': !isPlay(),
+              }"
+            ></ion-icon>
+          </ion-button>
+
+          <ion-button shape="round" size="large" color="purple" class="!w-14 !h-14" (click)="finishHandler(reading.data)">
+            <ion-icon slot="icon-only" name="checkmark-outline" size="large"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    }
+  </ng-container>
+</ion-content>

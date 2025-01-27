@@ -1,0 +1,141 @@
+<ion-content color="light-blue" class="ion-padding">
+  <ng-container *ngIf="reading$ | async as reading">
+    <form class="px-2" [formGroup]="formGroup" (ngSubmit)="submitHandler()">
+      <div class="flex ion-margin-bottom items-center">
+        <div class="w-16 flex-none border border-dotted border-purple-900 p-1.5 items-center flex justify-center rounded-lg">
+          <ion-img [src]="cover" class="w-full h-auto"></ion-img>
+        </div>
+
+        <div class="pl-2">
+          <ion-text class="block font-semibold text-xl" [innerHTML]="title"></ion-text>
+        </div>
+      </div>
+
+      <div class="block relative text-sm ion-margin-bottom">
+        <div class="absolute left-[5px] w-1 top-3 bottom-6 border-l-2 border-dashed border-neutral-400"></div>
+
+        <div class="relative pl-6 py-1">
+          <span class="absolute left-0 top-3 h-3 w-3 rounded-full bg-green-600 z-10"></span>
+          <div class="flex items-center">
+            <div class="leading-3">
+              <div class="block mb-1 text-neutral-500 italic">mulai</div>
+              <div class="font-medium">{{ fromDatetime | date: 'd MMM YY HH:mm' }}</div>
+            </div>
+            <div class="ml-auto">
+              <ion-button size="small" fill="outline" shape="round" mode="ios" (click)="dateChangeHandler('from', fromDatetime)">
+                <ion-icon slot="start" name="create"></ion-icon>
+                <ion-text class="ml-1">Ubah</ion-text>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative pl-6 py-1">
+          <span class="absolute left-0 top-3 h-3 w-3 rounded-full bg-rose-600 z-10"></span>
+          <div class="flex items-center">
+            <div class="leading-3">
+              <div class="block mb-1 text-neutral-500 italic">selesai</div>
+              <div class="font-medium">{{ toDatetime | date: 'd MMM YY HH:mm' }}</div>
+            </div>
+            <div class="ml-auto">
+              <ion-button size="small" fill="outline" shape="round" mode="ios" (click)="dateChangeHandler('to', toDatetime)">
+                <ion-icon slot="start" name="create"></ion-icon>
+                <ion-text class="ml-1">Ubah</ion-text>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="reading.status == 'success' && reading.data.meta?.pause_log">
+          <div class="relative pl-6 py-1">
+            <span class="absolute left-0 top-3 h-3 w-3 rounded-full bg-blue-600 z-10"></span>
+            <div class="flex items-center">
+              <div class="leading-3">
+                <div class="block mb-1 text-neutral-500 italic">jeda</div>
+                <div class="font-medium">{{ calculatePauseDuration(reading.data?.meta?.pause_log) }} menit</div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="relative pl-6 py-1">
+            <span class="absolute left-0 top-3 h-3 w-3 rounded-full bg-purple-600 z-10"></span>
+            <div class="flex items-center">
+              <div class="leading-3">
+                <div class="block mb-1 text-neutral-500 italic">durasi</div>
+                <div class="font-medium">{{ duration > 0 ? (duration - calculatePauseDuration(reading.data?.meta?.pause_log)) : '0' }} menit</div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">
+          <ion-input type="tel" formControlName="fromPage" label="Dari halaman..." labelPlacement="floating" placeholder="123"></ion-input>
+        </ion-item>
+
+        <ion-item fill="outline" class="ion-margin-bottom ion-item-input" lines="none">
+          <ion-input type="tel" formControlName="toPage" label="Sampai halaman..." labelPlacement="floating" placeholder="135"></ion-input>
+        </ion-item>
+      </div>
+
+      <ion-item fill="outline" class="ion-item-input ion-margin-bottom" lines="none">
+        <ion-textarea 
+          label="Kesimpulan"
+          placeholder="Poin penting setelah kamu membacanya?" 
+          rows="3" 
+          labelPlacement="floating" 
+          autoGrow="true"
+          formControlName="content"
+        ></ion-textarea>
+      </ion-item>
+
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-chip-grid #chipGrid aria-label="Enter tags">
+          @for (fruit of tags(); track fruit) {
+            <mat-chip-row
+              (removed)="remove(fruit)"
+              [editable]="true"
+              (edited)="edit(fruit, $event)"
+              [aria-description]="'press enter to edit ' + fruit.label"
+            >
+              {{fruit.label}}
+              <button matChipRemove [attr.aria-label]="'remove ' + fruit.label">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+          <input
+            placeholder="Topik (contoh: sains, psikologi)"
+            [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)"
+          />
+        </mat-chip-grid>
+      </mat-form-field>
+
+      <div class="ion-padding-top">
+        <ion-button shape="round" color="purple" expand="block" mode="ios" type="submit" [disabled]="formGroup.invalid">
+          Simpan dan Bagikan
+        </ion-button>
+      </div>
+    </form>
+  </ng-container>
+</ion-content>
+
+<ion-modal #changeDateModal class="changeDateModal">
+  <ng-template>
+    <div class="ion-padding flex items-center">
+      <ion-buttons>
+        <ion-button (click)="closeChangeDateHandler()" size="small">
+          <ion-icon name="close" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <div class="pl-3 text-lg">{{ changeDateBehavior == 'from' ? 'Baca dari kapan?' : 'Sampai kapan?' }}</div>
+    </div>
+    <ion-datetime class="w-full mb-3" size="cover" locale="id-ID" hourCycle="h24" [value]="selectedDatetime" (ionChange)="dateChangedHandler($event)"></ion-datetime>
+    <ion-button expand="block" color="purple" mode="ios" shape="round" class="mb-4 ion-margin-start ion-margin-end" (click)="confirmHandler()">Terapkan</ion-button>
+  </ng-template>
+</ion-modal>

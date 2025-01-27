@@ -1,7 +1,7 @@
 import { Component, effect, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 import { KeywordSignalService } from '../../services/keyword-signal.service';
 import { InfiniteScrollCustomEvent, IonInfiniteScroll } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
@@ -49,10 +49,10 @@ export class ChallengeListScreenComponent  implements OnInit {
     // listen state
     this.actionSubject$.pipe(takeUntilDestroyed()).subscribe(action => {
       switch (action.type) {
-        case '[ReadingChallenge] Load More Other Challenges Success':
+        case '[Challenge] Load More Other Challenges Success':
           if (this.infiniteEvent) this.infiniteEvent.target.complete();
           break;
-        case '[ReadingChallenge] Load More Other Challenges Failure':
+        case '[Challenge] Load More Other Challenges Failure':
           this.loadMoreEnabled = false;
           if (this.infiniteEvent) this.infiniteEvent.target.complete();
           break;

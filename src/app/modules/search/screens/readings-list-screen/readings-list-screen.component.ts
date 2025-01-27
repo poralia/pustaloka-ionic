@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 import { intervalToDuration, parseISO } from 'date-fns';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
@@ -37,10 +37,10 @@ export class ReadingsListScreenComponent  implements OnInit {
     // listen state
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe(action => {
       switch (action.type) {
-        case '[ReadingChallenge] Load More Readings Success':
+        case '[Challenge] Load More Readings Success':
           if (this.infiniteEvent) this.infiniteEvent.target.complete();
           break;
-        case '[ReadingChallenge] Load More Readings Failure':
+        case '[Challenge] Load More Readings Failure':
           this.loadMoreEnabled = false;
           if (this.infiniteEvent) this.infiniteEvent.target.complete();
           break;

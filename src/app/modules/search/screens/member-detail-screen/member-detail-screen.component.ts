@@ -6,8 +6,8 @@ import { ActionsSubject } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { IFriendshipRequest } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 import { StatsCardOtherComponent } from 'src/app/modules/shared/components/stats-card-other/stats-card-other.component';
 
 @Component({
@@ -43,11 +43,11 @@ export class MemberDetailScreenComponent  implements OnInit {
     // listen state
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe(action => {
       switch (action.type) {
-        case '[ReadingChallenge] Load More Readings Challenges':
+        case '[Challenge] Load More Readings Challenges':
           this.loadMoreEnabled = true;
           this.infiniteEvent?.target?.complete();
           break;
-        case '[ReadingChallenge] Load More Readings Failure':
+        case '[Challenge] Load More Readings Failure':
           this.loadMoreEnabled = false;
           this.infiniteEvent?.target?.complete();
           break;

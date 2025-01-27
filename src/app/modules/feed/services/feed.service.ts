@@ -5,7 +5,7 @@ import { FeedActions } from '../state/actions/feed/feed.actions';
 import { Observable } from 'rxjs';
 import * as FeedSelectors from '../state/selectors/feed/feed.selectors';
 import { ICreateActivity, IFilter } from '../feed.interfaces';
-import { IPostFilter } from '../../reading-challenge/reading-challege.interface';
+import { IPostFilter } from '../../challenge/challenge.interface';
 
 @Injectable({
   providedIn: 'root'

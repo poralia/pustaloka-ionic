@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FeedService } from '../../services/feed.service';
-import { IPostFilter } from 'src/app/modules/reading-challenge/reading-challege.interface';
+import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { Observable } from 'rxjs';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 
 @Component({
   selector: 'app-history-screen',

@@ -6,9 +6,9 @@ import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProfileCardComponent } from 'src/app/modules/shared/components/profile-card/profile-card.component';
-import { ChallengeService } from 'src/app/modules/reading-challenge/services/challenge.service';
+import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { IPostFilter, IUpdateReading } from 'src/app/modules/reading-challenge/reading-challege.interface';
+import { IPostFilter, IUpdateReading } from 'src/app/modules/challenge/challenge.interface';
 import { TZDate } from '@date-fns/tz';
 
 @Component({
@@ -24,7 +24,7 @@ export class FeedListScreenComponent  implements OnInit {
   public activities$: Observable<{ data: any, status: string }>;
   public drafts$: Observable<{ data: any, status: string }>;
   public filter: IFilter = {
-    type: ['post_reading'],
+    type: ['post_reading', 'post_review'],
     component: 'activity',
     page: 1,
     per_page: 25,
@@ -122,12 +122,13 @@ export class FeedListScreenComponent  implements OnInit {
         to_page: reading.meta.to_page,
         to_datetime: '',
       },
-      extra: {
-        action: 'continue-reading',
-      }
+    }
+    
+    const extra = {
+      action: 'continue-reading',
     }
 
-    this.challengeService.updateReading(reading.id, payload);
+    this.challengeService.updateReading(reading.id, payload, extra);
   }
 
 }

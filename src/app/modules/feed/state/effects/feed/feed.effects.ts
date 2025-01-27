@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeedActions } from '../../actions/feed/feed.actions';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { HttpService } from '../../../services/http.service';
-import { HttpService as ChallengeHttpService } from 'src/app/modules/reading-challenge/services/http.service';
+import { HttpService as ChallengeHttpService } from 'src/app/modules/challenge/services/http.service';
 import { ToastController } from '@ionic/angular';
 
 

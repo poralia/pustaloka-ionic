@@ -14,8 +14,8 @@ const routes: Routes = [
         loadChildren: () => import('./screens/feed/feed.module').then(m => m.FeedPageModule)
       },
       {
-        path: 'reading-challenge',
-        loadChildren: () => import('./screens/reading-challenge/reading-challenge.module').then(m => m.ReadingChallengePageModule)
+        path: 'challenge',
+        loadChildren: () => import('./screens/challenge/challenge.module').then(m => m.ChallengePageModule)
       },
       {
         path: 'search',
