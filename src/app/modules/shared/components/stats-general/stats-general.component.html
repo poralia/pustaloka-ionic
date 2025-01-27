@@ -35,8 +35,26 @@
               <ion-icon name="timer" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
             </div>
 
-            <div><ion-text class="textl-lg">Menit Digunakan</ion-text></div>
+            <div><ion-text class="textl-lg">Total Menit</ion-text></div>
             <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.spending_time) }}</ion-text></div>
+          </div>
+
+          <div class="flex gap-3 items-center py-1">
+            <div class="flex items-center w-8">
+              <ion-icon name="pause" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+            </div>
+
+            <div><ion-text class="textl-lg">Jeda Menit</ion-text></div>
+            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.pause_duration) }}</ion-text></div>
+          </div>
+
+          <div class="flex gap-3 items-center py-1">
+            <div class="flex items-center w-8">
+              <ion-icon name="alarm" color="purple" slot="icon-only" class="text-2xl"></ion-icon>
+            </div>
+
+            <div><ion-text class="textl-lg">Menit Efektif</ion-text></div>
+            <div class="text-2xl font-bold pl-3 ml-auto text-right"><ion-text>{{ getMinutesFromSeconds(stats.data.spending_time - stats.data.pause_duration) }}</ion-text></div>
           </div>
 
           <div class="flex gap-3 items-center py-1">
