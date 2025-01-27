@@ -87,5 +87,9 @@ export const AuthActions = createActionGroup({
     'Get General Stats': props<{ filter: IStatsFilter, extra?: any }>(),
     'Get General Stats Success': props<{ data: any, filter: IStatsFilter, extra?: any }>(),
     'Get General Stats Failure': props<{ error: HttpErrorResponse, filter: IStatsFilter, extra?: any }>(),
+
+    'Get Other General Stats': props<{ filter: IStatsFilter, extra?: any }>(),
+    'Get Other General Stats Success': props<{ data: any, filter: IStatsFilter, extra?: any }>(),
+    'Get Other General Stats Failure': props<{ error: HttpErrorResponse, filter: IStatsFilter, extra?: any }>(),
   }
 });

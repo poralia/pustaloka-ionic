@@ -305,4 +305,18 @@ export class AuthService {
     return this.store.pipe(select(AuthSelectors.generalStats));
   }
 
+  /**
+   * Get other general stats
+   */
+  getOtherGeneralStats(filter: IStatsFilter, extra?: any) {
+    this.store.dispatch(AuthActions.getOtherGeneralStats({ filter: filter, extra: extra }));
+  }
+
+  /**
+   * Select general stats
+   */
+  selectOtherGeneralStats(): Observable<any> {
+    return this.store.pipe(select(AuthSelectors.otherGeneralStats));
+  }
+
 }

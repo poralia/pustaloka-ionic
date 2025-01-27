@@ -87,3 +87,10 @@ export const generalStats = createSelector(
         return state.stats.general;
     },
 );
+
+export const otherGeneralStats = createSelector(
+    authSelectFeature,
+    (state: AuthState) => {
+        return state.stats.generalOther;
+    },
+);

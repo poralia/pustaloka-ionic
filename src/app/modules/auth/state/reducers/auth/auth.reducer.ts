@@ -93,6 +93,11 @@ export interface AuthState {
       data: any
       statuses: string
       error: any | null
+    },
+    generalOther: {
+      data: any
+      statuses: string
+      error: any | null
     }
   },
 }
@@ -180,6 +185,11 @@ export const initialState: AuthState = {
       error: null,
     },
     general: {
+      data: null,
+      statuses: Statuses.IDLE,
+      error: null,
+    },
+    generalOther: {
       data: null,
       statuses: Statuses.IDLE,
       error: null,
@@ -945,6 +955,69 @@ export const AuthReducer = createReducer(
           ...state.stats,
           general: {
             ...state.stats.general,
+            statuses: Statuses.FAILURE,
+            error: error,
+          }
+        }
+      }
+    }
+
+    return { ...state }
+  }),
+
+
+  // ...
+  // GET OTHERS GENERAL STATS
+  // ...
+  on(AuthActions.getOtherGeneralStats, (state, { filter }) => {
+    const view = filter.view;
+
+    if (view === 'general') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          generalOther: {
+            ...state.stats.generalOther,
+            statuses: Statuses.LOADING,
+            error: null,
+          }
+        }
+      }
+    }
+
+    return { ...state }
+  }),
+  on(AuthActions.getOtherGeneralStatsSuccess, (state, { data, filter }) => {
+    const view = filter.view;
+
+    if (view === 'general') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          generalOther: {
+            ...state.stats.generalOther,
+            data: data,
+            statuses: Statuses.SUCCESS,
+            error: null,
+          }
+        }
+      }
+    }
+    
+    return { ...state }
+  }),
+  on(AuthActions.getOtherGeneralStatsFailure, (state, { error, filter }) => {
+    const view = filter.view;
+
+    if (view === 'general') {
+      return {
+        ...state,
+        stats: {
+          ...state.stats,
+          generalOther: {
+            ...state.stats.generalOther,
             statuses: Statuses.FAILURE,
             error: error,
           }

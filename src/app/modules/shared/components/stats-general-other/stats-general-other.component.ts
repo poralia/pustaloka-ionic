@@ -42,12 +42,11 @@ export class StatsGeneralComponentOther  implements OnInit {
     private actionsSubject$: ActionsSubject,
     private decimalPipe: DecimalPipe,
   ) { 
-    this.stats$ = this.authService.selectGeneralStats();
+    this.stats$ = this.authService.selectOtherGeneralStats();
 
     this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
-        case '[Auth] Get General Stats Success':
-          
+        case '[Auth] Get Other General Stats Success':
           break;
       }
     });
@@ -63,7 +62,7 @@ export class StatsGeneralComponentOther  implements OnInit {
       uid: this.uid as string,
     }
 
-    this.authService.getGeneralStats(this.filter, { target: 'self' });
+    this.authService.getOtherGeneralStats(this.filter, { target: 'other' });
   }
 
   dateChangeHandler(behavior: string, date: any) {

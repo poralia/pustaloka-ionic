@@ -104,8 +104,6 @@ export class StatsCardOtherComponent  implements OnInit {
       return Math.round(parseInt(item.effective_duration) / 60);
     });
 
-    console.log(effectiveDurations)
-
     const totalPages = pages.reduce((acc: any, curr: any) => acc + curr, 0);
     const totalMinutes = minutes.reduce((acc: any, curr: any) => acc + curr, 0);
     const totalPauseDurations = pauseDurations.reduce((acc: any, curr: any) => acc + curr, 0);

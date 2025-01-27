@@ -786,4 +786,43 @@ export class AuthEffects {
     ), { dispatch: false }
   )
 
+
+  // ...
+  // GET OTHER GENERAL STATS
+  // ...
+  getOtherGeneralStats$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getOtherGeneralStats),
+      exhaustMap(action => {
+        return this.httpService.getStats(action.filter).pipe(
+          map(res => {
+            return AuthActions.getOtherGeneralStatsSuccess({ data: res, filter: action.filter, extra: action.extra });
+          }),
+          catchError(error => of(AuthActions.getOtherGeneralStatsFailure({ error: error, filter: action.filter, extra: action.extra }))),
+        )
+      })
+    )
+  )
+
+  getOtherGeneralStatsSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getOtherGeneralStatsSuccess),
+      tap(({ data }) => {
+        console.log(data);
+      })
+    ), { dispatch: false }
+  )
+
+  getOtherGeneralStatsFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.getOtherGeneralStatsFailure),
+      tap(({ error }) => {
+        console.log(error);
+        const message = error.error.message;
+        this.presentToast(message);
+
+      })
+    ), { dispatch: false }
+  )
+
 }
