@@ -2,7 +2,7 @@
   @if (stats.statuses == 'success') {
     <div class="block mb-4 ion-padding !pb-0">
       <div class="block">
-        <div class="block">
+        <div *ngIf="!uid" class="block">
           <ion-text class="text-lg font-semibold" color="purple">Capaian Saya</ion-text>
         </div>
 

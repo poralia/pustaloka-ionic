@@ -11,6 +11,13 @@ export const activities = createSelector(
     }
 );
 
+export const otherActivities = createSelector(
+    feedSelectFeature,
+    (state: FeedState) => {
+        return state.otherActivities;
+    }
+);
+
 export const activity = (pid: number) => createSelector(
     feedSelectFeature,
     (state: FeedState) => {

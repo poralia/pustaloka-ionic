@@ -25,6 +25,7 @@ export class FeedDetailScreenComponent  implements OnInit {
 
   public pid: string | null = this.route.snapshot.paramMap.get('pid');
   public toComment: string | null = this.route.snapshot.queryParamMap.get('toComment');
+  public previousPage: string | null = this.route.snapshot.queryParamMap.get('previousPage');
   public activity$: Observable<{ data: any, status: string }>;
   public readings$: Observable<{ data: any, status: string }>;
   public comments$: Observable<{ data: any, status: string }>;

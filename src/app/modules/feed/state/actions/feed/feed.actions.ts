@@ -13,6 +13,14 @@ export const FeedActions = createActionGroup({
     'Load More Activities': props<{ filter: IFilter }>(),
     'Load More Activities Success': props<{ data: any, filter: IFilter }>(),
     'Load More Activities Failure': props<{ error: HttpErrorResponse, filter: IFilter }>(),
+
+    'Load Other Activities': props<{ filter: IFilter }>(),
+    'Load Other Activities Success': props<{ data: any, filter: IFilter }>(),
+    'Load Other Activities Failure': props<{ error: HttpErrorResponse, filter: IFilter }>(),
+
+    'Load More Other Activities': props<{ filter: IFilter }>(),
+    'Load More Other Activities Success': props<{ data: any, filter: IFilter }>(),
+    'Load More Other Activities Failure': props<{ error: HttpErrorResponse, filter: IFilter }>(),
     
     'Retrieve Activity': props<{ pid: number }>(),
     'Retrieve Activity Success': props<{ data: any, pid: number }>(),

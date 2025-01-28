@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="light-blue">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/search" icon="return-up-back-outline"></ion-back-button>
+      <ion-back-button icon="return-up-back-outline"></ion-back-button>
     </ion-buttons>
 
     <ng-container *ngIf="member$ | async as member">
@@ -37,10 +37,10 @@
 
   <app-stats-general-other [uid]="uid"></app-stats-general-other>
 
-  <ng-container *ngIf="readings$ | async as readings">
-    @if (readings.status == 'success') {
-      @for (item of readings.data; track item.id) {
-        <app-reading-item [item]="item" [currentUserId]="uid"></app-reading-item>
+  <ng-container *ngIf="activities$ | async as activities">
+    @if (activities.status == 'success') {
+      @for (item of activities.data; track item.id) {
+        <app-feed-item [props]="{'item': item, 'showProfile': false }"></app-feed-item>
       }
 
       <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="!loadMoreEnabled">

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { intervalToDuration, parseISO } from 'date-fns';
+import { differenceInMinutes, intervalToDuration, parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-reading-item',
@@ -17,21 +17,14 @@ export class ReadingItemComponent  implements OnInit {
   ngOnInit() {}
 
   getDuration(item: any) {
-    let duration: any;
-
-    // calculate duration
     if (item.meta?.from_datetime) {
-      const { hours, minutes, seconds } = intervalToDuration({
-        start: parseISO(item.meta?.from_datetime),
-        end: parseISO(item.meta?.to_datetime),
-      });
-
-      if (hours) duration = `${hours} jam ${minutes} menit ${seconds} detik`;
-      if (minutes) duration = `${minutes} menit ${seconds} detik`;
-      if (seconds) duration = `${seconds} detik`;
+      return differenceInMinutes(
+        item.meta?.to_datetime,
+        item.meta?.from_datetime
+      );
     }
 
-    return duration;
+    return 0;
   }
 
 }

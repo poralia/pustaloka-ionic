@@ -7,6 +7,7 @@ export interface IFilter {
     display_comments?: string
     primary_id?: number
     secondary_id?: number
+    user_id?: number
 }
 
 export interface ICreateActivity {

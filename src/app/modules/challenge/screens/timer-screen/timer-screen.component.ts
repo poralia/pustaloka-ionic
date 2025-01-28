@@ -150,6 +150,9 @@ export class TimerScreenComponent  implements OnInit {
           text: 'YA',
           role: 'confirm',
           handler: () => {
+            const toDatetime = new TZDate(new Date(), "Asia/Jakarta").toISOString();
+            const lastLog = this.pauseLogs()[this.pauseLogs()?.length - 1];
+
             this.resetStopwatch();
             this.router.navigate(['/tabs/challenge/summary'], { 
               replaceUrl: true,
@@ -158,7 +161,7 @@ export class TimerScreenComponent  implements OnInit {
                 title: reading.title.rendered,
                 bookCover: reading.meta.book.book_cover,
                 fromDatetime: reading.meta.from_datetime,
-                toDatetime: new TZDate(new Date(), "Asia/Jakarta").toISOString(),
+                toDatetime: this.isPlay() ? toDatetime : lastLog?.from_datetime, // use last log
                 fromPage: reading.meta.from_page,
               }
             });

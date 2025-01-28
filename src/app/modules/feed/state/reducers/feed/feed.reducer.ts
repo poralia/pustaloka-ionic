@@ -10,6 +10,11 @@ export interface FeedState {
     status: string
     error: any
   },
+  otherActivities: {
+    data: any
+    status: string
+    error: any
+  },
   activity: {
     data: any
     status: string
@@ -29,6 +34,11 @@ export interface FeedState {
 
 export const initialState: FeedState = {
   activities: {
+    data: null,
+    status: Statuses.IDLE,
+    error: null,
+  },
+  otherActivities: {
     data: null,
     status: Statuses.IDLE,
     error: null,
@@ -119,6 +129,79 @@ export const FeedReducer = createReducer(
       ...state,
       activities: {
         ...state.activities,
+        error: error,
+        status: Statuses.FAILURE,
+      }
+    }
+  }),
+
+
+  // ...
+  // OTHER ACTIVITIES LIST
+  // ...
+  on(FeedActions.loadOtherActivities, (state) => {
+    return {
+      ...state,
+      otherActivities: {
+        ...state.otherActivities,
+        status: Statuses.LOADING,
+        error: null,
+      }
+    }
+  }),
+  on(FeedActions.loadOtherActivitiesSuccess, (state, { data }) => {
+    return {
+      ...state,
+      otherActivities: {
+        ...state.otherActivities,
+        data: data,
+        status: Statuses.SUCCESS,
+        error: null,
+      }
+    }
+  }),
+  on(FeedActions.loadOtherActivitiesFailure, (state, { error }) => {
+    return {
+      ...state,
+      otherActivities: {
+        ...state.otherActivities,
+        error: error,
+        status: Statuses.FAILURE,
+      }
+    }
+  }),
+
+
+  // ...
+  // LOAD MORE OTHER ACTIVITIES
+  // ...
+  on(FeedActions.loadMoreOtherActivities, (state) => {
+    return {
+      ...state,
+      otherActivities: {
+        ...state.otherActivities,
+        error: null,
+      }
+    }
+  }),
+  on(FeedActions.loadMoreOtherActivitiesSuccess, (state, { data }) => {
+    return {
+      ...state,
+      otherActivities: {
+        ...state.otherActivities,
+        data: [
+          ...state.otherActivities.data,
+          ...data
+        ],
+        error: null,
+      }
+    }
+  }),
+  on(FeedActions.loadMoreOtherActivitiesFailure, (state, { error }) => {
+    return {
+      ...state,
+      otherActivities: {
+        ...state.otherActivities,
         error: error,
         status: Statuses.FAILURE,
       }

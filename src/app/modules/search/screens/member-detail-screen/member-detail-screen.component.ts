@@ -8,6 +8,8 @@ import { IFriendshipRequest } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
 import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
+import { IFilter } from 'src/app/modules/feed/feed.interfaces';
+import { FeedService } from 'src/app/modules/feed/services/feed.service';
 import { StatsCardOtherComponent } from 'src/app/modules/shared/components/stats-card-other/stats-card-other.component';
 
 @Component({
@@ -21,33 +23,41 @@ export class MemberDetailScreenComponent  implements OnInit {
   @ViewChild(StatsCardOtherComponent) otherCardComponent: StatsCardOtherComponent | null = null;
 
   public member$: Observable<{ data: any, statuses: string }>;
-  public readings$: Observable<{ data: any, status: string }>;
+  public activities$: Observable<{ data: any, status: string }>;
   public uid: string | null = this.route.snapshot.paramMap.get('uid');
-  public filter: IPostFilter = {
-    author: this.uid as unknown as string,
-    page: 1,
-    per_page: 25,
-  }
+  public filter: IFilter = {
+      type: ['post_reading', 'post_review'],
+      component: 'activity',
+      page: 1,
+      per_page: 25,
+      scope: '',
+      display_comments: '',
+      user_id: this.uid as unknown as number,
+    }
   private infiniteEvent: InfiniteScrollCustomEvent | null = null;
   public loadMoreEnabled: boolean = true;
 
   constructor(
     private authService: AuthService,
-    private challengeService: ChallengeService,
+    private feedService: FeedService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
   ) { 
     this.member$ = this.authService.selectMember();
-    this.readings$ = this.challengeService.selectReadings();
+    this.activities$ = this.feedService.selectOtherActivities();
 
     // listen state
-    this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe(action => {
+    this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
-        case '[Challenge] Load More Readings Challenges':
-          this.loadMoreEnabled = true;
+        case '[Feed] Load More Other Activities Success':
+          if (action?.data?.length > 0) {
+            this.loadMoreEnabled = true;
+          } else {
+            this.loadMoreEnabled = false;
+          }
           this.infiniteEvent?.target?.complete();
           break;
-        case '[Challenge] Load More Readings Failure':
+        case '[Feed] Load More Other Activities Failure':
           this.loadMoreEnabled = false;
           this.infiniteEvent?.target?.complete();
           break;
@@ -57,7 +67,11 @@ export class MemberDetailScreenComponent  implements OnInit {
 
   ngOnInit() {
     this.authService.retrieveMember(this.uid as unknown as string);
-    this.challengeService.getReadings(this.filter);
+    this.filter = {
+      ...this.filter,
+      user_id: this.uid as unknown as number,
+    }
+    this.feedService.loadOtherActivities(this.filter);
   }
 
   onIonInfinite(ev: any) {
@@ -67,7 +81,7 @@ export class MemberDetailScreenComponent  implements OnInit {
       page: this.filter.page ? this.filter.page + 1 : 1,
     }
 
-    this.challengeService.loadMoreReadings(this.filter);
+    this.feedService.loadMoreOtherActivities(this.filter);
     this.infiniteEvent = (ev as InfiniteScrollCustomEvent);
   }
 

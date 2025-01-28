@@ -1,5 +1,5 @@
 <div>
   @for (item of items; track item.id) {
-    <app-feed-item [props]="{'item': item}"></app-feed-item>
+    <app-feed-item [props]="{'item': item, 'showProfile': true}"></app-feed-item>
   }
 </div>

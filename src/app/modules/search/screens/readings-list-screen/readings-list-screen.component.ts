@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { IPostFilter } from 'src/app/modules/challenge/challenge.interface';
 import { ChallengeService } from 'src/app/modules/challenge/services/challenge.service';
-import { intervalToDuration, parseISO } from 'date-fns';
+import { differenceInMinutes, intervalToDuration, parseISO } from 'date-fns';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -58,21 +58,14 @@ export class ReadingsListScreenComponent  implements OnInit {
   }
 
   getDuration(item: any) {
-    let duration: any;
-
-    // calculate duration
     if (item.meta?.from_datetime) {
-      const { hours, minutes, seconds } = intervalToDuration({
-        start: parseISO(item.meta?.from_datetime),
-        end: parseISO(item.meta?.to_datetime),
-      });
-
-      if (hours) duration = `${hours} jam ${minutes} menit ${seconds} detik`;
-      if (minutes) duration = `${minutes} menit ${seconds} detik`;
-      if (seconds) duration = `${seconds} detik`;
+      return differenceInMinutes(
+        item.meta?.to_datetime,
+        item.meta?.from_datetime
+      );
     }
 
-    return duration;
+    return 0;
   }
 
   onIonInfinite(ev: any) {

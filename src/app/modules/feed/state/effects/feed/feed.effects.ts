@@ -102,6 +102,74 @@ export class FeedEffects {
 
 
   // ...
+  // OTHER ACTIVITIES LIST
+  // ...
+  loadOtherActivities$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.loadOtherActivities),
+      mergeMap(action => 
+        this.httpService.loadActivities(action.filter).pipe(
+          map(res => FeedActions.loadOtherActivitiesSuccess({ data: res, filter: action.filter })),
+          catchError(error => of(FeedActions.loadOtherActivitiesFailure({ error: error, filter: action.filter }))),
+        )
+      )
+    )
+  )
+
+  loadOtherActivitiesSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.loadOtherActivitiesSuccess),
+      tap(({ data }) => {
+        console.log(data);
+      }),
+    ), { dispatch: false }
+  )
+
+  loadOtherActivitiesFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.loadOtherActivitiesFailure),
+      tap(({ error }) => {
+        console.log(error);
+      }),
+    ), { dispatch: false }
+  )
+
+
+  // ...
+  // LOAD MORE OTHER ACTIVITIES
+  // ...
+  loadMoreOtherActivities$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.loadMoreOtherActivities),
+      mergeMap(action => 
+        this.httpService.loadActivities(action.filter).pipe(
+          map(res => FeedActions.loadMoreOtherActivitiesSuccess({ data: res, filter: action.filter })),
+          catchError(error => of(FeedActions.loadMoreOtherActivitiesFailure({ error: error, filter: action.filter }))),
+        )
+      )
+    )
+  )
+
+  loadMoreOtherActivitiesSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.loadMoreOtherActivitiesSuccess),
+      tap(({ data }) => {
+        console.log(data);
+      }),
+    ), { dispatch: false }
+  )
+
+  loadMoreOtherActivitiesFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.loadMoreOtherActivitiesFailure),
+      tap(({ error }) => {
+        console.log(error);
+      }),
+    ), { dispatch: false }
+  )
+
+
+  // ...
   // RETRIEVE ACTIVITY
   // ...
   retrieveActivity$ = createEffect(() =>

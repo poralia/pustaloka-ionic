@@ -24,10 +24,24 @@ export class FeedService {
   }
 
   /**
+   * Load other activities
+   */
+  loadOtherActivities(filter: IFilter): void {
+    this.store.dispatch(FeedActions.loadOtherActivities({ filter: filter }));
+  }
+
+  /**
    * Load more activities
    */
   loadMoreActivities(filter: IFilter): void {
     this.store.dispatch(FeedActions.loadMoreActivities({ filter: filter }));
+  }
+
+  /**
+   * Load more other activities
+   */
+  loadMoreOtherActivities(filter: IFilter): void {
+    this.store.dispatch(FeedActions.loadMoreOtherActivities({ filter: filter }));
   }
 
   /**
@@ -42,6 +56,13 @@ export class FeedService {
    */
   selectActivities(): Observable<any> {
     return this.store.pipe(select(FeedSelectors.activities));
+  }
+
+  /**
+   * Select other activities
+   */
+  selectOtherActivities(): Observable<any> {
+    return this.store.pipe(select(FeedSelectors.otherActivities));
   }
 
   /**

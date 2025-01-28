@@ -14,7 +14,11 @@ export class FeedItemComponent  implements OnInit {
 
   @Input('props') props: {
     item: any,
-  } | any = {}
+    showProfile?: boolean
+  } = {
+    item: null,
+    showProfile: true,
+  }
 
   constructor(
     private router: Router,
@@ -77,6 +81,7 @@ export class FeedItemComponent  implements OnInit {
 
     this.router.navigate(['/tabs/feed', item.id], { queryParams: {
       toComment: toComment,
+      previousPage: !this.props?.showProfile ? 'profile' : null,
     }});
   }
 

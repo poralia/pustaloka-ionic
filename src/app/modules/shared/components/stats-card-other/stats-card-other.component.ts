@@ -93,15 +93,15 @@ export class StatsCardOtherComponent  implements OnInit {
     });
 
     const minutes = payload.map((item: any) => {
-      return Math.round(parseInt(item.spending_time) / 60);
+      return Math.floor(parseInt(item.spending_time) / 60);
     });
 
     const pauseDurations = payload.map((item: any) => {
-      return Math.round(parseInt(item.pause_duration) / 60);
+      return Math.floor(parseInt(item.pause_duration) / 60);
     });
 
     const effectiveDurations = payload.map((item: any) => {
-      return Math.round(parseInt(item.effective_duration) / 60);
+      return Math.floor(parseInt(item.effective_duration) / 60);
     });
 
     const totalPages = pages.reduce((acc: any, curr: any) => acc + curr, 0);

@@ -109,7 +109,7 @@ export class StatsGeneralComponent  implements OnInit {
   }
 
   getMinutesFromSeconds(seconds: any) {
-    const sec = Math.round(parseInt(seconds) / 60);
+    const sec = Math.floor(parseInt(seconds) / 60);
     return sec > 0 ? this.decimalPipe.transform(sec, '1.0') : 0;
   }
 

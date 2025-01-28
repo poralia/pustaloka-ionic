@@ -8,7 +8,7 @@
   }"
 >
   <ion-card-content class="pt-3">
-    <ion-item lines="none" class="ion-no-padding mb-2.5" [ngStyle]="{'--background': 'none'}">
+    <ion-item *ngIf="props.showProfile" lines="none" class="ion-no-padding mb-2.5" [ngStyle]="{'--background': 'none'}">
       <ion-avatar slot="start" class="w-11 h-11">
         <ion-img [src]="props.item.user_avatar?.thumb"></ion-img>
       </ion-avatar>
