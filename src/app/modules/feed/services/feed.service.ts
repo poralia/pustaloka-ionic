@@ -114,4 +114,11 @@ export class FeedService {
     this.store.dispatch(FeedActions.postComment({ data: data }));
   }
 
+  /**
+   * Mark activity as favorite / un-favorite
+   */
+  favorite(pid: number | string) {
+    this.store.dispatch(FeedActions.markFavorite({ pid: pid }));
+  }
+
 }

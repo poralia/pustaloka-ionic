@@ -61,6 +61,7 @@
               <ion-select-option value="">Semua</ion-select-option>
               <ion-select-option value="friends">Teman</ion-select-option>
               <ion-select-option value="just-me">Hanya Saya</ion-select-option>
+              <ion-select-option value="favorites">Favorit</ion-select-option>
             </ion-select>
           </ion-item>
       </div>
@@ -71,7 +72,7 @@
         }
       </div>
 
-      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="loadMoreDisabled">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
       </ion-infinite-scroll>
     }

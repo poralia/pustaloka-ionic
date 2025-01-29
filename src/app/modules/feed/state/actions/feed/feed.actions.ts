@@ -41,5 +41,9 @@ export const FeedActions = createActionGroup({
     'Post Comment': props<{ data: ICreateActivity }>(),
     'Post Comment Success': props<{ data: any }>(),
     'Post Comment Failure': props<{ error: HttpErrorResponse }>(),
+
+    'Mark Favorite': props<{ pid: number | string }>(),
+    'Mark Favorite Success': props<{ data: any, pid: number | string }>(),
+    'Mark Favorite Failure': props<{ error: HttpErrorResponse, pid: number | string }>(),
   }
 });

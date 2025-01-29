@@ -33,6 +33,7 @@ export class FeedListScreenComponent  implements OnInit {
   }
   public filterValue: string = '';
   public inviniteEvent: InfiniteScrollCustomEvent | null = null;
+  public loadMoreDisabled: boolean = false;
 
   constructor(
     private feedService: FeedService,
@@ -44,9 +45,17 @@ export class FeedListScreenComponent  implements OnInit {
     this.drafts$ = this.challengeService.selectReadingsDraft();
 
     // listen state
-    this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe(action => {
+    this.actionsSubject$.pipe(takeUntilDestroyed()).subscribe((action: any) => {
       switch (action.type) {
         case '[Feed] Load More Activities Success':
+          this.inviniteEvent?.target?.complete();
+          
+          if (action.data.length <= 0) {
+            this.loadMoreDisabled = true;
+          } else {
+            this.loadMoreDisabled = false;
+          }
+          break;
         case '[Feed] Load More Activities Failure':
           this.inviniteEvent?.target?.complete();
           break;

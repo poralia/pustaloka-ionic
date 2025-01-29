@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { differenceInMinutes, differenceInSeconds, intervalToDuration, parseISO } from 'date-fns';
+import { FeedService } from 'src/app/modules/feed/services/feed.service';
 
 @Component({
     selector: 'app-feed-item',
@@ -22,6 +23,7 @@ export class FeedItemComponent  implements OnInit {
 
   constructor(
     private router: Router,
+    private feedService: FeedService,
   ) { }
 
   ngOnInit() {
@@ -69,20 +71,35 @@ export class FeedItemComponent  implements OnInit {
 
   clickHandler(item: any, event: any) {
     let toComment: boolean = false;
+    let redirectTo: boolean = true;
 
     if (event.target.nodeName === 'ION-TEXT') {
       let button = event.target.parentElement;
-      if (button.nodeName == 'ION-BUTTON' && button.getAttribute('id') === 'to-comment') {
-        toComment = true;
+      if (button.nodeName == 'ION-BUTTON') {
+        if (button.getAttribute('id') === 'to-comment') {
+          toComment = true;
+          redirectTo = true;
+        } else if (button.getAttribute('id') === 'to-favorite') {
+          redirectTo = false;
+          this.feedService.favorite(item.id);
+        }
       }
-    } else if (event.target.nodeName === 'ION-BUTTON' && event.target.getAttribute('id') === 'to-comment') {
-      toComment = true;
+    } else if (event.target.nodeName === 'ION-BUTTON') {
+      if (event.target.getAttribute('id') === 'to-comment') {
+        toComment = true;
+        redirectTo = true;
+      } else if (event.target.getAttribute('id') === 'to-favorite') {
+        redirectTo = false;
+        this.feedService.favorite(item.id);
+      }
     }
 
-    this.router.navigate(['/tabs/feed', item.id], { queryParams: {
-      toComment: toComment,
-      previousPage: !this.props?.showProfile ? 'profile' : null,
-    }});
+    if (redirectTo) {
+      this.router.navigate(['/tabs/feed', item.id], { queryParams: {
+        toComment: toComment,
+        previousPage: !this.props?.showProfile ? 'profile' : null,
+      }});
+    }
   }
 
 }

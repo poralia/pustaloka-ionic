@@ -54,4 +54,11 @@ export class HttpService {
     return this.httpClient.post(HTTPEnpoint.ACTIVITY, data);
   }
 
+  /**
+   * Mark activity as favorite / un-favorite
+   */
+  favorite(pid: number | string): Observable<any> {
+    return this.httpClient.post(`${HTTPEnpoint.ACTIVITY}/${pid}/favorite`, {});
+  }
+
 }

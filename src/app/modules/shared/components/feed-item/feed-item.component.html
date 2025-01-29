@@ -91,6 +91,12 @@
         <ion-text *ngIf="props.item.comment_count.total > 0">{{ props.item.comment_count.total | number }} Komentar</ion-text>
         <ion-text *ngIf="props.item.comment_count.total <= 0">Beri Komentar</ion-text>
       </ion-button>
+
+      <ion-button id="to-favorite" fill="clear" size="small" color="purple">
+        <ion-icon slot="start" name="heart" [color]="props.item.favorited ? 'danger': 'dark'"></ion-icon>
+        <ion-text *ngIf="props.item.favorited_count > 0">{{ props.item.favorited_count | number }} Favorit</ion-text>
+        <ion-text *ngIf="props.item.favorited_count <= 0">Favorit</ion-text>
+      </ion-button>
     </div>
   </ion-card-content>
 </ion-card>

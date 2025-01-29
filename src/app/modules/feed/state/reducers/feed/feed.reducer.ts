@@ -387,5 +387,59 @@ export const FeedReducer = createReducer(
       }
     }
   }),
+
+
+  /**
+   * MARK ACTIVITY AS FAVORITED
+   */
+  on(FeedActions.markFavoriteSuccess, (state, { data, pid }) => {
+    let newActivitiesData = data.activities ? [...state.activities.data] : [];
+    if (state.activities.data && state.activities.data.length > 0) {
+      const index = state.activities.data?.findIndex((obj: any) => obj.id == pid);
+      const obj = state.activities.data?.find((obj: any) => obj.id == pid);
+      const isFavorited = obj?.favorited;
+      const favoritedCount = parseInt(obj?.favorited_count);
+
+      newActivitiesData = [
+        ...state.activities.data?.slice(0, index),
+        {
+          ...state.activities.data?.[index],
+          favorited: isFavorited ? false : true,
+          favorited_count: isFavorited ? favoritedCount - 1 : favoritedCount + 1,
+        },
+        ...state.activities.data?.slice(index + 1),
+      ];
+    }
+
+    let newOtherActivitiesData = data.otherActivities ? state.otherActivities.data : [];
+    if (state.otherActivities.data && state.otherActivities.data.length > 0) {
+      const otherIndex = state.otherActivities.data?.findIndex((obj: any) => obj.id == pid);
+      const otherObj = state.otherActivities.data?.find((obj: any) => obj.id == pid);
+      const otherIsFavorited = otherObj?.favorited;
+      const otherFavoritedCount = parseInt(otherObj?.favorited_count);
+
+      newOtherActivitiesData = [
+        ...state.otherActivities.data?.slice(0, otherIndex),
+        {
+          ...state.otherActivities.data?.[otherIndex],
+          favorited: otherIsFavorited ? false : true,
+          favorited_count: otherIsFavorited ? otherFavoritedCount - 1 : otherFavoritedCount + 1,
+        },
+        ...state.otherActivities.data?.slice(otherIndex + 1),
+      ];
+    }
+
+    return {
+      ...state,
+      activities: {
+        ...state.activities,
+        data: newActivitiesData,
+      },
+      otherActivities: {
+        ...state.otherActivities,
+        data: newOtherActivitiesData,
+      },
+    }
+  })
 );
 

@@ -339,4 +339,39 @@ export class FeedEffects {
     ), { dispatch: false }
   )
 
+
+  // ...
+  // MARK ACTIVITY FAVORITE
+  // ...
+  markFavorite$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.markFavorite),
+      mergeMap(action => 
+        this.httpService.favorite(action.pid).pipe(
+          map(res => FeedActions.markFavoriteSuccess({ data: res, pid: action.pid })),
+          catchError(error => of(FeedActions.markFavoriteFailure({ error: error, pid: action.pid }))),
+        )
+      )
+    )
+  )
+
+  markFavoriteSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.markFavoriteSuccess),
+      tap(({ data }) => {
+        console.log(data);
+        this.presentToast('Berhasil difavoritkan', 'success', 1500);
+      }),
+    ), { dispatch: false }
+  )
+
+  markFavoriteFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeedActions.markFavoriteFailure),
+      tap(({ error }) => {
+        console.log(error);
+      }),
+    ), { dispatch: false }
+  )
+
 }
