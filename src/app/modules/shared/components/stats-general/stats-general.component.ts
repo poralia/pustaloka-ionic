@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TZDate } from '@date-fns/tz';
 import { IonModal } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
-import { addMonths, format, startOfMonth } from 'date-fns';
+import { addMonths, format, startOfMonth, sub } from 'date-fns';
 import { Observable } from 'rxjs';
 import { IStatsFilter } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
@@ -24,8 +24,8 @@ export class StatsGeneralComponent  implements OnInit {
   public changeDateBehavior: string = 'from';
   public selectedDatetime: any;
   public fromDatetime: any = new TZDate(new Date(), "Asia/Jakarta");
-  public startOfMonth: any = startOfMonth(this.fromDatetime);
-  public toDatetime: any = addMonths(this.startOfMonth.toISOString(), 1);
+  public startOfMonth: any = sub(this.fromDatetime, { days: 30 });
+  public toDatetime: any = this.fromDatetime;
   public stats$: Observable<{ data: any, statuses: string }>;
 
   public filter: IStatsFilter = {

@@ -1,6 +1,6 @@
 <ng-container *ngIf="stats$ | async as stats">
-  @if (stats.statuses == 'success') {
-    <div class="block mb-4 ion-padding !pb-0">
+  <div class="block mb-4 ion-padding !pb-0">
+    @if (stats.statuses == 'success') {
       <div class="block">
         <div *ngIf="!uid" class="block">
           <ion-text class="text-lg font-semibold" color="purple">Capaian Saya</ion-text>
@@ -87,11 +87,11 @@
             <div class="text-base font-bold pl-3 ml-auto text-right"><ion-text>{{ stats.data.total_session | number }}</ion-text></div>
           </div>
         </div>
-      
-        <app-stats-card-other [showHeader]="false" [uid]="uid"></app-stats-card-other>
       </div>
-    </div>
-  }
+    }
+
+    <app-stats-card-other [showHeader]="false" [uid]="uid"></app-stats-card-other>
+  </div>
 </ng-container>
 
 <ion-modal #changeDateModal class="changeDateModal">

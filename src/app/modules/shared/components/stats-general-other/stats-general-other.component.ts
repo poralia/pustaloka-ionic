@@ -4,11 +4,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TZDate } from '@date-fns/tz';
 import { IonModal } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
-import { addMonths, format, startOfMonth } from 'date-fns';
+import { addMonths, format, startOfMonth, sub } from 'date-fns';
 import { Observable } from 'rxjs';
 import { IStatsFilter } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-import { StatsCardComponent } from '../stats-card/stats-card.component';
+import { StatsCardOtherComponent } from '../stats-card-other/stats-card-other.component';
 
 @Component({
   selector: 'app-stats-general-other',
@@ -19,15 +19,15 @@ import { StatsCardComponent } from '../stats-card/stats-card.component';
 export class StatsGeneralComponentOther  implements OnInit {
 
   @ViewChild('changeDateModal', { read: IonModal }) changeDateModal: IonModal | null = null;
-  @ViewChild(StatsCardComponent) statsCardComponent: StatsCardComponent | null = null;
+  @ViewChild(StatsCardOtherComponent) statsCardOtherComponent: StatsCardOtherComponent | null = null;
 
   @Input('uid') uid: string | number | null = null;
   
   public changeDateBehavior: string = 'from';
   public selectedDatetime: any;
   public fromDatetime: any = new TZDate(new Date(), "Asia/Jakarta");
-  public startOfMonth: any = startOfMonth(this.fromDatetime);
-  public toDatetime: any = addMonths(this.startOfMonth.toISOString(), 1);
+  public startOfMonth: any = sub(this.fromDatetime, { days: 30 });
+  public toDatetime: any = this.fromDatetime;
   public stats$: Observable<{ data: any, statuses: string }>;
 
   public filter: IStatsFilter = {
@@ -99,8 +99,8 @@ export class StatsGeneralComponentOther  implements OnInit {
       }
     }
 
-    if (this.statsCardComponent) {
-      this.statsCardComponent.externalTriggerHandler(this.filter);
+    if (this.statsCardOtherComponent) {
+      this.statsCardOtherComponent.externalTriggerHandler(this.filter);
     }
     this.loadStats();
     this.changeDateModal?.dismiss();

@@ -4,7 +4,7 @@ import { TZDate } from '@date-fns/tz';
 import { IonModal } from '@ionic/angular';
 import { ActionsSubject } from '@ngrx/store';
 import Chart, { plugins } from 'chart.js/auto';
-import { addMonths, format, parseISO, startOfMonth } from 'date-fns';
+import { addMonths, format, parseISO, startOfMonth, sub } from 'date-fns';
 import { IStatsFilter } from 'src/app/modules/auth/interfaces';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { DecimalPipe } from '@angular/common';
@@ -25,8 +25,8 @@ export class StatsCardOtherComponent  implements OnInit {
   public changeDateBehavior: string = 'from';
   public selectedDatetime: any;
   public fromDatetime: any = new TZDate(new Date(), "Asia/Jakarta");
-  public startOfMonth: any = startOfMonth(this.fromDatetime);
-  public toDatetime: any = addMonths(this.startOfMonth.toISOString(), 1);
+  public startOfMonth: any = sub(this.fromDatetime, { days: 30 });
+  public toDatetime: any = this.fromDatetime;
   public chart: any;
 
   public filter: IStatsFilter = {
@@ -63,45 +63,70 @@ export class StatsCardOtherComponent  implements OnInit {
   }
 
   async loadStats() {
-    const auth = await this.authService.getAuth();
-    if (auth) {
-      this.filter = {
-        ...this.filter,
-        uid: auth.user_id,
-      }
-    }
-
-    if (this.uid) {
-      this.filter = {
-        ...this.filter,
-        uid: this.uid,
-      }
+    this.filter = {
+      ...this.filter,
+      uid: this.uid as unknown as number,
     }
 
     this.authService.getDailyStats(this.filter, { target: 'other' });
   }
 
   initializeCharts(payload: any) {
+    if (this.chart) this.chart.destroy();
+    
     const ctx = document.getElementById('myChart-user-' + this.uid);
+    const fromDate = new Date(this.filter.from_date);
+    const toDate = new Date(this.filter.to_date);
+    let loop = new Date(fromDate);
+    let labels = [];
 
-    const labels = payload.map((item: any) => {
-      return parseISO(item.post_date).getDate();
+    while (loop <= toDate) {
+      labels.push(loop.getDate());
+      let newDate = loop.setDate(loop.getDate() + 1);
+      loop = new Date(newDate);
+    }
+
+    const pages = labels.map(item => {
+      const found = payload.find((p: any) => {
+        const d = parseISO(p.post_date).getDate();
+        return d == item;
+      });
+
+      if (found) {
+        return parseInt(found.total_reading_page);
+      }
+
+      return 0;
     });
 
-    const pages = payload.map((item: any) => {
-      return parseInt(item.total_reading_page);
-    });
+    const minutes = labels.map(item => {
+      const found = payload.find((p: any) => {
+        const d = parseISO(p.post_date).getDate();
+        return d == item;
+      });
 
-    const minutes = payload.map((item: any) => {
-      return Math.floor(parseInt(item.spending_time) / 60);
+      if (found) {
+        return Math.floor(parseInt(found.spending_time) / 60);
+      }
+
+      return 0;
     });
 
     const pauseDurations = payload.map((item: any) => {
       return Math.floor(parseInt(item.pause_duration) / 60);
     });
 
-    const effectiveDurations = payload.map((item: any) => {
-      return Math.floor(parseInt(item.effective_duration) / 60);
+    const effectiveDurations = labels.map(item => {
+      const found = payload.find((p: any) => {
+        const d = parseISO(p.post_date).getDate();
+        return d == item;
+      });
+
+      if (found) {
+        return Math.floor(parseInt(found.effective_duration) / 60);
+      }
+
+      return 0;
     });
 
     const totalPages = pages.reduce((acc: any, curr: any) => acc + curr, 0);
@@ -150,10 +175,18 @@ export class StatsCardOtherComponent  implements OnInit {
           y: {
             beginAtZero: true,
             stacked: false,
+            ticks: {
+              display: true,
+              autoSkip: false
+            }
           },
           x: {
             beginAtZero: true,
             stacked: false,
+            ticks: {
+              display: true,
+              autoSkip: false
+            }
           },
         },
         plugins: {
@@ -221,6 +254,19 @@ export class StatsCardOtherComponent  implements OnInit {
     this.chart.destroy();
     this.loadStats();
     this.changeDateModal?.dismiss();
+  }
+
+  /**
+   * Trigger from outside
+   */
+  externalTriggerHandler(data: any) {
+    this.filter = {
+      ...this.filter,
+      from_date: data.from_date,
+      to_date: data.to_date,
+    };
+    if (this.chart) this.chart.destroy();
+    this.loadStats();
   }
 
   ionViewDidLeave() {
